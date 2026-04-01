@@ -1,12 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
     [SerializeField] private DialogueUI dialogueUI;
     [SerializeField] private QuestManager questManager;
+    [SerializeField] private DialogueContextBuilder contextBuilder;
+    [SerializeField] private NPCResponseService responseService;
 
     private NPCDialogueData currentNPC;
     private bool isDialogueOpen;
+
+    private List<string> dialogueHistory = new List<string>();
 
     public bool IsDialogueOpen => isDialogueOpen;
 
@@ -16,6 +21,7 @@ public class DialogueManager : MonoBehaviour
 
         currentNPC = npcData;
         isDialogueOpen = true;
+        dialogueHistory.Clear();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -25,6 +31,7 @@ public class DialogueManager : MonoBehaviour
         dialogueUI.ClearHistory();
 
         string startMessage = GetNPCStartMessage(currentNPC);
+        AddDialogueLine(currentNPC.NPCName + ": " + startMessage);
         dialogueUI.AddMessage(currentNPC.NPCName, startMessage);
         dialogueUI.ClearInput();
     }
@@ -35,9 +42,22 @@ public class DialogueManager : MonoBehaviour
         if (string.IsNullOrWhiteSpace(playerMessage)) return;
 
         dialogueUI.AddMessage("Игрок", playerMessage);
+        AddDialogueLine("Игрок: " + playerMessage);
 
-        string npcResponse = GenerateResponse(playerMessage);
+        HandleQuestLogicBeforeResponse();
+
+        DialogueContext context = contextBuilder.BuildContext(
+            currentNPC,
+            playerMessage,
+            dialogueHistory
+        );
+
+        string npcResponse = responseService.GetResponse(context);
+
+        HandleQuestLogicAfterResponse();
+
         dialogueUI.AddMessage(currentNPC.NPCName, npcResponse);
+        AddDialogueLine(currentNPC.NPCName + ": " + npcResponse);
 
         dialogueUI.ClearInput();
     }
@@ -46,11 +66,17 @@ public class DialogueManager : MonoBehaviour
     {
         currentNPC = null;
         isDialogueOpen = false;
+        dialogueHistory.Clear();
 
         dialogueUI.Hide();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    private void AddDialogueLine(string line)
+    {
+        dialogueHistory.Add(line);
     }
 
     private string GetNPCStartMessage(NPCDialogueData npcData)
@@ -86,10 +112,10 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private string GenerateResponse(string playerMessage)
+    private void HandleQuestLogicBeforeResponse()
     {
-        if (currentNPC.QuestData == null || questManager == null)
-            return "Я услышал тебя: \"" + playerMessage + "\"";
+        if (currentNPC == null || currentNPC.QuestData == null || questManager == null)
+            return;
 
         string questId = currentNPC.QuestData.questId;
         QuestStatus status = questManager.GetQuestStatus(questId);
@@ -97,33 +123,26 @@ public class DialogueManager : MonoBehaviour
         if (status == QuestStatus.NotStarted)
         {
             questManager.StartQuest(questId);
-            return "Прошу тебя, найди и принеси мне предмет: " + currentNPC.QuestData.questName;
+            return;
         }
 
         if (status == QuestStatus.InProgress)
         {
             questManager.CheckQuestProgress(questId);
-
-            if (questManager.GetQuestStatus(questId) == QuestStatus.Completed)
-            {
-                questManager.TurnInQuest(questId);
-                return "Прекрасно! Ты выполнил мое поручение.";
-            }
-
-            return "Я все еще жду предмет.";
         }
+    }
+
+    private void HandleQuestLogicAfterResponse()
+    {
+        if (currentNPC == null || currentNPC.QuestData == null || questManager == null)
+            return;
+
+        string questId = currentNPC.QuestData.questId;
+        QuestStatus status = questManager.GetQuestStatus(questId);
 
         if (status == QuestStatus.Completed)
         {
             questManager.TurnInQuest(questId);
-            return "Прекрасно! Ты выполнил мое поручение.";
         }
-
-        if (status == QuestStatus.TurnedIn)
-        {
-            return "У меня пока нет новых поручений.";
-        }
-
-        return "Я услышал тебя: \"" + playerMessage + "\"";
     }
 }

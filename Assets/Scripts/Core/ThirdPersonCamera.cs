@@ -8,6 +8,7 @@ public class ThirdPersonCamera : MonoBehaviour
     [SerializeField] private float minPitch = -30f;
     [SerializeField] private float maxPitch = 60f;
     [SerializeField] private DialogueManager dialogueManager;
+    [SerializeField] private GameplayUIController gameplayUIController;
 
     private float yaw;
     private float pitch;
@@ -26,7 +27,11 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         if (target == null) return;
 
-        if (dialogueManager == null || !dialogueManager.IsDialogueOpen)
+        bool canRotateCamera =
+            (dialogueManager == null || !dialogueManager.IsDialogueOpen) &&
+            (gameplayUIController == null || !gameplayUIController.IsAnyGameplayPanelOpen);
+
+        if (canRotateCamera)
         {
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");

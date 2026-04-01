@@ -5,6 +5,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private float interactionRange = 3f;
     [SerializeField] private LayerMask interactionLayer;
     [SerializeField] private DialogueManager dialogueManager;
+    [SerializeField] private GameplayUIController gameplayUIController;
 
     private IInteractable currentInteractable;
 
@@ -12,7 +13,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (dialogueManager != null && dialogueManager.IsDialogueOpen)
+        if ((dialogueManager != null && dialogueManager.IsDialogueOpen) ||
+        (gameplayUIController != null && gameplayUIController.IsAnyGameplayPanelOpen))
         {
             return;
         }

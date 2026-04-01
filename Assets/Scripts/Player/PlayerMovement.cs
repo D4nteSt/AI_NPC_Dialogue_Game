@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private DialogueManager dialogueManager;
+    [SerializeField] private GameplayUIController gameplayUIController;
 
     private CharacterController controller;
     private float verticalVelocity;
@@ -19,8 +20,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (dialogueManager != null && dialogueManager.IsDialogueOpen)
+        if ((dialogueManager != null && dialogueManager.IsDialogueOpen) ||
+        (gameplayUIController != null && gameplayUIController.IsAnyGameplayPanelOpen))
+        {
             return;
+        }
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
