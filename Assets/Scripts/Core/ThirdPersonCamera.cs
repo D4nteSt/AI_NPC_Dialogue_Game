@@ -25,7 +25,8 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (target == null) return;
+        if (target == null)
+            return;
 
         bool canRotateCamera =
             (dialogueManager == null || !dialogueManager.IsDialogueOpen) &&

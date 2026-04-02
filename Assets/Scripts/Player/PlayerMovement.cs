@@ -20,11 +20,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if ((dialogueManager != null && dialogueManager.IsDialogueOpen) ||
-        (gameplayUIController != null && gameplayUIController.IsAnyGameplayPanelOpen))
-        {
+        bool shouldBlockMovement =
+            (dialogueManager != null && dialogueManager.IsDialogueOpen) ||
+            (gameplayUIController != null && gameplayUIController.IsAnyGameplayPanelOpen);
+
+        if (shouldBlockMovement)
             return;
-        }
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");

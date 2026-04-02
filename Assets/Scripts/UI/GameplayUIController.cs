@@ -10,6 +10,17 @@ public class GameplayUIController : MonoBehaviour
     public bool IsQuestJournalOpen => questJournalPanel != null && questJournalPanel.activeSelf;
     public bool IsAnyGameplayPanelOpen => IsInventoryOpen || IsQuestJournalOpen;
 
+    private void Start()
+    {
+        if (inventoryPanel != null)
+            inventoryPanel.SetActive(false);
+
+        if (questJournalPanel != null)
+            questJournalPanel.SetActive(false);
+
+        UpdateCursorState();
+    }
+
     private void Update()
     {
         HandleInput();
@@ -45,7 +56,8 @@ public class GameplayUIController : MonoBehaviour
 
     public void ToggleInventory()
     {
-        if (inventoryPanel == null) return;
+        if (inventoryPanel == null)
+            return;
 
         bool newState = !inventoryPanel.activeSelf;
 
@@ -60,7 +72,8 @@ public class GameplayUIController : MonoBehaviour
 
     public void ToggleQuestJournal()
     {
-        if (questJournalPanel == null) return;
+        if (questJournalPanel == null)
+            return;
 
         bool newState = !questJournalPanel.activeSelf;
 
@@ -87,6 +100,11 @@ public class GameplayUIController : MonoBehaviour
     private void UpdateCursorState()
     {
         bool shouldShowCursor = IsAnyGameplayPanelOpen;
+
+        if (dialogueManager != null && dialogueManager.IsDialogueOpen)
+        {
+            shouldShowCursor = true;
+        }
 
         Cursor.lockState = shouldShowCursor ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = shouldShowCursor;

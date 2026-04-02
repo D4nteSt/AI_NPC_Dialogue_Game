@@ -13,9 +13,13 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
-        if ((dialogueManager != null && dialogueManager.IsDialogueOpen) ||
-        (gameplayUIController != null && gameplayUIController.IsAnyGameplayPanelOpen))
+        bool shouldBlockInteraction =
+            (dialogueManager != null && dialogueManager.IsDialogueOpen) ||
+            (gameplayUIController != null && gameplayUIController.IsAnyGameplayPanelOpen);
+
+        if (shouldBlockInteraction)
         {
+            currentInteractable = null;
             return;
         }
 
