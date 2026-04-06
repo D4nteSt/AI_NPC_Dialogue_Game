@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private DialogueManager dialogueManager;
     [SerializeField] private GameplayUIController gameplayUIController;
+    [SerializeField] private Animator characterAnimator;
 
     private CharacterController controller;
     private float verticalVelocity;
@@ -31,7 +32,16 @@ public class PlayerMovement : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
 
         Vector3 inputDirection = new Vector3(horizontal, 0f, vertical).normalized;
+
+        bool isMoving = inputDirection.magnitude >= 0.1f;
+
+        if (characterAnimator != null)
+        {
+            characterAnimator.SetBool("IsMoving", isMoving);
+        }
+
         Vector3 moveDirection = Vector3.zero;
+
 
         if (inputDirection.magnitude >= 0.1f)
         {
