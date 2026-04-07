@@ -4,9 +4,21 @@ using System.Collections.Generic;
 public class DialogueContext
 {
     public string npcName;
+    public string npcRole;
     public string npcPersonality;
-    public string greetingMessage;
+    public string npcSpeechStyle;
 
+    public string npcBackstory;
+    public string npcLocationContext;
+
+    public string npcKnowledge;
+    public string npcUnknowns;
+
+    public string npcMotivation;
+    public string npcSecret;
+    public string npcAttitudeToPlayer;
+
+    public string greetingMessage;
     public string playerMessage;
 
     public string questId;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class NPCPromptBuilder : MonoBehaviour
 {
     [SerializeField] private int maxHistoryLines = 6;
+    [SerializeField] private bool includeSecretsInPrompt = true;
 
     public string BuildPrompt(DialogueContext context)
     {
@@ -13,108 +14,170 @@ public class NPCPromptBuilder : MonoBehaviour
 
         StringBuilder prompt = new StringBuilder();
 
-        AppendRoleBlock(prompt, context);
-        AppendSituationBlock(prompt, context);
-        AppendInventoryBlock(prompt, context);
+        AppendIdentityBlock(prompt, context);
+        AppendWorldContextBlock(prompt, context);
+        AppendKnowledgeBlock(prompt, context);
+        AppendMotivationBlock(prompt, context);
+        AppendCurrentSituationBlock(prompt, context);
         AppendDialogueHistoryBlock(prompt, context);
+        AppendResponseObjectiveBlock(prompt, context);
         AppendResponseRulesBlock(prompt);
 
         return prompt.ToString();
     }
 
-    private void AppendRoleBlock(StringBuilder prompt, DialogueContext context)
+    private void AppendIdentityBlock(StringBuilder prompt, DialogueContext context)
     {
-        prompt.AppendLine("Ты — неигровой персонаж в сюжетной игре на Unity.");
-        prompt.AppendLine();
+        prompt.AppendLine("СИСТЕМНАЯ РОЛЬ ПЕРСОНАЖА");
+        prompt.AppendLine("Ты — неигровой персонаж в сюжетной камерной игре.");
 
         if (!string.IsNullOrWhiteSpace(context.npcName))
-        {
-            prompt.AppendLine("Твое имя: " + context.npcName + ".");
-        }
+            prompt.AppendLine("Имя персонажа: " + Clean(context.npcName) + ".");
+
+        if (!string.IsNullOrWhiteSpace(context.npcRole))
+            prompt.AppendLine("Роль персонажа в мире: " + Clean(context.npcRole) + ".");
 
         if (!string.IsNullOrWhiteSpace(context.npcPersonality))
-        {
-            prompt.AppendLine("Твой характер и манера поведения: " + context.npcPersonality + ".");
-        }
+            prompt.AppendLine("Характер: " + Clean(context.npcPersonality) + ".");
 
-        prompt.AppendLine("Отвечай как живой персонаж внутри игрового мира, а не как система, модель или ассистент.");
+        if (!string.IsNullOrWhiteSpace(context.npcSpeechStyle))
+            prompt.AppendLine("Стиль речи: " + Clean(context.npcSpeechStyle) + ".");
+
+        prompt.AppendLine("Ты отвечаешь только как живой персонаж внутри игрового мира.");
         prompt.AppendLine();
     }
 
-    private void AppendSituationBlock(StringBuilder prompt, DialogueContext context)
+    private void AppendWorldContextBlock(StringBuilder prompt, DialogueContext context)
     {
-        prompt.AppendLine("Текущая игровая ситуация:");
+        prompt.AppendLine("КОНТЕКСТ ПЕРСОНАЖА И МЕСТА");
+
+        if (!string.IsNullOrWhiteSpace(context.npcBackstory))
+            prompt.AppendLine("Предыстория: " + Clean(context.npcBackstory) + ".");
+
+        if (!string.IsNullOrWhiteSpace(context.npcLocationContext))
+            prompt.AppendLine("Связь с местом: " + Clean(context.npcLocationContext) + ".");
+
+        if (!string.IsNullOrWhiteSpace(context.npcAttitudeToPlayer))
+            prompt.AppendLine("Отношение к игроку: " + Clean(context.npcAttitudeToPlayer) + ".");
+
+        prompt.AppendLine("Сохраняй атмосферу локальной истории и говори как участник событий, а не как внешний помощник.");
+        prompt.AppendLine();
+    }
+
+    private void AppendKnowledgeBlock(StringBuilder prompt, DialogueContext context)
+    {
+        prompt.AppendLine("ЗНАНИЯ И ОГРАНИЧЕНИЯ ПЕРСОНАЖА");
+
+        if (!string.IsNullOrWhiteSpace(context.npcKnowledge))
+            prompt.AppendLine("Персонаж знает: " + Clean(context.npcKnowledge) + ".");
+
+        if (!string.IsNullOrWhiteSpace(context.npcUnknowns))
+            prompt.AppendLine("Персонаж не знает: " + Clean(context.npcUnknowns) + ".");
+
+        prompt.AppendLine("Не сообщай информацию, которой персонаж не мог бы естественно обладать.");
+        prompt.AppendLine("Не упоминай код, переменные, интерфейсы, игровые системы и внутреннюю механику.");
+        prompt.AppendLine();
+    }
+
+    private void AppendMotivationBlock(StringBuilder prompt, DialogueContext context)
+    {
+        prompt.AppendLine("ВНУТРЕННЯЯ МОТИВАЦИЯ ПЕРСОНАЖА");
+
+        if (!string.IsNullOrWhiteSpace(context.npcMotivation))
+            prompt.AppendLine("Главная мотивация: " + Clean(context.npcMotivation) + ".");
+
+        if (includeSecretsInPrompt && !string.IsNullOrWhiteSpace(context.npcSecret))
+            prompt.AppendLine("Скрытый внутренний слой: " + Clean(context.npcSecret) + ".");
+
+        prompt.AppendLine("Даже если персонаж что-то скрывает, он не обязан раскрывать это напрямую в каждом ответе.");
+        prompt.AppendLine();
+    }
+
+    private void AppendCurrentSituationBlock(StringBuilder prompt, DialogueContext context)
+    {
+        prompt.AppendLine("ТЕКУЩАЯ ИГРОВАЯ СИТУАЦИЯ");
 
         if (!string.IsNullOrWhiteSpace(context.questName))
-        {
-            prompt.AppendLine("- Связанный квест: " + context.questName + ".");
-        }
+            prompt.AppendLine("Текущее поручение связано с объектом: " + Clean(context.questName) + ".");
 
         if (!string.IsNullOrWhiteSpace(context.questDescription))
-        {
-            prompt.AppendLine("- Суть квеста: " + context.questDescription + ".");
-        }
+            prompt.AppendLine("Суть поручения: " + Clean(context.questDescription) + ".");
 
         if (!string.IsNullOrWhiteSpace(context.questStatus))
-        {
-            prompt.AppendLine("- Внутренний статус квеста: " + ConvertQuestStatus(context.questStatus) + ".");
-        }
-
-        prompt.AppendLine("- Учитывай текущую стадию задания в своем ответе.");
-        prompt.AppendLine();
-    }
-
-    private void AppendInventoryBlock(StringBuilder prompt, DialogueContext context)
-    {
-        prompt.AppendLine("Сведения о предмете у игрока:");
+            prompt.AppendLine("Стадия поручения: " + ConvertQuestStatus(context.questStatus) + ".");
 
         if (context.inventoryItems != null && context.inventoryItems.Count > 0)
-        {
-            prompt.AppendLine("- У игрока есть: " + string.Join(", ", context.inventoryItems) + ".");
-        }
+            prompt.AppendLine("У игрока есть предметы: " + string.Join(", ", context.inventoryItems) + ".");
         else
-        {
-            prompt.AppendLine("- У игрока сейчас нет значимых предметов для этого разговора.");
-        }
+            prompt.AppendLine("У игрока нет значимых предметов для этой сцены.");
 
+        prompt.AppendLine("Строй реплику в соответствии с текущей стадией поручения.");
         prompt.AppendLine();
     }
 
     private void AppendDialogueHistoryBlock(StringBuilder prompt, DialogueContext context)
     {
-        prompt.AppendLine("Недавний контекст разговора:");
+        prompt.AppendLine("НЕДАВНИЙ КОНТЕКСТ РАЗГОВОРА");
 
         List<string> lines = GetRecentHistory(context.dialogueHistory, maxHistoryLines);
 
         if (lines.Count == 0)
         {
-            prompt.AppendLine("- Это начало разговора или история пуста.");
+            prompt.AppendLine("История разговора пока пуста.");
         }
         else
         {
             foreach (string line in lines)
             {
-                prompt.AppendLine("- " + line);
+                prompt.AppendLine(line);
             }
         }
 
         prompt.AppendLine();
-        prompt.AppendLine("Последняя реплика игрока:");
-        prompt.AppendLine(context.playerMessage);
+        prompt.AppendLine("ПОСЛЕДНЯЯ РЕПЛИКА ИГРОКА");
+        prompt.AppendLine(string.IsNullOrWhiteSpace(context.playerMessage) ? "Игрок пока ничего не сказал." : context.playerMessage);
+        prompt.AppendLine();
+    }
+
+    private void AppendResponseObjectiveBlock(StringBuilder prompt, DialogueContext context)
+    {
+        prompt.AppendLine("ЗАДАЧА ТЕКУЩЕГО ОТВЕТА");
+        prompt.AppendLine(BuildResponseObjective(context));
         prompt.AppendLine();
     }
 
     private void AppendResponseRulesBlock(StringBuilder prompt)
     {
-        prompt.AppendLine("Правила ответа:");
-        prompt.AppendLine("- Отвечай кратко и естественно, обычно 1–3 предложениями.");
+        prompt.AppendLine("ПРАВИЛА ОТВЕТА");
+        prompt.AppendLine("- Отвечай естественно, обычно 1–3 предложениями.");
         prompt.AppendLine("- Не перечисляй служебные поля, статусы, названия переменных и внутреннюю структуру игры.");
-        prompt.AppendLine("- Не говори, что ты ИИ, языковая модель, NPC-система или программа.");
-        prompt.AppendLine("- Не выходи из роли персонажа.");
-        prompt.AppendLine("- Если игрок говорит грубо, странно или слишком коротко, все равно отвечай в характере персонажа.");
-        prompt.AppendLine("- Если квест еще не завершен, не веди себя так, будто задание уже выполнено.");
-        prompt.AppendLine("- Если квест завершен, можешь благодарить, подтверждать результат или переходить к следующей естественной реплике.");
-        prompt.AppendLine("- Ответ должен звучать как реплика персонажа в мире игры.");
+        prompt.AppendLine("- Не говори, что ты ИИ, модель, NPC-система, программа или ассистент.");
+        prompt.AppendLine("- Не выходи из роли.");
+        prompt.AppendLine("- Не ломай атмосферу сцены.");
+        prompt.AppendLine("- Не отвечай как журнал заданий, подсказка интерфейса или системное уведомление.");
+        prompt.AppendLine("- Даже если игрок пишет грубо, коротко, нелепо или шутливо, сохраняй характер персонажа.");
+        prompt.AppendLine("- Не утверждай, что поручение завершено, если оно еще не завершено.");
+        prompt.AppendLine("- Если поручение уже завершено, можешь признать это, поблагодарить или естественно завершить разговор.");
+        prompt.AppendLine("- Реплика должна звучать как часть художественного диалога.");
+    }
+
+    private string BuildResponseObjective(DialogueContext context)
+    {
+        string status = context.questStatus ?? string.Empty;
+
+        switch (status)
+        {
+            case "NotStarted":
+                return "Ввести игрока в ситуацию, обозначить значимость поручения и заинтересовать его, оставаясь в характере персонажа.";
+            case "InProgress":
+                return "Удержать игрока в логике текущего поручения, мягко направить его и не разрушать атмосферу сухими пояснениями.";
+            case "Completed":
+                return "Признать успех игрока, подчеркнуть значение результата и подготовить естественный переход к завершению сцены.";
+            case "TurnedIn":
+                return "Показать, что персонаж помнит помощь игрока и реагирует на завершенное поручение естественно и по-человечески.";
+            default:
+                return "Поддержать естественный разговор, раскрывая характер и отношение персонажа к происходящему.";
+        }
     }
 
     private List<string> GetRecentHistory(List<string> fullHistory, int maxLines)
@@ -139,15 +202,23 @@ public class NPCPromptBuilder : MonoBehaviour
         switch (rawStatus)
         {
             case "NotStarted":
-                return "задание еще не начато";
+                return "поручение еще не начато";
             case "InProgress":
-                return "задание выполняется";
+                return "поручение сейчас выполняется";
             case "Completed":
-                return "условие задания уже выполнено";
+                return "условие поручения уже выполнено";
             case "TurnedIn":
-                return "задание уже сдано";
+                return "поручение уже завершено и результат передан персонажу";
             default:
-                return "состояние задания неизвестно";
+                return "состояние поручения не уточнено";
         }
+    }
+
+    private string Clean(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return string.Empty;
+
+        return text.Trim().TrimEnd('.', '!', '?');
     }
 }
