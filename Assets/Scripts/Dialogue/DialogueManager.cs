@@ -81,6 +81,9 @@ public class DialogueManager : MonoBehaviour
 
     private string GetNPCStartMessage(NPCDialogueData npcData)
     {
+        if (npcData == null)
+            return string.Empty;
+
         if (npcData.QuestData == null || questManager == null)
             return npcData.GreetingMessage;
 
@@ -88,33 +91,64 @@ public class DialogueManager : MonoBehaviour
 
         QuestStatus status = questManager.GetQuestStatus(npcData.QuestData.questId);
 
-        switch (status)
+        if (npcData.IsQuestGiver)
         {
-            case QuestStatus.NotStarted:
-                return npcData.GreetingMessage + " У меня есть для тебя задание.";
+            switch (status)
+            {
+                case QuestStatus.NotStarted:
+                    return npcData.GreetingMessage + " У меня есть для тебя задание.";
 
-            case QuestStatus.InProgress:
-                questManager.CheckQuestProgress(npcData.QuestData.questId);
+                case QuestStatus.InProgress:
+                    questManager.CheckQuestProgress(npcData.QuestData.questId);
 
-                if (questManager.GetQuestStatus(npcData.QuestData.questId) == QuestStatus.Completed)
-                    return "Ты нашел то, что я просил? Похоже, да.";
+                    if (questManager.GetQuestStatus(npcData.QuestData.questId) == QuestStatus.Completed)
+                        return "Ты нашел то, что я просил? Похоже, да.";
 
-                return "Ты уже нашел нужный предмет?";
+                    return "Ты уже нашел нужный предмет?";
 
-            case QuestStatus.Completed:
-                return "Отлично! Ты принес нужный предмет.";
+                case QuestStatus.Completed:
+                    return "Отлично! Ты принес нужный предмет.";
 
-            case QuestStatus.TurnedIn:
-                return "Спасибо за помощь. Ты хорошо справился.";
+                case QuestStatus.TurnedIn:
+                    return "Спасибо за помощь. Ты хорошо справился.";
 
-            default:
-                return npcData.GreetingMessage;
+                default:
+                    return npcData.GreetingMessage;
+            }
+        }
+        else
+        {
+            switch (status)
+            {
+                case QuestStatus.NotStarted:
+                    return npcData.GreetingMessage;
+
+                case QuestStatus.InProgress:
+                    questManager.CheckQuestProgress(npcData.QuestData.questId);
+
+                    if (questManager.GetQuestStatus(npcData.QuestData.questId) == QuestStatus.Completed)
+                        return "Похоже, ты уже нашел нужную вещь. Тогда лучше не мешкать.";
+
+                    return npcData.GreetingMessage;
+
+                case QuestStatus.Completed:
+                    return "Похоже, дело уже почти закончено.";
+
+                case QuestStatus.TurnedIn:
+                    return "Кажется, здесь стало спокойнее.";
+
+                default:
+                    return npcData.GreetingMessage;
+            }
         }
     }
 
     private void HandleQuestLogicBeforeResponse()
     {
         if (currentNPC == null || currentNPC.QuestData == null || questManager == null)
+            return;
+
+        if (!currentNPC.IsQuestGiver)
             return;
 
         string questId = currentNPC.QuestData.questId;
@@ -135,6 +169,9 @@ public class DialogueManager : MonoBehaviour
     private void HandleQuestLogicAfterResponse()
     {
         if (currentNPC == null || currentNPC.QuestData == null || questManager == null)
+            return;
+
+        if (!currentNPC.IsQuestGiver)
             return;
 
         string questId = currentNPC.QuestData.questId;

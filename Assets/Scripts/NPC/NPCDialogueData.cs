@@ -25,6 +25,13 @@ public class NPCDialogueData : MonoBehaviour
     [Header("Relationship")]
     [SerializeField] private string npcAttitudeToPlayer = "Сначала относится к игроку осторожно, но при уважительном поведении начинает доверять больше";
 
+    [Header("Conversation Dynamics")]
+    [SerializeField] private string npcCurrentEmotionalState = "Спокоен и собран, но внутренне напряжен из-за возвращения артефакта";
+    [SerializeField] private string npcConversationTendency = "Говорит неторопливо, осторожно и не раскрывает всего сразу, предпочитая намеки прямым объяснениям";
+
+    [Header("Quest Role")]
+    [SerializeField] private bool isQuestGiver = true;
+
     [Header("Dialogue")]
     [SerializeField] private string greetingMessage = "Здравствуй, путник.";
     [SerializeField] private QuestData questData;
@@ -40,6 +47,9 @@ public class NPCDialogueData : MonoBehaviour
     public string NPCMotivation => npcMotivation;
     public string NPCSecret => npcSecret;
     public string NPCAttitudeToPlayer => npcAttitudeToPlayer;
+    public string NPCCurrentEmotionalState => npcCurrentEmotionalState;
+    public string NPCConversationTendency => npcConversationTendency;
+    public bool IsQuestGiver => isQuestGiver;
     public string GreetingMessage => greetingMessage;
     public QuestData QuestData => questData;
 }

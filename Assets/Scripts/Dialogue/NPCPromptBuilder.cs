@@ -60,6 +60,12 @@ public class NPCPromptBuilder : MonoBehaviour
         if (!string.IsNullOrWhiteSpace(context.npcAttitudeToPlayer))
             prompt.AppendLine("ќтношение к игроку: " + Clean(context.npcAttitudeToPlayer) + ".");
 
+        if (!string.IsNullOrWhiteSpace(context.npcCurrentEmotionalState))
+            prompt.AppendLine("“екущее эмоциональное состо€ние: " + Clean(context.npcCurrentEmotionalState) + ".");
+
+        if (!string.IsNullOrWhiteSpace(context.npcConversationTendency))
+            prompt.AppendLine("ћанера вести разговор: " + Clean(context.npcConversationTendency) + ".");
+
         prompt.AppendLine("—охран€й атмосферу локальной истории и говори как участник событий, а не как внешний помощник.");
         prompt.AppendLine();
     }
@@ -159,11 +165,33 @@ public class NPCPromptBuilder : MonoBehaviour
         prompt.AppendLine("- Ќе утверждай, что поручение завершено, если оно еще не завершено.");
         prompt.AppendLine("- ≈сли поручение уже завершено, можешь признать это, поблагодарить или естественно завершить разговор.");
         prompt.AppendLine("- –еплика должна звучать как часть художественного диалога.");
+        prompt.AppendLine("- Ќе пересказывай весь контекст игроку, если он о нем не спрашивал.");
+        prompt.AppendLine("- Ќе повтор€й название поручени€ или предмета механически в каждом ответе.");
+        prompt.AppendLine("- Ќе раскрывай скрытые мотивы и секреты напр€мую без естественного повода.");
+        prompt.AppendLine("- Ќе делай ответ длинным монологом, если ситуаци€ требует короткой реплики.");
+        prompt.AppendLine("- ≈сли персонаж по характеру осторожен, не становись внезапно слишком откровенным без причины.");
     }
 
     private string BuildResponseObjective(DialogueContext context)
     {
         string status = context.questStatus ?? string.Empty;
+
+        if (!context.isQuestGiver)
+        {
+            switch (status)
+            {
+                case "NotStarted":
+                    return "ћ€гко обозначить, что в происход€щем есть что-то тревожное или важное, не выдава€ поручение напр€мую.";
+                case "InProgress":
+                    return "ƒать игроку осторожный взгл€д со стороны и помочь почувствовать атмосферу и значение происход€щего.";
+                case "Completed":
+                    return "ќтреагировать на успех игрока как наблюдатель, а не как тот, кто принимает результат.";
+                case "TurnedIn":
+                    return "ѕоказать последстви€ завершенного событи€ и отношение персонажа к случившемус€.";
+                default:
+                    return "ѕоддержать естественный разговор с точки зрени€ второстепенного участника событий.";
+            }
+        }
 
         switch (status)
         {

@@ -16,7 +16,25 @@ public class DialogueContextBuilder : MonoBehaviour
         if (npcData != null)
         {
             context.npcName = npcData.NPCName;
+            context.npcRole = npcData.NPCRole;
             context.npcPersonality = npcData.NPCPersonality;
+            context.npcSpeechStyle = npcData.NPCSpeechStyle;
+
+            context.npcBackstory = npcData.NPCBackstory;
+            context.npcLocationContext = npcData.NPCLocationContext;
+
+            context.npcKnowledge = npcData.NPCKnowledge;
+            context.npcUnknowns = npcData.NPCUnknowns;
+
+            context.npcMotivation = npcData.NPCMotivation;
+            context.npcSecret = npcData.NPCSecret;
+            context.npcAttitudeToPlayer = npcData.NPCAttitudeToPlayer;
+
+            context.npcCurrentEmotionalState = npcData.NPCCurrentEmotionalState;
+            context.npcConversationTendency = npcData.NPCConversationTendency;
+
+            context.isQuestGiver = npcData.IsQuestGiver;
+
             context.greetingMessage = npcData.GreetingMessage;
 
             if (npcData.QuestData != null)
@@ -27,9 +45,22 @@ public class DialogueContextBuilder : MonoBehaviour
 
                 if (questManager != null)
                 {
-                    context.questStatus = questManager
-                        .GetQuestStatus(npcData.QuestData.questId)
-                        .ToString();
+                    QuestStatus status = questManager.GetQuestStatus(npcData.QuestData.questId);
+
+                    bool playerHasRequiredItem =
+                        inventoryManager != null &&
+                        !string.IsNullOrWhiteSpace(npcData.QuestData.requiredItemId) &&
+                        inventoryManager.HasItem(npcData.QuestData.requiredItemId);
+
+                    if (playerHasRequiredItem)
+                    {
+                        if (status == QuestStatus.NotStarted || status == QuestStatus.InProgress)
+                        {
+                            status = QuestStatus.Completed;
+                        }
+                    }
+
+                    context.questStatus = status.ToString();
                 }
             }
         }

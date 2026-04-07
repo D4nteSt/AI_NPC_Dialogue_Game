@@ -18,6 +18,11 @@ public class DialogueContext
     public string npcSecret;
     public string npcAttitudeToPlayer;
 
+    public string npcCurrentEmotionalState;
+    public string npcConversationTendency;
+
+    public bool isQuestGiver;
+
     public string greetingMessage;
     public string playerMessage;
 
