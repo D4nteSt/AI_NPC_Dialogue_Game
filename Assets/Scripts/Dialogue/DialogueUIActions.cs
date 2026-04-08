@@ -5,16 +5,14 @@ public class DialogueUIActions : MonoBehaviour
     [SerializeField] private DialogueManager dialogueManager;
     [SerializeField] private DialogueUI dialogueUI;
 
-    public void OnSendButtonClicked()
+    public async void OnSendButtonClicked()
     {
-        Debug.Log("Нажата кнопка Send");
         string message = dialogueUI.GetInputText();
-        dialogueManager.SendPlayerMessage(message);
+        await dialogueManager.SendPlayerMessageAsync(message);
     }
 
     public void OnCloseButtonClicked()
     {
-        Debug.Log("Нажата кнопка Close");
         dialogueManager.CloseDialogue();
     }
 }

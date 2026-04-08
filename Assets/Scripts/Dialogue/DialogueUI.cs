@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueUI : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class DialogueUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI npcNameText;
     [SerializeField] private TextMeshProUGUI dialogueHistoryText;
     [SerializeField] private TMP_InputField playerInputField;
+    [SerializeField] private Button sendButton;
 
     public void Show()
     {
@@ -42,5 +44,14 @@ public class DialogueUI : MonoBehaviour
     {
         playerInputField.text = string.Empty;
         playerInputField.ActivateInputField();
+    }
+
+    public void SetInputInteractable(bool interactable)
+    {
+        if (playerInputField != null)
+            playerInputField.interactable = interactable;
+
+        if (sendButton != null)
+            sendButton.interactable = interactable;
     }
 }

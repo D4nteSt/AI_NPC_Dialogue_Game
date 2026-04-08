@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
@@ -6,14 +7,16 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private DialogueUI dialogueUI;
     [SerializeField] private QuestManager questManager;
     [SerializeField] private DialogueContextBuilder contextBuilder;
-    [SerializeField] private NPCResponseService responseService;
+    [SerializeField] private NPCAsyncResponseService responseService;
 
     private NPCDialogueData currentNPC;
     private bool isDialogueOpen;
+    private bool isWaitingForResponse;
 
     private List<string> dialogueHistory = new List<string>();
 
     public bool IsDialogueOpen => isDialogueOpen;
+    public bool IsWaitingForResponse => isWaitingForResponse;
 
     public void StartDialogue(NPCDialogueData npcData)
     {
@@ -21,6 +24,7 @@ public class DialogueManager : MonoBehaviour
 
         currentNPC = npcData;
         isDialogueOpen = true;
+        isWaitingForResponse = false;
         dialogueHistory.Clear();
 
         Cursor.lockState = CursorLockMode.None;
@@ -29,6 +33,7 @@ public class DialogueManager : MonoBehaviour
         dialogueUI.Show();
         dialogueUI.SetNPCName(currentNPC.NPCName);
         dialogueUI.ClearHistory();
+        dialogueUI.SetInputInteractable(true);
 
         string startMessage = GetNPCStartMessage(currentNPC);
         AddDialogueLine(currentNPC.NPCName + ": " + startMessage);
@@ -36,10 +41,14 @@ public class DialogueManager : MonoBehaviour
         dialogueUI.ClearInput();
     }
 
-    public void SendPlayerMessage(string playerMessage)
+    public async Task SendPlayerMessageAsync(string playerMessage)
     {
         if (!isDialogueOpen || currentNPC == null) return;
+        if (isWaitingForResponse) return;
         if (string.IsNullOrWhiteSpace(playerMessage)) return;
+
+        isWaitingForResponse = true;
+        dialogueUI.SetInputInteractable(false);
 
         dialogueUI.AddMessage("Игрок", playerMessage);
         AddDialogueLine("Игрок: " + playerMessage);
@@ -52,20 +61,28 @@ public class DialogueManager : MonoBehaviour
             dialogueHistory
         );
 
-        string npcResponse = responseService.GetResponse(context);
+        dialogueUI.AddMessage(currentNPC.NPCName, "...");
+        int thinkingMessageIndex = dialogueHistory.Count;
+        AddDialogueLine(currentNPC.NPCName + ": ...");
+
+        string npcResponse = await responseService.GetResponseAsync(context);
 
         HandleQuestLogicAfterResponse();
 
-        dialogueUI.AddMessage(currentNPC.NPCName, npcResponse);
-        AddDialogueLine(currentNPC.NPCName + ": " + npcResponse);
+        ReplaceLastDialogueUIMessage(currentNPC.NPCName, npcResponse);
+        ReplaceLastDialogueHistoryLine(currentNPC.NPCName + ": " + npcResponse);
 
         dialogueUI.ClearInput();
+        dialogueUI.SetInputInteractable(true);
+
+        isWaitingForResponse = false;
     }
 
     public void CloseDialogue()
     {
         currentNPC = null;
         isDialogueOpen = false;
+        isWaitingForResponse = false;
         dialogueHistory.Clear();
 
         dialogueUI.Hide();
@@ -77,6 +94,31 @@ public class DialogueManager : MonoBehaviour
     private void AddDialogueLine(string line)
     {
         dialogueHistory.Add(line);
+    }
+
+    private void ReplaceLastDialogueHistoryLine(string newLine)
+    {
+        if (dialogueHistory.Count == 0) return;
+        dialogueHistory[dialogueHistory.Count - 1] = newLine;
+    }
+
+    private void ReplaceLastDialogueUIMessage(string sender, string message)
+    {
+        // Упрощенный вариант: пересобираем весь текст из истории
+        dialogueUI.ClearHistory();
+
+        ReplaceLastDialogueHistoryLine(sender + ": " + message);
+
+        foreach (string line in dialogueHistory)
+        {
+            int separatorIndex = line.IndexOf(": ");
+            if (separatorIndex > 0)
+            {
+                string lineSender = line.Substring(0, separatorIndex);
+                string lineMessage = line.Substring(separatorIndex + 2);
+                dialogueUI.AddMessage(lineSender, lineMessage);
+            }
+        }
     }
 
     private string GetNPCStartMessage(NPCDialogueData npcData)
