@@ -3819,6 +3819,7 @@ MonoBehaviour:
   npcNameText: {fileID: 1251150081}
   dialogueHistoryText: {fileID: 817782401}
   playerInputField: {fileID: 1995115857}
+  sendButton: {fileID: 1100937743}
 --- !u!114 &747523192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3834,7 +3835,7 @@ MonoBehaviour:
   dialogueUI: {fileID: 747523191}
   questManager: {fileID: 1095872253}
   contextBuilder: {fileID: 1983255720}
-  responseService: {fileID: 1983255719}
+  responseService: {fileID: 1983255724}
 --- !u!114 &747523193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8792,6 +8793,9 @@ GameObject:
   - component: {fileID: 1983255718}
   - component: {fileID: 1983255723}
   - component: {fileID: 1983255722}
+  - component: {fileID: 1983255726}
+  - component: {fileID: 1983255724}
+  - component: {fileID: 1983255725}
   m_Layer: 0
   m_Name: DialogueSystems
   m_TagString: Untagged
@@ -8881,6 +8885,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AINPCResponseGenerator
   promptBuilder: {fileID: 1983255722}
   logPromptToConsole: 1
+--- !u!114 &1983255724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983255717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c638a67380bcd14d89e7e82fe8b36da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCAsyncResponseService
+  responseGeneratorBehaviour: {fileID: 1983255725}
+--- !u!114 &1983255725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983255717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72ee6b5101dc1c4f80fce16dfcc7232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AsyncAINPCResponseGenerator
+  promptBuilder: {fileID: 1983255722}
+  aiTextServiceBehaviour: {fileID: 1983255726}
+  logPromptToConsole: 1
+--- !u!114 &1983255726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983255717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94dd1e06d91ef8d4ab30e79b173ae8a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MockAITextService
+  simulatedDelaySeconds: 1.2
 --- !u!1 &1995115856
 GameObject:
   m_ObjectHideFlags: 0
