@@ -4,24 +4,89 @@ using UnityEngine;
 
 public class NPCPromptBuilder : MonoBehaviour
 {
-    [SerializeField] private int maxHistoryLines = 6;
-    [SerializeField] private bool includeSecretsInPrompt = true;
+    [SerializeField] private int maxHistoryLinesDebug = 6;
+    [SerializeField] private int maxHistoryLinesCompact = 4;
+    [SerializeField] private bool includeSecretsInDebugPrompt = true;
+    [SerializeField] private bool includeSecretsInCompactPrompt = true;
 
     public string BuildPrompt(DialogueContext context)
+    {
+        return BuildPrompt(context, PromptMode.Debug);
+    }
+
+    public string BuildPrompt(DialogueContext context, PromptMode mode)
     {
         if (context == null)
             return "Контекст отсутствует.";
 
+        return mode == PromptMode.Compact
+            ? BuildCompactPrompt(context)
+            : BuildDebugPrompt(context);
+    }
+
+    private string BuildDebugPrompt(DialogueContext context)
+    {
         StringBuilder prompt = new StringBuilder();
 
         AppendIdentityBlock(prompt, context);
         AppendWorldContextBlock(prompt, context);
         AppendKnowledgeBlock(prompt, context);
-        AppendMotivationBlock(prompt, context);
+        AppendMotivationBlock(prompt, context, includeSecretsInDebugPrompt);
         AppendCurrentSituationBlock(prompt, context);
-        AppendDialogueHistoryBlock(prompt, context);
+        AppendDialogueHistoryBlock(prompt, context, maxHistoryLinesDebug);
         AppendResponseObjectiveBlock(prompt, context);
         AppendResponseRulesBlock(prompt);
+
+        return prompt.ToString();
+    }
+
+    private string BuildCompactPrompt(DialogueContext context)
+    {
+        StringBuilder prompt = new StringBuilder();
+
+        prompt.AppendLine("Ты NPC в сюжетной игре. Отвечай только как персонаж.");
+        prompt.AppendLine();
+
+        prompt.AppendLine("NPC:");
+        prompt.AppendLine("Имя: " + SafeText(context.npcName, "NPC"));
+        prompt.AppendLine("Роль: " + CompressRole(context.npcRole));
+        prompt.AppendLine("Характер: " + CompressTraitsCompact(context.npcPersonality));
+        prompt.AppendLine("Речь: " + CompressSpeech(context.npcSpeechStyle));
+        prompt.AppendLine("Отношение: " + CompressAttitude(context.npcAttitudeToPlayer));
+        prompt.AppendLine("Состояние: " + CompressState(context.npcCurrentEmotionalState));
+
+        if (ShouldIncludeSecretInCompactPrompt(context))
+        {
+            prompt.AppendLine("Скрыто: " + CompressSecret(context.npcSecret));
+        }
+
+        prompt.AppendLine();
+
+        prompt.AppendLine("Ситуация:");
+        prompt.AppendLine("Квест: " + SafeText(context.questName, "нет"));
+        prompt.AppendLine("Статус: " + SafeText(context.questStatus, "неизвестно"));
+        prompt.AppendLine("Предметы: " + FormatInventoryCompact(context.inventoryItems));
+        prompt.AppendLine("Задача: " + BuildCompactObjective(context));
+        prompt.AppendLine();
+
+        prompt.AppendLine("Последние реплики:");
+        List<string> lines = GetRecentHistory(context.dialogueHistory, maxHistoryLinesCompact);
+        if (lines.Count == 0)
+        {
+            prompt.AppendLine("Начало разговора.");
+        }
+        else
+        {
+            foreach (string line in lines)
+            {
+                prompt.AppendLine(line);
+            }
+        }
+
+        prompt.AppendLine();
+        prompt.AppendLine("Последняя реплика игрока: " + SafeText(context.playerMessage, "..."));
+        prompt.AppendLine();
+        prompt.AppendLine("Правила: 1–3 предложения; не выходить из роли; не упоминать систему; не пересказывать контекст; не раскрывать скрытое без повода.");
 
         return prompt.ToString();
     }
@@ -85,14 +150,14 @@ public class NPCPromptBuilder : MonoBehaviour
         prompt.AppendLine();
     }
 
-    private void AppendMotivationBlock(StringBuilder prompt, DialogueContext context)
+    private void AppendMotivationBlock(StringBuilder prompt, DialogueContext context, bool includeSecrets)
     {
         prompt.AppendLine("ВНУТРЕННЯЯ МОТИВАЦИЯ ПЕРСОНАЖА");
 
         if (!string.IsNullOrWhiteSpace(context.npcMotivation))
             prompt.AppendLine("Главная мотивация: " + Clean(context.npcMotivation) + ".");
 
-        if (includeSecretsInPrompt && !string.IsNullOrWhiteSpace(context.npcSecret))
+        if (includeSecrets && !string.IsNullOrWhiteSpace(context.npcSecret))
             prompt.AppendLine("Скрытый внутренний слой: " + Clean(context.npcSecret) + ".");
 
         prompt.AppendLine("Даже если персонаж что-то скрывает, он не обязан раскрывать это напрямую в каждом ответе.");
@@ -121,11 +186,11 @@ public class NPCPromptBuilder : MonoBehaviour
         prompt.AppendLine();
     }
 
-    private void AppendDialogueHistoryBlock(StringBuilder prompt, DialogueContext context)
+    private void AppendDialogueHistoryBlock(StringBuilder prompt, DialogueContext context, int maxLines)
     {
         prompt.AppendLine("НЕДАВНИЙ КОНТЕКСТ РАЗГОВОРА");
 
-        List<string> lines = GetRecentHistory(context.dialogueHistory, maxHistoryLines);
+        List<string> lines = GetRecentHistory(context.dialogueHistory, maxLines);
 
         if (lines.Count == 0)
         {
@@ -208,6 +273,42 @@ public class NPCPromptBuilder : MonoBehaviour
         }
     }
 
+    private string BuildCompactObjective(DialogueContext context)
+    {
+        string status = context.questStatus ?? string.Empty;
+
+        if (!context.isQuestGiver)
+        {
+            switch (status)
+            {
+                case "NotStarted":
+                    return "намекнуть, что ситуация важна или тревожна";
+                case "InProgress":
+                    return "дать осторожный взгляд со стороны";
+                case "Completed":
+                    return "признать успех игрока как наблюдатель";
+                case "TurnedIn":
+                    return "отразить последствия завершенного события";
+                default:
+                    return "поддержать разговор в характере персонажа";
+            }
+        }
+
+        switch (status)
+        {
+            case "NotStarted":
+                return "ввести в ситуацию и заинтересовать";
+            case "InProgress":
+                return "мягко направить игрока";
+            case "Completed":
+                return "признать успех и подготовить завершение";
+            case "TurnedIn":
+                return "отреагировать на завершенное поручение";
+            default:
+                return "поддержать разговор в характере персонажа";
+        }
+    }
+
     private List<string> GetRecentHistory(List<string> fullHistory, int maxLines)
     {
         List<string> cleaned = new List<string>();
@@ -265,11 +366,161 @@ public class NPCPromptBuilder : MonoBehaviour
         }
     }
 
+    private string SafeText(string text, string fallback)
+    {
+        return string.IsNullOrWhiteSpace(text) ? fallback : Clean(text);
+    }
+
     private string Clean(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
             return string.Empty;
 
         return text.Trim().TrimEnd('.', '!', '?');
+    }
+
+    private string CompressTraitsCompact(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return "не указано";
+
+        string cleaned = Clean(text).ToLowerInvariant();
+
+        if (cleaned.Contains("мудр") && cleaned.Contains("осторож"))
+            return "мудрый, осторожный";
+
+        if (cleaned.Contains("вниматель") && cleaned.Contains("мягк"))
+            return "внимательная, мягкая";
+
+        return CompressByWords(cleaned, 6);
+    }
+
+    private string CompressSpeech(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return "обычная";
+
+        string cleaned = Clean(text).ToLowerInvariant();
+
+        if (cleaned.Contains("намек") || cleaned.Contains("намёк"))
+            return "размеренная, краткая, с намеками";
+
+        if (cleaned.Contains("прямо") || cleaned.Contains("прям"))
+            return "мягкая, прямая, без загадок";
+
+        return CompressByWords(cleaned, 6);
+    }
+
+    private string CompressAttitude(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return "нейтральное";
+
+        string cleaned = Clean(text).ToLowerInvariant();
+
+        if (cleaned.Contains("осторож") && cleaned.Contains("довер"))
+            return "осторожное доверие";
+
+        if (cleaned.Contains("насторож"))
+            return "настороженность";
+
+        return CompressByWords(cleaned, 5);
+    }
+
+    private string CompressState(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return "спокойствие";
+
+        string cleaned = Clean(text).ToLowerInvariant();
+
+        if (cleaned.Contains("напряж"))
+            return "спокойное напряжение";
+
+        if (cleaned.Contains("насторож"))
+            return "спокойная настороженность";
+
+        return CompressByWords(cleaned, 5);
+    }
+
+    private string CompressRole(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return "персонаж локации";
+
+        string cleaned = Clean(text);
+
+        if (cleaned.Length <= 40)
+            return cleaned;
+
+        return CompressByWords(cleaned, 6);
+    }
+
+    private string CompressSecret(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return string.Empty;
+
+        string cleaned = Clean(text).ToLowerInvariant();
+
+        if (cleaned.Contains("артефакт") && cleaned.Contains("говор"))
+            return "знает об артефакте больше, чем говорит";
+
+        return CompressByWords(cleaned, 8);
+    }
+
+    private bool ShouldIncludeSecretInCompactPrompt(DialogueContext context)
+    {
+        if (context == null || string.IsNullOrWhiteSpace(context.npcSecret))
+            return false;
+
+        string playerMessage = context.playerMessage != null
+            ? context.playerMessage.ToLowerInvariant()
+            : string.Empty;
+
+        string questStatus = context.questStatus ?? string.Empty;
+
+        return questStatus == "InProgress" ||
+               questStatus == "Completed" ||
+               playerMessage.Contains("артефакт") ||
+               playerMessage.Contains("руин") ||
+               playerMessage.Contains("квест") ||
+               playerMessage.Contains("задание") ||
+               playerMessage.Contains("что") ||
+               playerMessage.Contains("какой");
+    }
+
+    private string CompressByWords(string text, int maxWords)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return "не указано";
+
+        string cleaned = Clean(text);
+        string[] words = cleaned.Split(' ');
+
+        if (words.Length <= maxWords)
+            return cleaned;
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < maxWords; i++)
+        {
+            if (i > 0)
+                sb.Append(" ");
+
+            sb.Append(words[i]);
+        }
+
+        return sb.ToString().TrimEnd(',', ';', '.') + "...";
+    }
+
+    private string FormatInventoryCompact(List<string> items)
+    {
+        if (items == null || items.Count == 0)
+            return "пусто";
+
+        if (items.Count == 1)
+            return items[0];
+
+        return items[0] + " +" + (items.Count - 1);
     }
 }

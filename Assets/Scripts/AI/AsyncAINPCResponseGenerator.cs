@@ -27,16 +27,18 @@ public class AsyncAINPCResponseGenerator : MonoBehaviour, IAsyncNPCResponseGener
         if (aiTextService == null)
             return "Ошибка: AI Text Service не настроен.";
 
-        string prompt = promptBuilder.BuildPrompt(context);
+        string debugPrompt = promptBuilder.BuildPrompt(context, PromptMode.Debug);
+        string compactPrompt = promptBuilder.BuildPrompt(context, PromptMode.Compact);
 
         if (logPromptToConsole)
         {
-            Debug.Log("=== AI PROMPT START ===\n" + prompt + "\n=== AI PROMPT END ===");
+            Debug.Log("=== AI DEBUG PROMPT START ===\n" + debugPrompt + "\n=== AI DEBUG PROMPT END ===");
+            Debug.Log("=== AI COMPACT PROMPT START ===\n" + compactPrompt + "\n=== AI COMPACT PROMPT END ===");
         }
 
         AIRequestData request = new AIRequestData
         {
-            prompt = prompt,
+            prompt = compactPrompt,
             context = context,
             npcId = BuildNpcId(context),
             npcName = context != null ? context.npcName : string.Empty,
