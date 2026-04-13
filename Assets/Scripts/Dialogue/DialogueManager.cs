@@ -62,15 +62,22 @@ public class DialogueManager : MonoBehaviour
         );
 
         dialogueUI.AddMessage(currentNPC.NPCName, "...");
-        int thinkingMessageIndex = dialogueHistory.Count;
-        AddDialogueLine(currentNPC.NPCName + ": ...");
 
         string npcResponse = await responseService.GetResponseAsync(context);
 
         HandleQuestLogicAfterResponse();
 
-        ReplaceLastDialogueUIMessage(currentNPC.NPCName, npcResponse);
-        ReplaceLastDialogueHistoryLine(currentNPC.NPCName + ": " + npcResponse);
+        bool isTechnicalError = IsTechnicalMessage(npcResponse);
+
+        if (!isTechnicalError)
+        {
+            AddDialogueLine(currentNPC.NPCName + ": " + npcResponse);
+        }
+
+        ReplaceThinkingMessageInUI(
+            isTechnicalError ? "Система" : currentNPC.NPCName,
+            npcResponse
+        );
 
         dialogueUI.ClearInput();
         dialogueUI.SetInputInteractable(true);
@@ -222,6 +229,47 @@ public class DialogueManager : MonoBehaviour
         if (status == QuestStatus.Completed)
         {
             questManager.TurnInQuest(questId);
+        }
+    }
+
+    private bool IsTechnicalMessage(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+            return true;
+
+        string normalized = message.Trim();
+
+        return normalized.StartsWith("Ошибка AI:") ||
+               normalized.StartsWith("Ошибка HTTP:") ||
+               normalized.StartsWith("Ошибка:") ||
+               normalized == "...";
+    }
+
+    private void ReplaceThinkingMessageInUI(string sender, string message)
+    {
+        dialogueUI.ClearHistory();
+
+        foreach (string line in dialogueHistory)
+        {
+            int separatorIndex = line.IndexOf(": ");
+            if (separatorIndex > 0)
+            {
+                string lineSender = line.Substring(0, separatorIndex);
+                string lineMessage = line.Substring(separatorIndex + 2);
+                dialogueUI.AddMessage(lineSender, lineMessage);
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(message))
+        {
+            bool lastLineMatchesHistory =
+                dialogueHistory.Count > 0 &&
+                dialogueHistory[dialogueHistory.Count - 1] == sender + ": " + message;
+
+            if (!lastLineMatchesHistory)
+            {
+                dialogueUI.AddMessage(sender, message);
+            }
         }
     }
 }

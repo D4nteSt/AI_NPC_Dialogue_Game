@@ -50,7 +50,7 @@ public class AsyncAINPCResponseGenerator : MonoBehaviour, IAsyncNPCResponseGener
             return "Ошибка: AI-сервис вернул пустой ответ.";
 
         if (!response.success)
-            return "Ошибка AI: " + response.errorMessage;
+            return "Не удалось получить ответ NPC. " + response.errorMessage;
 
         if (string.IsNullOrWhiteSpace(response.responseText))
             return "AI не смог сформировать ответ.";

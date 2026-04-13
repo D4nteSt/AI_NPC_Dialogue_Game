@@ -210,16 +210,39 @@ public class NPCPromptBuilder : MonoBehaviour
 
     private List<string> GetRecentHistory(List<string> fullHistory, int maxLines)
     {
-        List<string> result = new List<string>();
+        List<string> cleaned = new List<string>();
 
         if (fullHistory == null || fullHistory.Count == 0)
-            return result;
+            return cleaned;
 
-        int startIndex = Mathf.Max(0, fullHistory.Count - maxLines);
-
-        for (int i = startIndex; i < fullHistory.Count; i++)
+        foreach (string line in fullHistory)
         {
-            result.Add(fullHistory[i]);
+            if (string.IsNullOrWhiteSpace(line))
+                continue;
+
+            string trimmed = line.Trim();
+
+            if (trimmed == "...")
+                continue;
+
+            if (trimmed.StartsWith("Система:"))
+                continue;
+
+            if (trimmed.Contains("Ошибка AI:"))
+                continue;
+
+            if (trimmed.Contains("Ошибка HTTP:"))
+                continue;
+
+            cleaned.Add(trimmed);
+        }
+
+        int startIndex = Mathf.Max(0, cleaned.Count - maxLines);
+
+        List<string> result = new List<string>();
+        for (int i = startIndex; i < cleaned.Count; i++)
+        {
+            result.Add(cleaned[i]);
         }
 
         return result;

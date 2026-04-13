@@ -8796,6 +8796,7 @@ GameObject:
   - component: {fileID: 1983255726}
   - component: {fileID: 1983255724}
   - component: {fileID: 1983255725}
+  - component: {fileID: 1983255727}
   m_Layer: 0
   m_Name: DialogueSystems
   m_TagString: Untagged
@@ -8911,7 +8912,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AsyncAINPCResponseGenerator
   promptBuilder: {fileID: 1983255722}
-  aiTextServiceBehaviour: {fileID: 1983255726}
+  aiTextServiceBehaviour: {fileID: 1983255727}
   logPromptToConsole: 1
 --- !u!114 &1983255726
 MonoBehaviour:
@@ -8926,6 +8927,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MockAITextService
   simulatedDelaySeconds: 1.2
+--- !u!114 &1983255727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983255717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cefbd734ebc16e34ea68a564aa19008d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HTTPAITextService
+  backendUrl: http://127.0.0.1:8000/npc-dialogue
 --- !u!1 &1995115856
 GameObject:
   m_ObjectHideFlags: 0

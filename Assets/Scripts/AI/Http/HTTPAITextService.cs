@@ -114,8 +114,43 @@ public class HTTPAITextService : MonoBehaviour, IAITextService
             questName = context.questName,
             questDescription = context.questDescription,
             questStatus = context.questStatus,
-            inventoryItems = context.inventoryItems,
-            dialogueHistory = context.dialogueHistory
+            inventoryItems = context.inventoryItems != null
+                ? new System.Collections.Generic.List<string>(context.inventoryItems)
+                : new System.Collections.Generic.List<string>(),
+            dialogueHistory = FilterDialogueHistory(context.dialogueHistory)
         };
+    }
+
+    private System.Collections.Generic.List<string> FilterDialogueHistory(
+    System.Collections.Generic.List<string> history)
+    {
+        var result = new System.Collections.Generic.List<string>();
+
+        if (history == null || history.Count == 0)
+            return result;
+
+        foreach (string line in history)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+                continue;
+
+            string trimmed = line.Trim();
+
+            if (trimmed == "...")
+                continue;
+
+            if (trimmed.Contains("Ошибка AI:"))
+                continue;
+
+            if (trimmed.Contains("Ошибка HTTP:"))
+                continue;
+
+            if (trimmed.StartsWith("Система:"))
+                continue;
+
+            result.Add(trimmed);
+        }
+
+        return result;
     }
 }
