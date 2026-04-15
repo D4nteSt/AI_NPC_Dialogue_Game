@@ -31,6 +31,7 @@ async def npc_dialogue(request: NpcDialogueRequest):
 
             reply_text, usage_dict = await yandex_provider.generate_reply(
                 prompt=request.prompt,
+                npc_name=request.npcName,
                 temperature=temperature,
                 max_output_tokens=max_output_tokens,
             )

@@ -50,18 +50,22 @@ public class DialogueManager : MonoBehaviour
         isWaitingForResponse = true;
         dialogueUI.SetInputInteractable(false);
 
-        dialogueUI.AddMessage("Игрок", playerMessage);
-        AddDialogueLine("Игрок: " + playerMessage);
+        string trimmedPlayerMessage = playerMessage.Trim();
+
+        // 1. Игрок: добавить в историю и UI только один раз
+        AddDialogueLine("Игрок: " + trimmedPlayerMessage);
+        RebuildDialogueUIFromHistory();
+
+        // 2. Временно показать, что NPC думает (только в UI)
+        dialogueUI.AddMessage(currentNPC.NPCName, "...");
 
         HandleQuestLogicBeforeResponse();
 
         DialogueContext context = contextBuilder.BuildContext(
             currentNPC,
-            playerMessage,
+            trimmedPlayerMessage,
             dialogueHistory
         );
-
-        dialogueUI.AddMessage(currentNPC.NPCName, "...");
 
         string npcResponse = await responseService.GetResponseAsync(context);
 
@@ -69,22 +73,25 @@ public class DialogueManager : MonoBehaviour
 
         bool isTechnicalError = IsTechnicalMessage(npcResponse);
 
+        // 3. Если ответ нормальный — добавить его в историю
         if (!isTechnicalError)
         {
             AddDialogueLine(currentNPC.NPCName + ": " + npcResponse);
         }
 
-        ReplaceThinkingMessageInUI(
-            isTechnicalError ? "Система" : currentNPC.NPCName,
-            npcResponse
-        );
+        // 4. Пересобрать UI из чистой истории
+        RebuildDialogueUIFromHistory();
+
+        // 5. Если это техошибка — показать отдельно, но не сохранять в историю
+        if (isTechnicalError)
+        {
+            dialogueUI.AddMessage("Система", npcResponse);
+        }
 
         dialogueUI.ClearInput();
         dialogueUI.SetInputInteractable(true);
-
         isWaitingForResponse = false;
     }
-
     public void CloseDialogue()
     {
         currentNPC = null;
@@ -100,32 +107,10 @@ public class DialogueManager : MonoBehaviour
 
     private void AddDialogueLine(string line)
     {
-        dialogueHistory.Add(line);
-    }
+        if (string.IsNullOrWhiteSpace(line))
+            return;
 
-    private void ReplaceLastDialogueHistoryLine(string newLine)
-    {
-        if (dialogueHistory.Count == 0) return;
-        dialogueHistory[dialogueHistory.Count - 1] = newLine;
-    }
-
-    private void ReplaceLastDialogueUIMessage(string sender, string message)
-    {
-        // Упрощенный вариант: пересобираем весь текст из истории
-        dialogueUI.ClearHistory();
-
-        ReplaceLastDialogueHistoryLine(sender + ": " + message);
-
-        foreach (string line in dialogueHistory)
-        {
-            int separatorIndex = line.IndexOf(": ");
-            if (separatorIndex > 0)
-            {
-                string lineSender = line.Substring(0, separatorIndex);
-                string lineMessage = line.Substring(separatorIndex + 2);
-                dialogueUI.AddMessage(lineSender, lineMessage);
-            }
-        }
+        dialogueHistory.Add(line.Trim());
     }
 
     private string GetNPCStartMessage(NPCDialogueData npcData)
@@ -245,31 +230,21 @@ public class DialogueManager : MonoBehaviour
                normalized == "...";
     }
 
-    private void ReplaceThinkingMessageInUI(string sender, string message)
+    private void RebuildDialogueUIFromHistory()
     {
         dialogueUI.ClearHistory();
 
         foreach (string line in dialogueHistory)
         {
             int separatorIndex = line.IndexOf(": ");
-            if (separatorIndex > 0)
-            {
-                string lineSender = line.Substring(0, separatorIndex);
-                string lineMessage = line.Substring(separatorIndex + 2);
-                dialogueUI.AddMessage(lineSender, lineMessage);
-            }
-        }
+            if (separatorIndex <= 0)
+                continue;
 
-        if (!string.IsNullOrWhiteSpace(message))
-        {
-            bool lastLineMatchesHistory =
-                dialogueHistory.Count > 0 &&
-                dialogueHistory[dialogueHistory.Count - 1] == sender + ": " + message;
+            string sender = line.Substring(0, separatorIndex);
+            string message = line.Substring(separatorIndex + 2);
 
-            if (!lastLineMatchesHistory)
-            {
-                dialogueUI.AddMessage(sender, message);
-            }
+            dialogueUI.AddMessage(sender, message);
         }
     }
+
 }

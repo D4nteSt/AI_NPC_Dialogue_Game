@@ -54,6 +54,8 @@ public class NPCPromptBuilder : MonoBehaviour
         prompt.AppendLine("Речь: " + CompressSpeech(context.npcSpeechStyle));
         prompt.AppendLine("Отношение: " + CompressAttitude(context.npcAttitudeToPlayer));
         prompt.AppendLine("Состояние: " + CompressState(context.npcCurrentEmotionalState));
+        prompt.AppendLine("Тон: " + BuildToneHint(context));
+        prompt.AppendLine("Избегай: " + BuildAvoidHint(context));
 
         if (ShouldIncludeSecretInCompactPrompt(context))
         {
@@ -85,8 +87,19 @@ public class NPCPromptBuilder : MonoBehaviour
 
         prompt.AppendLine();
         prompt.AppendLine("Последняя реплика игрока: " + SafeText(context.playerMessage, "..."));
+        if (IsGreetingMessage(context.playerMessage))
+        {
+            prompt.AppendLine("Особое правило: если игрок просто приветствует, ответь кратко и естественно, не пересказывая задание и не объясняя квест заново.");
+        }
+        string exampleLines = BuildStyleExamples(context);
+        if (!string.IsNullOrWhiteSpace(exampleLines))
+        {
+            prompt.AppendLine();
+            prompt.AppendLine("Примеры тона:");
+            prompt.AppendLine(exampleLines);
+        }
         prompt.AppendLine();
-        prompt.AppendLine("Правила: 1–3 предложения; не выходить из роли; не упоминать систему; не пересказывать контекст; не раскрывать скрытое без повода.");
+        prompt.AppendLine("Правила: 1–3 предложения; не выходить из роли; не упоминать систему; не пересказывать контекст; не раскрывать скрытое без повода; не говорить слишком абстрактно; не использовать шаблонные фэнтези-фразы без опоры на сцену.");
 
         return prompt.ToString();
     }
@@ -276,6 +289,7 @@ public class NPCPromptBuilder : MonoBehaviour
     private string BuildCompactObjective(DialogueContext context)
     {
         string status = context.questStatus ?? string.Empty;
+        string playerMessage = context.playerMessage ?? string.Empty;
 
         if (!context.isQuestGiver)
         {
@@ -299,14 +313,18 @@ public class NPCPromptBuilder : MonoBehaviour
             case "NotStarted":
                 return "ввести в ситуацию и заинтересовать";
             case "InProgress":
-                return "мягко направить игрока";
+                if (playerMessage.Contains("почему") || playerMessage.Contains("что") || playerMessage.Contains("зачем") || playerMessage.Contains("как"))
+                    return "ответить осторожно и предметно, частично раскрывая смысл без полного объяснения";
+                else return "мягко направить игрока"; 
+
+
             case "Completed":
-                return "признать успех и подготовить завершение";
-            case "TurnedIn":
-                return "отреагировать на завершенное поручение";
-            default:
-                return "поддержать разговор в характере персонажа";
-        }
+                        return "признать успех и подготовить завершение";
+                    case "TurnedIn":
+                        return "отреагировать на завершенное поручение";
+                    default:
+                        return "поддержать разговор в характере персонажа";
+                    }
     }
 
     private List<string> GetRecentHistory(List<string> fullHistory, int maxLines)
@@ -522,5 +540,79 @@ public class NPCPromptBuilder : MonoBehaviour
             return items[0];
 
         return items[0] + " +" + (items.Count - 1);
+    }
+    private bool IsGreetingMessage(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+
+        string cleaned = text.Trim().ToLowerInvariant();
+
+        return cleaned == "привет" ||
+               cleaned == "здравствуй" ||
+               cleaned == "здравствуйте" ||
+               cleaned == "здарова" ||
+               cleaned == "добрый день" ||
+               cleaned == "hi" ||
+               cleaned == "hello";
+    }
+
+    private string BuildToneHint(DialogueContext context)
+    {
+        string npcName = context.npcName != null ? context.npcName.ToLowerInvariant() : "";
+        string role = context.npcRole != null ? context.npcRole.ToLowerInvariant() : "";
+
+        bool isOldMan = npcName.Contains("старик") || role.Contains("хранитель");
+        bool isLea = npcName.Contains("лея") || role.Contains("травниц");
+
+        if (isOldMan)
+            return "спокойно, коротко, сдержанно; иногда через образы пути, камня, тишины, памяти; говорить скорее намеком, чем легендой";
+
+        if (isLea)
+            return "мягко, просто, осторожно; чуть живее и человечнее, чем Старик; меньше загадочности; говорить через ощущение места, леса, троп, тишины и тревоги";
+
+        return "естественно, кратко, в характере персонажа";
+    }
+
+    private string BuildAvoidHint(DialogueContext context)
+    {
+        string npcName = context.npcName != null ? context.npcName.ToLowerInvariant() : "";
+        string role = context.npcRole != null ? context.npcRole.ToLowerInvariant() : "";
+
+        bool isOldMan = npcName.Contains("старик") || role.Contains("хранитель");
+        bool isLea = npcName.Contains("лея") || role.Contains("травниц");
+
+        if (isOldMan)
+            return "не говорить как справочник; не пересказывать квест заново; избегать общих фраз вроде 'древняя сила', 'изменить судьбу', 'проклятие', 'тайны прошлого', если они не опираются на сцену; говорить конкретнее и суше"; ;
+
+        if (isLea)
+            return "не говорить слишком пафосно; не звучать как Старик; избегать абстрактных фраз и лишней загадочности";
+
+        return "не использовать абстрактные и шаблонные формулировки без опоры на ситуацию";
+    }
+
+    private string BuildStyleExamples(DialogueContext context)
+    {
+        string npcName = context.npcName != null ? context.npcName.ToLowerInvariant() : "";
+        string role = context.npcRole != null ? context.npcRole.ToLowerInvariant() : "";
+
+        bool isOldMan = npcName.Contains("старик") || role.Contains("хранитель");
+        bool isLea = npcName.Contains("лея") || role.Contains("травниц");
+
+        if (isOldMan)
+        {
+            return "- \"Не всякая вещь любит чужие руки.\"\n" +
+                   "- \"Тише ступай — руины не терпят спешки.\"\n" +
+                   "- \"Мудрость тут полезнее силы.\"";
+        }
+
+        if (isLea)
+        {
+            return "- \"Я бы на твоем месте не шла туда без осторожности.\"\n" +
+                   "- \"В лесу сейчас тревожно, даже если с виду тихо.\"\n" +
+                   "- \"Старик не все говорит сразу, но в одном он прав.\"";
+        }
+
+        return "";
     }
 }

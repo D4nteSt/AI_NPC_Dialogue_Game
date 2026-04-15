@@ -44,7 +44,7 @@ public class BackendRequestOptions
 {
     public string provider = "mock";
     public string model = "test-model";
-    public float temperature = 0.7f;
-    public int maxOutputTokens = 180;
+    public float temperature = 0.45f;
+    public int maxOutputTokens = 96;
     public bool debug = true;
 }
