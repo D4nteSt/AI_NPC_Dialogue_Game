@@ -6,8 +6,13 @@ from app.models import (
     UsageData,
     DebugData,
 )
+from app.config import settings
+from app.providers.mock_provider import build_mock_reply
+from app.providers.yandex_provider import YandexProvider
 
 app = FastAPI(title="AI NPC Backend")
+
+yandex_provider = YandexProvider() if settings.AI_PROVIDER == "yandex" else None
 
 
 @app.get("/")
@@ -19,52 +24,60 @@ async def root():
 async def npc_dialogue(request: NpcDialogueRequest):
     start_time = time.time()
 
-    reply_text = build_mock_reply(request)
+    try:
+        if settings.AI_PROVIDER == "yandex":
+            temperature = request.options.temperature if request.options else 0.3
+            max_output_tokens = request.options.maxOutputTokens if request.options else 180
 
-    latency_ms = int((time.time() - start_time) * 1000)
+            reply_text, usage_dict = await yandex_provider.generate_reply(
+                prompt=request.prompt,
+                temperature=temperature,
+                max_output_tokens=max_output_tokens,
+            )
 
-    debug_data = None
-    if request.options and request.options.debug:
-        debug_data = DebugData(
-            promptUsed=request.prompt,
-            latencyMs=latency_ms,
+            provider_name = "yandex"
+            model_name = settings.YANDEX_MODEL
+        else:
+            reply_text = build_mock_reply(request)
+            usage_dict = {"inputTokens": 0, "outputTokens": 0}
+            provider_name = "mock"
+            model_name = request.options.model if request.options and request.options.model else "local-test"
+
+        latency_ms = int((time.time() - start_time) * 1000)
+
+        debug_data = None
+        if request.options and request.options.debug:
+            debug_data = DebugData(
+                promptUsed=request.prompt,
+                latencyMs=latency_ms,
+            )
+
+        return NpcDialogueResponse(
+            success=True,
+            replyText=reply_text,
+            provider=provider_name,
+            model=model_name,
+            usage=UsageData(**usage_dict),
+            debug=debug_data,
+            errorMessage=None,
         )
 
-    return NpcDialogueResponse(
-        success=True,
-        replyText=reply_text,
-        provider=(request.options.provider if request.options else "mock"),
-        model=(request.options.model if request.options and request.options.model else "local-test"),
-        usage=UsageData(inputTokens=0, outputTokens=0),
-        debug=debug_data,
-        errorMessage=None,
-    )
+    except Exception as e:
+        latency_ms = int((time.time() - start_time) * 1000)
 
+        debug_data = None
+        if request.options and request.options.debug:
+            debug_data = DebugData(
+                promptUsed=request.prompt,
+                latencyMs=latency_ms,
+            )
 
-def build_mock_reply(request: NpcDialogueRequest) -> str:
-    npc_name = request.npcName.lower()
-    player_message = request.playerMessage.lower().strip()
-    quest_status = (request.dialogueContext.questStatus or "").strip()
-
-    is_lea = "лея" in npc_name
-    is_old_man = "старик" in npc_name
-
-    if is_lea:
-        if quest_status == "Completed":
-            return "Если это и правда та самая вещь, лучше не держать ее при себе дольше, чем нужно."
-        if quest_status == "TurnedIn":
-            return "Теперь здесь будто стало тише. Надеюсь, так и останется."
-        if "что" in player_message or "какое" in player_message:
-            return "Речь о старой реликвии из руин. Я бы не трогала ее без нужды, но оставлять ее там тоже нельзя."
-        return "Здесь редко что-то происходит без последствий. Если ввязался в это, будь внимателен."
-
-    if is_old_man:
-        if quest_status == "Completed":
-            return "Да... если предмет у тебя, не медли. Старым вещам не стоит долго менять руки."
-        if quest_status == "TurnedIn":
-            return "Ты исполнил просьбу, и я этого не забуду."
-        if "что" in player_message or "какое" in player_message:
-            return "Есть вещь, что не должна покоиться среди руин. Найди ее и принеси мне."
-        return "Не всякая тропа ведет прямо, путник. Но эту дорогу тебе все же придется пройти."
-
-    return "Я услышал тебя. Скажи яснее, если ждешь ясного ответа."
+        return NpcDialogueResponse(
+            success=False,
+            replyText="",
+            provider=settings.AI_PROVIDER,
+            model=settings.YANDEX_MODEL if settings.AI_PROVIDER == "yandex" else "local-test",
+            usage=UsageData(inputTokens=0, outputTokens=0),
+            debug=debug_data,
+            errorMessage=str(e),
+        )
