@@ -42,8 +42,8 @@ public class BackendDialogueContextData
 [Serializable]
 public class BackendRequestOptions
 {
-    public string provider = "mock";
-    public string model = "test-model";
+    public string provider = "backend";
+    public string model = "backend-managed";
     public float temperature = 0.45f;
     public int maxOutputTokens = 96;
     public bool debug = true;

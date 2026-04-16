@@ -32,22 +32,24 @@ class YandexProvider:
         if not reply_text:
             reply_text = "Модель не вернула текст ответа."
 
+        reply_text = self._normalize_reply(reply_text, npc_name)
+
         usage = {
             "inputTokens": getattr(response.usage, "input_tokens", 0) if getattr(response, "usage", None) else 0,
             "outputTokens": getattr(response.usage, "output_tokens", 0) if getattr(response, "usage", None) else 0,
         }
 
-        reply_text = self._strip_speaker_prefix(reply_text, npc_name)
-        reply_text = self._strip_outer_quotes(reply_text)
+        print("NORMALIZED REPLY:", reply_text)
 
         return reply_text, usage
 
-    def _strip_speaker_prefix(self, text: str, npc_name: str = "") -> str:
+    def _normalize_reply(self, text: str, npc_name: str = "") -> str:
         if not text:
             return ""
 
         cleaned = text.strip()
 
+        # Убираем имя говорящего
         prefixes = []
         if npc_name:
             prefixes.extend([
@@ -59,23 +61,31 @@ class YandexProvider:
 
         prefixes.extend(["NPC:", "Персонаж:", "Ответ:", "Реплика:"])
 
-        for prefix in prefixes:
-            if cleaned.startswith(prefix):
-                cleaned = cleaned[len(prefix):].strip()
-                break
+        changed = True
+        while changed:
+            changed = False
+            cleaned = cleaned.strip()
 
-        return cleaned
+            for prefix in prefixes:
+                if cleaned.startswith(prefix):
+                    cleaned = cleaned[len(prefix):].strip()
+                    changed = True
 
-    def _strip_outer_quotes(self, text: str) -> str:
-        if not text:
-            return ""
+            while cleaned.startswith(("—", "–", "-", "— ", "– ", "- ")):
+                cleaned = cleaned[1:].strip()
+                changed = True
 
-        cleaned = text.strip()
+            quote_pairs = [
+                ("«", "»"),
+                ('"', '"'),
+                ("“", "”"),
+                ("„", "“"),
+                ("'", "'"),
+            ]
 
-        if cleaned.startswith("«") and cleaned.endswith("»"):
-            cleaned = cleaned[1:-1].strip()
+            for left, right in quote_pairs:
+                if cleaned.startswith(left) and cleaned.endswith(right) and len(cleaned) >= 2:
+                    cleaned = cleaned[1:-1].strip()
+                    changed = True
 
-        if cleaned.startswith('"') and cleaned.endswith('"'):
-            cleaned = cleaned[1:-1].strip()
-
-        return cleaned
+        return cleaned.strip()

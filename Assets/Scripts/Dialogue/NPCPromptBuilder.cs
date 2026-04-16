@@ -69,6 +69,7 @@ public class NPCPromptBuilder : MonoBehaviour
         prompt.AppendLine("Статус: " + SafeText(context.questStatus, "неизвестно"));
         prompt.AppendLine("Предметы: " + FormatInventoryCompact(context.inventoryItems));
         prompt.AppendLine("Задача: " + BuildCompactObjective(context));
+        prompt.AppendLine("Тип запроса: " + BuildIntentHint(context));
         prompt.AppendLine();
 
         prompt.AppendLine("Последние реплики:");
@@ -583,10 +584,10 @@ public class NPCPromptBuilder : MonoBehaviour
         bool isLea = npcName.Contains("лея") || role.Contains("травниц");
 
         if (isOldMan)
-            return "не говорить как справочник; не пересказывать квест заново; избегать общих фраз вроде 'древняя сила', 'изменить судьбу', 'проклятие', 'тайны прошлого', если они не опираются на сцену; говорить конкретнее и суше"; ;
+            return "не говорить как справочник; не пересказывать квест заново; избегать общих фраз вроде 'древняя сила', 'изменить судьбу', 'проклятие', 'тайны прошлого', если они не опираются на сцену; говорить конкретнее и суше; если игрок просто подтверждает или соглашается, отвечать коротко и не вводить новую тему";
 
         if (isLea)
-            return "не говорить слишком пафосно; не звучать как Старик; избегать абстрактных фраз и лишней загадочности";
+            return "не говорить слишком пафосно; не звучать как Старик; избегать абстрактных фраз и лишней загадочности; не преувеличивать значение артефакта до масштаба мира, если персонаж не может знать этого наверняка";
 
         return "не использовать абстрактные и шаблонные формулировки без опоры на ситуацию";
     }
@@ -614,5 +615,63 @@ public class NPCPromptBuilder : MonoBehaviour
         }
 
         return "";
+    }
+
+    private string BuildIntentHint(DialogueContext context)
+    {
+        string playerMessage = context.playerMessage != null
+            ? context.playerMessage.Trim().ToLowerInvariant()
+            : string.Empty;
+
+        if (string.IsNullOrWhiteSpace(playerMessage))
+            return "общий разговор; ответь кратко и в характере персонажа.";
+
+        if (IsGreetingMessage(playerMessage))
+            return "приветствие; ответь кратко и естественно, не пересказывая задание.";
+
+        if (ContainsAny(playerMessage,
+            "где", "куда", "как пройти", "где искать", "куда идти", "где это"))
+            return "вопрос о месте; ответь конкретнее и короче, без лишней поэзии.";
+
+        if (ContainsAny(playerMessage,
+            "что это", "что за", "почему", "зачем", "в чем", "в чём", "что в нем", "что в нём"))
+            return "уточняющий вопрос о смысле; ответь осторожно, но по существу.";
+
+        if (ContainsAny(playerMessage,
+            "что делать", "что мне делать", "как мне", "как быть", "что дальше", "что с ним делать"))
+            return "просьба о практическом совете; ответь осторожно, но по делу.";
+
+        if (ContainsAny(playerMessage,
+            "припасы", "еда", "помощь", "заданий", "задание еще", "задание ещё", "есть работа", "есть еще", "есть ещё"))
+            return "прагматичный запрос; ответь по ситуации и по делу, без философских общих фраз.";
+
+        if (ContainsAny(playerMessage,
+            "не страшно", "не думаю", "сомневаюсь", "не верю", "вряд ли"))
+            return "сомнение игрока; ответь спокойно, без нажима, но сохрани настороженность персонажа.";
+
+        if (ContainsAny(playerMessage, "хорошо", "понял", "запомню", "ладно", "ясно", "проверю"))
+            return "подтверждение; ответь кратко, как на принятие совета, без новых объяснений.";
+
+        if (ContainsAny(playerMessage, "думаю", "я смогу", "я справлюсь", "моей мудрости", "я готов", "я найду"))
+            return "самоуверенное заявление; ответь сдержанно, можно чуть охладить уверенность игрока, но без длинней лекции.";
+
+        if (ContainsAny(playerMessage, "уважительно", "как с ним разговаривать", "ему всё равно"))
+            return "вопрос о поведении; дай короткий практичный совет, без лора.";
+
+        return "общий разговор; ответь кратко, в характере персонажа, по существу текущей реплики.";
+    }
+
+    private bool ContainsAny(string text, params string[] variants)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+
+        foreach (string variant in variants)
+        {
+            if (text.Contains(variant))
+                return true;
+        }
+
+        return false;
     }
 }
