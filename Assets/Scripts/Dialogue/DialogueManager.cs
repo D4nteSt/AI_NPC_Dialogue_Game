@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] private DialogueUI dialogueUI;
+    [Header("UI")]
+    [SerializeField] private DialogueUI dialogueUI;          // только show/hide панели
+    [SerializeField] private DialogueChatUI chatUI;          // новый чат-бокс
+
+    [Header("Systems")]
     [SerializeField] private QuestManager questManager;
     [SerializeField] private DialogueContextBuilder contextBuilder;
     [SerializeField] private NPCAsyncResponseService responseService;
@@ -13,10 +17,22 @@ public class DialogueManager : MonoBehaviour
     private bool isDialogueOpen;
     private bool isWaitingForResponse;
 
-    private List<string> dialogueHistory = new List<string>();
+    private readonly List<string> dialogueHistory = new();
 
     public bool IsDialogueOpen => isDialogueOpen;
     public bool IsWaitingForResponse => isWaitingForResponse;
+
+    private void OnEnable()
+    {
+        if (chatUI != null)
+            chatUI.PlayerMessageSubmitted += HandlePlayerMessageSubmitted;
+    }
+
+    private void OnDisable()
+    {
+        if (chatUI != null)
+            chatUI.PlayerMessageSubmitted -= HandlePlayerMessageSubmitted;
+    }
 
     public void StartDialogue(NPCDialogueData npcData)
     {
@@ -30,15 +46,27 @@ public class DialogueManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        dialogueUI.Show();
-        dialogueUI.SetNPCName(currentNPC.NPCName);
-        dialogueUI.ClearHistory();
-        dialogueUI.SetInputInteractable(true);
+        if (dialogueUI != null)
+            dialogueUI.Show();
+
+        if (chatUI != null)
+        {
+            chatUI.SetNpcName(currentNPC.NPCName);
+            chatUI.ClearMessages();
+            chatUI.SetInputInteractable(true);
+            chatUI.ClearInput();
+            chatUI.FocusInput();
+        }
 
         string startMessage = GetNPCStartMessage(currentNPC);
         AddDialogueLine(currentNPC.NPCName + ": " + startMessage);
-        dialogueUI.AddMessage(currentNPC.NPCName, startMessage);
-        dialogueUI.ClearInput();
+
+        RebuildChatUIFromHistory();
+    }
+
+    private async void HandlePlayerMessageSubmitted(string playerMessage)
+    {
+        await SendPlayerMessageAsync(playerMessage);
     }
 
     public async Task SendPlayerMessageAsync(string playerMessage)
@@ -48,16 +76,21 @@ public class DialogueManager : MonoBehaviour
         if (string.IsNullOrWhiteSpace(playerMessage)) return;
 
         isWaitingForResponse = true;
-        dialogueUI.SetInputInteractable(false);
+
+        if (chatUI != null)
+            chatUI.SetInputInteractable(false);
 
         string trimmedPlayerMessage = playerMessage.Trim();
 
-        // 1. Игрок: добавить в историю и UI только один раз
+        // 1. Добавляем реплику игрока в историю
         AddDialogueLine("Игрок: " + trimmedPlayerMessage);
-        RebuildDialogueUIFromHistory();
 
-        // 2. Временно показать, что NPC думает (только в UI)
-        dialogueUI.AddMessage(currentNPC.NPCName, "...");
+        // 2. Перерисовываем историю
+        RebuildChatUIFromHistory();
+
+        // 3. Временно показываем "..." только в UI
+        if (chatUI != null)
+            chatUI.AddNpcMessage("...");
 
         HandleQuestLogicBeforeResponse();
 
@@ -73,25 +106,31 @@ public class DialogueManager : MonoBehaviour
 
         bool isTechnicalError = IsTechnicalMessage(npcResponse);
 
-        // 3. Если ответ нормальный — добавить его в историю
+        // 4. Если ответ нормальный — сохраняем в историю
         if (!isTechnicalError)
         {
             AddDialogueLine(currentNPC.NPCName + ": " + npcResponse);
         }
 
-        // 4. Пересобрать UI из чистой истории
-        RebuildDialogueUIFromHistory();
+        // 5. Перерисовываем UI из чистой истории, чтобы убрать временное "..."
+        RebuildChatUIFromHistory();
 
-        // 5. Если это техошибка — показать отдельно, но не сохранять в историю
-        if (isTechnicalError)
+        // 6. Если это техошибка — показываем отдельно, но не пишем в историю
+        if (isTechnicalError && chatUI != null)
         {
-            dialogueUI.AddMessage("Система", npcResponse);
+            chatUI.AddSystemMessage(npcResponse);
         }
 
-        dialogueUI.ClearInput();
-        dialogueUI.SetInputInteractable(true);
+        if (chatUI != null)
+        {
+            chatUI.ClearInput();
+            chatUI.SetInputInteractable(true);
+            chatUI.FocusInput();
+        }
+
         isWaitingForResponse = false;
     }
+
     public void CloseDialogue()
     {
         currentNPC = null;
@@ -99,7 +138,11 @@ public class DialogueManager : MonoBehaviour
         isWaitingForResponse = false;
         dialogueHistory.Clear();
 
-        dialogueUI.Hide();
+        if (chatUI != null)
+            chatUI.ClearMessages();
+
+        if (dialogueUI != null)
+            dialogueUI.Hide();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -111,6 +154,31 @@ public class DialogueManager : MonoBehaviour
             return;
 
         dialogueHistory.Add(line.Trim());
+    }
+
+    private void RebuildChatUIFromHistory()
+    {
+        if (chatUI == null)
+            return;
+
+        chatUI.ClearMessages();
+
+        foreach (string line in dialogueHistory)
+        {
+            int separatorIndex = line.IndexOf(": ");
+            if (separatorIndex <= 0)
+                continue;
+
+            string sender = line.Substring(0, separatorIndex);
+            string message = line.Substring(separatorIndex + 2);
+
+            if (sender == "Игрок")
+                chatUI.AddPlayerMessage(message);
+            else if (sender == "Система")
+                chatUI.AddSystemMessage(message);
+            else
+                chatUI.AddNpcMessage(message);
+        }
     }
 
     private string GetNPCStartMessage(NPCDialogueData npcData)
@@ -229,22 +297,4 @@ public class DialogueManager : MonoBehaviour
                normalized.StartsWith("Ошибка:") ||
                normalized == "...";
     }
-
-    private void RebuildDialogueUIFromHistory()
-    {
-        dialogueUI.ClearHistory();
-
-        foreach (string line in dialogueHistory)
-        {
-            int separatorIndex = line.IndexOf(": ");
-            if (separatorIndex <= 0)
-                continue;
-
-            string sender = line.Substring(0, separatorIndex);
-            string message = line.Substring(separatorIndex + 2);
-
-            dialogueUI.AddMessage(sender, message);
-        }
-    }
-
 }
