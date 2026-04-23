@@ -61,7 +61,8 @@ public class DialogueManager : MonoBehaviour
         string startMessage = GetNPCStartMessage(currentNPC);
         AddDialogueLine(currentNPC.NPCName + ": " + startMessage);
 
-        RebuildChatUIFromHistory();
+        if (chatUI != null)
+            chatUI.AddNpcMessage(startMessage);
     }
 
     private async void HandlePlayerMessageSubmitted(string playerMessage)
@@ -85,7 +86,9 @@ public class DialogueManager : MonoBehaviour
             string trimmedPlayerMessage = playerMessage.Trim();
 
             AddDialogueLine("Игрок: " + trimmedPlayerMessage);
-            RebuildChatUIFromHistory();
+
+            if (chatUI != null)
+                chatUI.AddPlayerMessage(trimmedPlayerMessage);
 
             if (chatUI != null)
                 chatUI.AddNpcMessage("...");
@@ -104,25 +107,31 @@ public class DialogueManager : MonoBehaviour
 
             bool isTechnicalError = IsTechnicalMessage(npcResponse);
 
+            if (chatUI != null)
+                chatUI.RemoveLastMessage(); // убираем "..."
+
             if (!isTechnicalError)
             {
                 AddDialogueLine(currentNPC.NPCName + ": " + npcResponse);
+
+                if (chatUI != null)
+                    chatUI.AddNpcMessage(npcResponse);
             }
-
-            RebuildChatUIFromHistory();
-
-            if (isTechnicalError && chatUI != null)
+            else
             {
-                chatUI.AddSystemMessage(npcResponse);
+                if (chatUI != null)
+                    chatUI.AddSystemMessage(npcResponse);
             }
         }
         catch (System.Exception ex)
         {
             Debug.LogError("SendPlayerMessageAsync failed: " + ex);
-            RebuildChatUIFromHistory();
 
             if (chatUI != null)
+            {
+                chatUI.RemoveLastMessage();
                 chatUI.AddSystemMessage("Ошибка: " + ex.Message);
+            }
         }
         finally
         {

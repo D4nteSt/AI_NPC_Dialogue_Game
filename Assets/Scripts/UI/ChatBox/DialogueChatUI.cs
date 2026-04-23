@@ -108,12 +108,32 @@ public class DialogueChatUI : MonoBehaviour
         item.SetText(text);
 
         Canvas.ForceUpdateCanvases();
+
+        RectTransform itemRect = item.GetComponent<RectTransform>();
+        if (itemRect != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(itemRect);
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)contentRoot);
+
         StartCoroutine(ScrollToBottomNextFrame());
     }
 
     private IEnumerator ScrollToBottomNextFrame()
     {
         yield return null;
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)contentRoot);
+        scrollRect.verticalNormalizedPosition = 0f;
+    }
+
+    public void RemoveLastMessage()
+    {
+        if (contentRoot == null || contentRoot.childCount == 0)
+            return;
+
+        Transform lastChild = contentRoot.GetChild(contentRoot.childCount - 1);
+        Destroy(lastChild.gameObject);
+
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)contentRoot);
         scrollRect.verticalNormalizedPosition = 0f;
