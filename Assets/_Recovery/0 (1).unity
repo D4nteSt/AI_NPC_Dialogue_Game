@@ -3973,7 +3973,7 @@ MonoBehaviour:
   inputField: {fileID: 1995115857}
   sendButton: {fileID: 1100937743}
   npcMessagePrefab: {fileID: 2536804489125015842, guid: 25f3b3f0fe0836d4f8c1a012daefda24, type: 3}
-  playerMessagePrefab: {fileID: 2536804489125015842, guid: d167cd4f0aa233f4784d220f4c334313, type: 3}
+  playerMessagePrefab: {fileID: 9001911203951189145, guid: e89b16383c8234549982432496ef10d7, type: 3}
   systemMessagePrefab: {fileID: 3394816909657859351, guid: 859ce8681cf0519429faacde77af7bc6, type: 3}
 --- !u!4 &747683044 stripped
 Transform:
@@ -5410,7 +5410,7 @@ MonoBehaviour:
     m_Top: 16
     m_Bottom: 16
   m_ChildAlignment: 0
-  m_Spacing: 16
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -5822,7 +5822,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1100937744}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 747523190}
+        m_TargetAssemblyTypeName: DialogueUIActions, Assembly-CSharp
+        m_MethodName: OnSendButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1100937744
 MonoBehaviour:
   m_ObjectHideFlags: 0

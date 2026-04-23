@@ -80,55 +80,61 @@ public class DialogueManager : MonoBehaviour
         if (chatUI != null)
             chatUI.SetInputInteractable(false);
 
-        string trimmedPlayerMessage = playerMessage.Trim();
-
-        // 1. Добавляем реплику игрока в историю
-        AddDialogueLine("Игрок: " + trimmedPlayerMessage);
-
-        // 2. Перерисовываем историю
-        RebuildChatUIFromHistory();
-
-        // 3. Временно показываем "..." только в UI
-        if (chatUI != null)
-            chatUI.AddNpcMessage("...");
-
-        HandleQuestLogicBeforeResponse();
-
-        DialogueContext context = contextBuilder.BuildContext(
-            currentNPC,
-            trimmedPlayerMessage,
-            dialogueHistory
-        );
-
-        string npcResponse = await responseService.GetResponseAsync(context);
-
-        HandleQuestLogicAfterResponse();
-
-        bool isTechnicalError = IsTechnicalMessage(npcResponse);
-
-        // 4. Если ответ нормальный — сохраняем в историю
-        if (!isTechnicalError)
+        try
         {
-            AddDialogueLine(currentNPC.NPCName + ": " + npcResponse);
+            string trimmedPlayerMessage = playerMessage.Trim();
+
+            AddDialogueLine("Игрок: " + trimmedPlayerMessage);
+            RebuildChatUIFromHistory();
+
+            if (chatUI != null)
+                chatUI.AddNpcMessage("...");
+
+            HandleQuestLogicBeforeResponse();
+
+            DialogueContext context = contextBuilder.BuildContext(
+                currentNPC,
+                trimmedPlayerMessage,
+                dialogueHistory
+            );
+
+            string npcResponse = await responseService.GetResponseAsync(context);
+
+            HandleQuestLogicAfterResponse();
+
+            bool isTechnicalError = IsTechnicalMessage(npcResponse);
+
+            if (!isTechnicalError)
+            {
+                AddDialogueLine(currentNPC.NPCName + ": " + npcResponse);
+            }
+
+            RebuildChatUIFromHistory();
+
+            if (isTechnicalError && chatUI != null)
+            {
+                chatUI.AddSystemMessage(npcResponse);
+            }
         }
-
-        // 5. Перерисовываем UI из чистой истории, чтобы убрать временное "..."
-        RebuildChatUIFromHistory();
-
-        // 6. Если это техошибка — показываем отдельно, но не пишем в историю
-        if (isTechnicalError && chatUI != null)
+        catch (System.Exception ex)
         {
-            chatUI.AddSystemMessage(npcResponse);
-        }
+            Debug.LogError("SendPlayerMessageAsync failed: " + ex);
+            RebuildChatUIFromHistory();
 
-        if (chatUI != null)
+            if (chatUI != null)
+                chatUI.AddSystemMessage("Ошибка: " + ex.Message);
+        }
+        finally
         {
-            chatUI.ClearInput();
-            chatUI.SetInputInteractable(true);
-            chatUI.FocusInput();
-        }
+            if (chatUI != null)
+            {
+                chatUI.ClearInput();
+                chatUI.SetInputInteractable(true);
+                chatUI.FocusInput();
+            }
 
-        isWaitingForResponse = false;
+            isWaitingForResponse = false;
+        }
     }
 
     public void CloseDialogue()

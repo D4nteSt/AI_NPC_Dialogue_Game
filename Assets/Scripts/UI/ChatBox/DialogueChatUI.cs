@@ -49,12 +49,20 @@ public class DialogueChatUI : MonoBehaviour
     }
 
     public void ClearMessages()
+{
+    if (contentRoot == null)
+        return;
+
+    for (int i = contentRoot.childCount - 1; i >= 0; i--)
     {
-        for (int i = contentRoot.childCount - 1; i >= 0; i--)
-        {
-            Destroy(contentRoot.GetChild(i).gameObject);
-        }
+        Transform child = contentRoot.GetChild(i);
+        child.gameObject.SetActive(false);
+        Destroy(child.gameObject);
     }
+
+    Canvas.ForceUpdateCanvases();
+    LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)contentRoot);
+}
 
     public void SetInputInteractable(bool value)
     {
