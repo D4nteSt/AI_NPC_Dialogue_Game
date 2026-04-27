@@ -49,13 +49,13 @@ public class AsyncAINPCResponseGenerator : MonoBehaviour, IAsyncNPCResponseGener
         AIResponseData response = await aiTextService.GenerateTextAsync(request);
 
         if (response == null)
-            return "Ошибка: AI-сервис вернул пустой ответ.";
+            return "Ошибка AI: AI-сервис вернул пустой ответ.";
 
         if (!response.success)
-            return "Не удалось получить ответ NPC. " + response.errorMessage;
+            return "Ошибка AI: " + response.errorMessage;
 
         if (string.IsNullOrWhiteSpace(response.responseText))
-            return "AI не смог сформировать ответ.";
+            return "Ошибка AI: AI не смог сформировать ответ.";
 
         return response.responseText;
     }

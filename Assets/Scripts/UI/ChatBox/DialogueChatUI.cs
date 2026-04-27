@@ -138,4 +138,44 @@ public class DialogueChatUI : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)contentRoot);
         scrollRect.verticalNormalizedPosition = 0f;
     }
+
+    private void Update()
+    {
+        if (inputField == null || !inputField.isFocused || !inputField.interactable)
+            return;
+
+        bool enterPressed =
+            Input.GetKeyDown(KeyCode.Return) ||
+            Input.GetKeyDown(KeyCode.KeypadEnter);
+
+        if (!enterPressed)
+            return;
+
+        bool shiftHeld =
+            Input.GetKey(KeyCode.LeftShift) ||
+            Input.GetKey(KeyCode.RightShift);
+
+        if (shiftHeld)
+        {
+            InsertNewLineAtCaret();
+            return;
+        }
+
+        SubmitInput();
+    }
+
+    private void InsertNewLineAtCaret()
+    {
+        if (inputField == null)
+            return;
+
+        string current = inputField.text ?? string.Empty;
+        int caret = inputField.stringPosition;
+
+        current = current.Insert(caret, "\n");
+        inputField.text = current;
+        inputField.stringPosition = caret + 1;
+        inputField.caretPosition = caret + 1;
+        inputField.ActivateInputField();
+    }
 }

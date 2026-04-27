@@ -305,11 +305,18 @@ public class DialogueManager : MonoBehaviour
         if (string.IsNullOrWhiteSpace(message))
             return true;
 
-        string normalized = message.Trim();
+        string normalized = message.Trim().ToLowerInvariant();
 
-        return normalized.StartsWith("Ошибка AI:") ||
-               normalized.StartsWith("Ошибка HTTP:") ||
-               normalized.StartsWith("Ошибка:") ||
+        return normalized.StartsWith("ошибка ai:") ||
+               normalized.StartsWith("ошибка http:") ||
+               normalized.StartsWith("ошибка:") ||
+               normalized.Contains("backend вернул пустой ответ") ||
+               normalized.Contains("не удалось распарсить ответ backend") ||
+               normalized.Contains("пустой запрос к backend") ||
+               normalized.Contains("cannot connect") ||
+               normalized.Contains("connection refused") ||
+               normalized.Contains("destination host") ||
+               normalized.Contains("timeout") ||
                normalized == "...";
     }
 }
