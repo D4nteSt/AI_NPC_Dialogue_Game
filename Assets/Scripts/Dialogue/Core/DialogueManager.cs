@@ -13,6 +13,12 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private DialogueContextBuilder contextBuilder;
     [SerializeField] private NPCAsyncResponseService responseService;
 
+    [Header("Dialogue Logic")]
+    [SerializeField] private PlayerIntentClassifier playerIntentClassifier;
+    [SerializeField] private DialogueRuleResolver dialogueRuleResolver;
+    [SerializeField] private DialogueOutcomeExecutor dialogueOutcomeExecutor;
+    [SerializeField] private InventoryManager inventoryManager;
+
     private NPCDialogueData currentNPC;
     private bool isDialogueOpen;
     private bool isWaitingForResponse;
@@ -90,10 +96,32 @@ public class DialogueManager : MonoBehaviour
             if (chatUI != null)
                 chatUI.AddPlayerMessage(trimmedPlayerMessage);
 
+            DialogueEvaluationContext evaluationContext = BuildEvaluationContext(trimmedPlayerMessage);
+
+            Debug.Log(
+                $"EVAL CONTEXT => npcId=[{evaluationContext.NpcId}], " +
+                $"intent=[{evaluationContext.PlayerIntent}], " +
+                $"questId=[{evaluationContext.QuestId}], " +
+                $"questStatus=[{evaluationContext.QuestStatus}], " +
+                $"items=[{string.Join(", ", evaluationContext.InventoryItemIds)}]"
+            );
+
+            Debug.Log("Player intent: " + evaluationContext.PlayerIntent);
+
+            if (dialogueRuleResolver != null && dialogueOutcomeExecutor != null)
+            {
+                DialogueOutcome outcome = dialogueRuleResolver.Resolve(evaluationContext);
+
+                if (outcome != null && outcome.HasActions)
+                {
+                    dialogueOutcomeExecutor.Execute(outcome);
+                }
+            }
+
             if (chatUI != null)
                 chatUI.AddNpcMessage("...");
 
-            HandleQuestLogicBeforeResponse();
+            //HandleQuestLogicBeforeResponse();
 
             DialogueContext context = contextBuilder.BuildContext(
                 currentNPC,
@@ -103,7 +131,7 @@ public class DialogueManager : MonoBehaviour
 
             string npcResponse = await responseService.GetResponseAsync(context);
 
-            HandleQuestLogicAfterResponse();
+            //HandleQuestLogicAfterResponse();
 
             bool isTechnicalError = IsTechnicalMessage(npcResponse);
 
@@ -318,5 +346,46 @@ public class DialogueManager : MonoBehaviour
                normalized.Contains("destination host") ||
                normalized.Contains("timeout") ||
                normalized == "...";
+    }
+
+    private DialogueEvaluationContext BuildEvaluationContext(string playerMessage)
+    {
+        PlayerIntentType intent = PlayerIntentType.None;
+
+        if (playerIntentClassifier != null)
+            intent = playerIntentClassifier.Classify(playerMessage);
+
+        string npcId = currentNPC != null && !string.IsNullOrWhiteSpace(currentNPC.NPCName)
+            ? currentNPC.NPCName.Trim().ToLowerInvariant()
+            : string.Empty;
+
+        string questId = currentNPC != null && currentNPC.QuestData != null
+            ? currentNPC.QuestData.questId
+            : string.Empty;
+
+        QuestStatus questStatus = QuestStatus.NotStarted;
+
+        if (!string.IsNullOrWhiteSpace(questId) && questManager != null)
+            questStatus = questManager.GetQuestStatus(questId);
+
+        DialogueEvaluationContext context = new DialogueEvaluationContext
+        {
+            NpcId = npcId,
+            NpcName = currentNPC != null ? currentNPC.NPCName : string.Empty,
+            PlayerMessage = playerMessage,
+            PlayerIntent = intent,
+            QuestId = questId,
+            QuestStatus = questStatus
+        };
+
+        if (inventoryManager != null)
+        {
+            foreach (var itemId in inventoryManager.Items.Keys)
+            {
+                context.InventoryItemIds.Add(itemId);
+            }
+        }
+
+        return context;
     }
 }
