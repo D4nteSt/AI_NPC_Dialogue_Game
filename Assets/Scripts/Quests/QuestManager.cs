@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public class QuestManager : MonoBehaviour
     public IReadOnlyDictionary<string, QuestData> Quests => quests;
     public IReadOnlyDictionary<string, QuestStatus> QuestStatuses => questStatuses;
 
+    public event Action QuestsChanged;
+
     public void RegisterQuest(QuestData questData)
     {
         if (questData == null || string.IsNullOrWhiteSpace(questData.questId))
@@ -20,6 +23,7 @@ public class QuestManager : MonoBehaviour
         {
             quests.Add(questData.questId, questData);
             questStatuses.Add(questData.questId, QuestStatus.NotStarted);
+            QuestsChanged?.Invoke();
         }
     }
 
@@ -40,6 +44,7 @@ public class QuestManager : MonoBehaviour
         {
             questStatuses[questId] = QuestStatus.InProgress;
             Debug.Log(" вест начат: " + questId);
+            QuestsChanged?.Invoke();
         }
     }
 
@@ -56,6 +61,7 @@ public class QuestManager : MonoBehaviour
         {
             questStatuses[questId] = QuestStatus.Completed;
             Debug.Log(" вест выполнен: " + questId);
+            QuestsChanged?.Invoke();
         }
     }
 
@@ -75,6 +81,7 @@ public class QuestManager : MonoBehaviour
 
             questStatuses[questId] = QuestStatus.TurnedIn;
             Debug.Log(" вест сдан: " + questId);
+            QuestsChanged?.Invoke();
         }
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class InventoryManager : MonoBehaviour
     private Dictionary<string, string> items = new Dictionary<string, string>();
 
     public IReadOnlyDictionary<string, string> Items => items;
+
+    public event Action InventoryChanged;
 
     public void AddItem(string itemId, string itemName)
     {
@@ -16,6 +19,7 @@ public class InventoryManager : MonoBehaviour
         {
             items.Add(itemId, itemName);
             Debug.Log("Предмет добавлен в инвентарь: " + itemName);
+            InventoryChanged?.Invoke();
         }
     }
 
@@ -30,6 +34,7 @@ public class InventoryManager : MonoBehaviour
         {
             Debug.Log("Предмет удален из инвентаря: " + items[itemId]);
             items.Remove(itemId);
+            InventoryChanged?.Invoke();
         }
     }
 
