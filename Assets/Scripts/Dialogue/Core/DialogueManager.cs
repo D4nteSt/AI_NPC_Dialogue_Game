@@ -106,8 +106,6 @@ public class DialogueManager : MonoBehaviour
                 $"items=[{string.Join(", ", evaluationContext.InventoryItemIds)}]"
             );
 
-            Debug.Log("Player intent: " + evaluationContext.PlayerIntent);
-
             if (dialogueRuleResolver != null && dialogueOutcomeExecutor != null)
             {
                 DialogueOutcome outcome = dialogueRuleResolver.Resolve(evaluationContext);
@@ -199,31 +197,6 @@ public class DialogueManager : MonoBehaviour
         dialogueHistory.Add(line.Trim());
     }
 
-    private void RebuildChatUIFromHistory()
-    {
-        if (chatUI == null)
-            return;
-
-        chatUI.ClearMessages();
-
-        foreach (string line in dialogueHistory)
-        {
-            int separatorIndex = line.IndexOf(": ");
-            if (separatorIndex <= 0)
-                continue;
-
-            string sender = line.Substring(0, separatorIndex);
-            string message = line.Substring(separatorIndex + 2);
-
-            if (sender == "Игрок")
-                chatUI.AddPlayerMessage(message);
-            else if (sender == "Система")
-                chatUI.AddSystemMessage(message);
-            else
-                chatUI.AddNpcMessage(message);
-        }
-    }
-
     private string GetNPCStartMessage(NPCDialogueData npcData)
     {
         if (npcData == null)
@@ -241,22 +214,22 @@ public class DialogueManager : MonoBehaviour
             switch (status)
             {
                 case QuestStatus.NotStarted:
-                    return npcData.GreetingMessage + " У меня есть для тебя задание.";
+                    return npcData.GreetingMessage + " У меня есть дело, в котором потребуется внимательный человек.";
 
                 case QuestStatus.InProgress:
                     questManager.CheckQuestProgress(npcData.QuestData.questId);
 
                     if (questManager.GetQuestStatus(npcData.QuestData.questId) == QuestStatus.Completed)
-                        return "Ты нашел то, что я просил? Похоже, да.";
+                        return "Вы нашли что-то важное? Покажите улику.";
 
-                    return "Ты уже нашел нужный предмет?";
+                    return "Продолжайте осмотр. В таком деле мелочей не бывает.";
 
                 case QuestStatus.Completed:
-                    return "Отлично! Ты принес нужный предмет.";
+                    return "Похоже, у вас есть улика. Давайте посмотрим.";
 
                 case QuestStatus.TurnedIn:
-                    return "Спасибо за помощь. Ты хорошо справился.";
-
+                    return "Дело закрыто. Хорошая работа.";
+            
                 default:
                     return npcData.GreetingMessage;
             }
@@ -288,46 +261,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void HandleQuestLogicBeforeResponse()
-    {
-        if (currentNPC == null || currentNPC.QuestData == null || questManager == null)
-            return;
-
-        if (!currentNPC.IsQuestGiver)
-            return;
-
-        string questId = currentNPC.QuestData.questId;
-        QuestStatus status = questManager.GetQuestStatus(questId);
-
-        if (status == QuestStatus.NotStarted)
-        {
-            questManager.StartQuest(questId);
-            return;
-        }
-
-        if (status == QuestStatus.InProgress)
-        {
-            questManager.CheckQuestProgress(questId);
-        }
-    }
-
-    private void HandleQuestLogicAfterResponse()
-    {
-        if (currentNPC == null || currentNPC.QuestData == null || questManager == null)
-            return;
-
-        if (!currentNPC.IsQuestGiver)
-            return;
-
-        string questId = currentNPC.QuestData.questId;
-        QuestStatus status = questManager.GetQuestStatus(questId);
-
-        if (status == QuestStatus.Completed)
-        {
-            questManager.TurnInQuest(questId);
-        }
-    }
-
     private bool IsTechnicalMessage(string message)
     {
         if (string.IsNullOrWhiteSpace(message))
@@ -355,12 +288,12 @@ public class DialogueManager : MonoBehaviour
         if (playerIntentClassifier != null)
             intent = playerIntentClassifier.Classify(playerMessage);
 
-        string npcId = currentNPC != null && !string.IsNullOrWhiteSpace(currentNPC.NPCName)
-            ? currentNPC.NPCName.Trim().ToLowerInvariant()
+        string npcId = currentNPC != null
+            ? DialogueDataNormalizer.NormalizeId(currentNPC.NPCName)
             : string.Empty;
 
         string questId = currentNPC != null && currentNPC.QuestData != null
-            ? currentNPC.QuestData.questId
+            ? DialogueDataNormalizer.NormalizeId(currentNPC.QuestData.questId)
             : string.Empty;
 
         QuestStatus questStatus = QuestStatus.NotStarted;
@@ -382,7 +315,7 @@ public class DialogueManager : MonoBehaviour
         {
             foreach (var itemId in inventoryManager.Items.Keys)
             {
-                context.InventoryItemIds.Add(itemId);
+                context.InventoryItemIds.Add(DialogueDataNormalizer.NormalizeId(itemId));
             }
         }
 

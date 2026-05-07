@@ -12,8 +12,14 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(string itemId, string itemName)
     {
+        itemId = DialogueDataNormalizer.NormalizeId(itemId);
+        itemName = DialogueDataNormalizer.NormalizeText(itemName);
+
         if (string.IsNullOrWhiteSpace(itemId))
             return;
+
+        if (string.IsNullOrWhiteSpace(itemName))
+            itemName = itemId;
 
         if (!items.ContainsKey(itemId))
         {
@@ -25,11 +31,14 @@ public class InventoryManager : MonoBehaviour
 
     public bool HasItem(string itemId)
     {
+        itemId = DialogueDataNormalizer.NormalizeId(itemId);
         return items.ContainsKey(itemId);
     }
 
     public void RemoveItem(string itemId)
     {
+        itemId = DialogueDataNormalizer.NormalizeId(itemId);
+
         if (items.ContainsKey(itemId))
         {
             Debug.Log("Предмет удален из инвентаря: " + items[itemId]);

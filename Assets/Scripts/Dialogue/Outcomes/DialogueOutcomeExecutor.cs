@@ -56,61 +56,97 @@ public class DialogueOutcomeExecutor : MonoBehaviour, IDialogueOutcomeExecutor
 
     private void ExecuteStartQuest(DialogueActionData action)
     {
-        if (questManager == null || string.IsNullOrWhiteSpace(action.questId))
+        if (questManager == null)
             return;
 
-        questManager.StartQuest(action.questId);
+        string questId = DialogueDataNormalizer.NormalizeId(action.questId);
+
+        if (string.IsNullOrWhiteSpace(questId))
+            return;
+
+        questManager.StartQuest(questId);
     }
 
     private void ExecuteAdvanceQuest(DialogueActionData action)
     {
-        if (questManager == null || string.IsNullOrWhiteSpace(action.questId))
+        if (questManager == null)
             return;
 
-        questManager.CheckQuestProgress(action.questId);
+        string questId = DialogueDataNormalizer.NormalizeId(action.questId);
+
+        if (string.IsNullOrWhiteSpace(questId))
+            return;
+
+        questManager.CheckQuestProgress(questId);
     }
 
     private void ExecuteCompleteQuest(DialogueActionData action)
     {
-        if (questManager == null || string.IsNullOrWhiteSpace(action.questId))
+        if (questManager == null)
             return;
 
-        questManager.CheckQuestProgress(action.questId);
+        string questId = DialogueDataNormalizer.NormalizeId(action.questId);
+
+        if (string.IsNullOrWhiteSpace(questId))
+            return;
+
+        questManager.CheckQuestProgress(questId);
     }
 
     private void ExecuteTurnInQuest(DialogueActionData action)
     {
-        if (questManager == null || string.IsNullOrWhiteSpace(action.questId))
+        if (questManager == null)
             return;
 
-        questManager.TurnInQuest(action.questId);
+        string questId = DialogueDataNormalizer.NormalizeId(action.questId);
+
+        if (string.IsNullOrWhiteSpace(questId))
+            return;
+
+        questManager.TurnInQuest(questId);
     }
 
     private void ExecuteGiveItem(DialogueActionData action)
     {
-        if (inventoryManager == null || string.IsNullOrWhiteSpace(action.itemId))
+        if (inventoryManager == null)
             return;
 
-        string itemName = string.IsNullOrWhiteSpace(action.itemName)
-            ? action.itemId
-            : action.itemName;
+        string itemId = DialogueDataNormalizer.NormalizeId(action.itemId);
 
-        inventoryManager.AddItem(action.itemId, itemName);
+        if (string.IsNullOrWhiteSpace(itemId))
+            return;
+
+        string itemName = DialogueDataNormalizer.NormalizeText(action.itemName);
+
+        if (string.IsNullOrWhiteSpace(itemName))
+            itemName = itemId;
+
+        inventoryManager.AddItem(itemId, itemName);
     }
 
     private void ExecuteRemoveItem(DialogueActionData action)
     {
-        if (inventoryManager == null || string.IsNullOrWhiteSpace(action.itemId))
+        if (inventoryManager == null)
             return;
 
-        inventoryManager.RemoveItem(action.itemId);
+        string itemId = DialogueDataNormalizer.NormalizeId(action.itemId);
+
+        if (string.IsNullOrWhiteSpace(itemId))
+            return;
+
+        inventoryManager.RemoveItem(itemId);
     }
 
     private void ExecuteShowNotification(DialogueActionData action)
     {
-        if (notificationUI == null || string.IsNullOrWhiteSpace(action.notificationText))
+        if (notificationUI == null)
             return;
 
-        notificationUI.Show(action.notificationText);
+        string notificationText = DialogueDataNormalizer.NormalizeText(action.notificationText);
+
+        if (string.IsNullOrWhiteSpace(notificationText))
+            return;
+
+        notificationUI.Show(notificationText);
     }
 }
