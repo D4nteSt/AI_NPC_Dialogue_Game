@@ -250,10 +250,10 @@ public class DialogueManager : MonoBehaviour
                     return npcData.GreetingMessage;
 
                 case QuestStatus.Completed:
-                    return "Похоже, дело уже почти закончено.";
+                    return "Вы что-то нашли? Надеюсь, это поможет инспектору.";
 
                 case QuestStatus.TurnedIn:
-                    return "Кажется, здесь стало спокойнее.";
+                    return "Инспектор забрал улику? Тогда, может быть, он поймет, куда она ведет";
 
                 default:
                     return npcData.GreetingMessage;
