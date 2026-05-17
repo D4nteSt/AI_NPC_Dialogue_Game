@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -7,46 +8,59 @@ public class PlayerIntentClassifier : MonoBehaviour
 {
     public PlayerIntentType Classify(string playerMessage)
     {
+        List<PlayerIntentType> intents = ClassifyAll(playerMessage);
+        return intents.Count > 0 ? intents[0] : PlayerIntentType.None;
+    }
+
+    public List<PlayerIntentType> ClassifyAll(string playerMessage)
+    {
+        List<PlayerIntentType> intents = new List<PlayerIntentType>();
+
         if (string.IsNullOrWhiteSpace(playerMessage))
-            return PlayerIntentType.None;
+        {
+            intents.Add(PlayerIntentType.None);
+            return intents;
+        }
 
         string text = Normalize(playerMessage);
 
-        // Важно: более конкретные намерения проверяем раньше общих.
         if (IsGreeting(text))
-            return PlayerIntentType.Greeting;
+            intents.Add(PlayerIntentType.Greeting);
 
         if (IsReturnWithItem(text))
-            return PlayerIntentType.ReturnWithItem;
+            intents.Add(PlayerIntentType.ReturnWithItem);
 
         if (IsRefuseTask(text))
-            return PlayerIntentType.RefuseTask;
-
-        if (IsAcceptTask(text))
-            return PlayerIntentType.AcceptTask;
+            intents.Add(PlayerIntentType.RefuseTask);
 
         if (IsAskForReward(text))
-            return PlayerIntentType.AskForReward;
+            intents.Add(PlayerIntentType.AskForReward);
 
         if (IsAskForItem(text))
-            return PlayerIntentType.AskForItem;
+            intents.Add(PlayerIntentType.AskForItem);
+
+        if (IsAcceptTask(text))
+            intents.Add(PlayerIntentType.AcceptTask);
 
         if (IsAskAboutQuest(text))
-            return PlayerIntentType.AskAboutQuest;
+            intents.Add(PlayerIntentType.AskAboutQuest);
 
         if (IsAskAboutLocation(text))
-            return PlayerIntentType.AskAboutLocation;
+            intents.Add(PlayerIntentType.AskAboutLocation);
 
         if (IsConfirm(text))
-            return PlayerIntentType.Confirm;
+            intents.Add(PlayerIntentType.Confirm);
 
         if (IsDecline(text))
-            return PlayerIntentType.Decline;
+            intents.Add(PlayerIntentType.Decline);
 
-        if (IsQuestion(text))
-            return PlayerIntentType.AskQuestion;
+        if (intents.Count == 0 && IsQuestion(text))
+            intents.Add(PlayerIntentType.AskQuestion);
 
-        return PlayerIntentType.GeneralTalk;
+        if (intents.Count == 0)
+            intents.Add(PlayerIntentType.GeneralTalk);
+
+        return intents;
     }
 
     private string Normalize(string input)
@@ -182,7 +196,31 @@ public class PlayerIntentClassifier : MonoBehaviour
             "какие факты",
             "какие обстоятельства",
             "с чего начать",
-            "что мне делать");
+            "что мне делать",
+            "что дальше",
+            "что делать дальше",
+            "что именно делать дальше",
+            "что теперь",
+            "что теперь делать",
+            "какой следующий шаг",
+            "следующий шаг",
+            "куда дальше",
+            "куда идти дальше",
+            "куда ведет улика",
+            "куда ведет эта улика",
+            "как найти виновного",
+            "как нам найти виновного",
+            "как выйти на виновного",
+            "как определить виновного",
+            "кто мог это сделать",
+            "кого проверить",
+            "кого допросить",
+            "кого опросить",
+            "с кем поговорить дальше",
+            "кому могла принадлежать ткань",
+            "кому принадлежит ткань",
+            "у кого был доступ",
+            "кто имел доступ");
     }
 
     private bool IsAskAboutLocation(string text)
@@ -227,7 +265,7 @@ public class PlayerIntentClassifier : MonoBehaviour
 
     private bool IsAskForItem(string text)
     {
-        // Прямая просьба выдать предмет.
+        // Прямая просьба или намерение получить предмет/документ.
         if (ContainsAny(text,
             "дай мне",
             "дайте мне",
@@ -238,8 +276,29 @@ public class PlayerIntentClassifier : MonoBehaviour
             "получить у вас",
             "можно получить",
             "могу получить",
+            "хочу получить",
+            "нужно получить",
+            "надо получить",
+            "я возьму",
+            "давайте я возьму",
+            "хочу взять",
+            "можно взять",
+            "заберу",
+            "я заберу",
+            "можно забрать",
             "нужен предмет",
             "нужна вещь",
+            "нужен ордер",
+            "нужно разрешение",
+            "нужен пропуск",
+            "мне нужен ордер",
+            "мне нужно разрешение",
+            "мне нужен пропуск",
+            "получить ордер",
+            "взять ордер",
+            "забрать ордер",
+            "возьму ордер",
+            "давайте я возьму ордер",
             "что мне взять",
             "что мне нужно взять",
             "что взять с собой",
@@ -249,7 +308,6 @@ public class PlayerIntentClassifier : MonoBehaviour
             return true;
         }
 
-        // Детективный случай: игрок просит разрешение/пропуск/доступ.
         bool mentionsAccessDocument = ContainsAny(text,
             "разрешение",
             "пропуск",
@@ -259,7 +317,28 @@ public class PlayerIntentClassifier : MonoBehaviour
             "бумагу",
             "бумаги",
             "ордер",
+            "предписание",
+            "разрешающий документ",
             "направление");
+
+        bool wantsToReceive = ContainsAny(text,
+            "дай",
+            "дайте",
+            "давай",
+            "давайте",
+            "выдай",
+            "выдайте",
+            "получить",
+            "возьму",
+            "заберу",
+            "взять",
+            "забрать",
+            "нужен",
+            "нужно",
+            "требуется");
+
+        if (mentionsAccessDocument && wantsToReceive)
+            return true;
 
         bool mentionsInspection = ContainsAny(text,
             "осмотр",
@@ -282,12 +361,16 @@ public class PlayerIntentClassifier : MonoBehaviour
                                  "хотелось бы получить",
                                  "необходимо получить",
                                  "понадобится",
-                                 "потребуется");
+                                 "потребуется",
+                                 "возьму",
+                                 "заберу",
+                                 "получить",
+                                 "взять",
+                                 "забрать");
 
         if (mentionsAccessDocument && (mentionsInspection || politeRequest))
             return true;
 
-        // Просьба о конкретном полезном предмете.
         bool mentionsTool = ContainsAny(text,
             "фонарь",
             "ключ",

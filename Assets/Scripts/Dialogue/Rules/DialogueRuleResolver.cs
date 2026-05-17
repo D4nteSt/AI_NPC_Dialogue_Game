@@ -33,41 +33,74 @@ public class DialogueRuleResolver : MonoBehaviour, IDialogueRuleResolver
         if (!string.IsNullOrWhiteSpace(ruleNpcId))
         {
             if (ruleNpcId != contextNpcId)
+            {
+                Debug.Log($"Rule [{rule.ruleId}] failed: npcId mismatch. Rule=[{ruleNpcId}] Context=[{contextNpcId}]");
                 return false;
+            }
         }
 
         if (rule.requiredIntent != PlayerIntentType.None)
         {
-            if (rule.requiredIntent != context.PlayerIntent)
+            bool hasIntent =
+                context.PlayerIntent == rule.requiredIntent ||
+                (context.PlayerIntents != null && context.PlayerIntents.Contains(rule.requiredIntent));
+
+            if (!hasIntent)
+            {
+                Debug.Log($"Rule [{rule.ruleId}] failed: intent mismatch. Rule=[{rule.requiredIntent}] Context=[{context.PlayerIntent}]");
                 return false;
+            }
         }
 
         string ruleQuestId = DialogueDataNormalizer.NormalizeId(rule.requiredQuestId);
-        string contextQuestId = DialogueDataNormalizer.NormalizeId(context.QuestId);
 
         if (!string.IsNullOrWhiteSpace(ruleQuestId))
         {
-            if (ruleQuestId != contextQuestId)
+            if (context.QuestStatuses != null &&
+                context.QuestStatuses.TryGetValue(ruleQuestId, out QuestStatus actualStatus))
+            {
+                if (rule.checkQuestStatus && rule.requiredQuestStatus != actualStatus)
+                {
+                    Debug.Log($"Rule [{rule.ruleId}] failed: questStatus mismatch. Rule=[{rule.requiredQuestStatus}] Context=[{actualStatus}] QuestId=[{ruleQuestId}]");
+                    return false;
+                }
+            }
+            else
+            {
+                Debug.Log($"Rule [{rule.ruleId}] failed: questId not found in context. Rule=[{ruleQuestId}]");
                 return false;
+            }
         }
-
-        if (rule.checkQuestStatus)
+        else
         {
-            if (rule.requiredQuestStatus != context.QuestStatus)
-                return false;
+            if (rule.checkQuestStatus)
+            {
+                if (rule.requiredQuestStatus != context.QuestStatus)
+                {
+                    Debug.Log($"Rule [{rule.ruleId}] failed: questStatus mismatch without questId. Rule=[{rule.requiredQuestStatus}] Context=[{context.QuestStatus}]");
+                    return false;
+                }
+            }
         }
 
         string requiredItemId = DialogueDataNormalizer.NormalizeId(rule.requiredInventoryItemId);
 
         if (!string.IsNullOrWhiteSpace(requiredItemId))
         {
-            bool hasItem = context.InventoryItemIds.Contains(requiredItemId);
+            bool hasItem = context.InventoryItemIds != null &&
+                           context.InventoryItemIds.Contains(requiredItemId);
 
             if (rule.requireItemPresent && !hasItem)
+            {
+                Debug.Log($"Rule [{rule.ruleId}] failed: required item missing. Item=[{requiredItemId}]");
                 return false;
+            }
 
             if (!rule.requireItemPresent && hasItem)
+            {
+                Debug.Log($"Rule [{rule.ruleId}] failed: item should be absent. Item=[{requiredItemId}]");
                 return false;
+            }
         }
 
         Debug.Log("Rule [" + rule.ruleId + "] matched successfully.");

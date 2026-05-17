@@ -6,6 +6,8 @@ public class DialogueOutcome
 
     public bool HasActions => Actions.Count > 0;
 
+    public string npcResponseHint;
+
     public void AddAction(DialogueActionData action)
     {
         if (action == null)

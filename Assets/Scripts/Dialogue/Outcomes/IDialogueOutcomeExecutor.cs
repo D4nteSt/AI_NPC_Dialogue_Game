@@ -1,4 +1,4 @@
 public interface IDialogueOutcomeExecutor
 {
-    void Execute(DialogueOutcome outcome);
+    DialogueOutcomeExecutionResult Execute(DialogueOutcome outcome);
 }

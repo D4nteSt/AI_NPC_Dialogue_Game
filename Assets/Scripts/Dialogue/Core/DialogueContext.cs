@@ -33,4 +33,6 @@ public class DialogueContext
 
     public List<string> inventoryItems = new List<string>();
     public List<string> dialogueHistory = new List<string>();
+
+    public string lastOutcomeSummary;
 }

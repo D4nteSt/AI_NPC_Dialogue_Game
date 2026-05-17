@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityEngine.Audio.ProcessorInstance;
 
 public class AsyncAINPCResponseGenerator : MonoBehaviour, IAsyncNPCResponseGenerator
 {
@@ -57,7 +58,8 @@ public class AsyncAINPCResponseGenerator : MonoBehaviour, IAsyncNPCResponseGener
         if (string.IsNullOrWhiteSpace(response.responseText))
             return "Ошибка AI: AI не смог сформировать ответ.";
 
-        return response.responseText;
+        return CleanNpcResponse(response.responseText);
+
     }
 
     private string BuildNpcId(DialogueContext context)
@@ -66,5 +68,21 @@ public class AsyncAINPCResponseGenerator : MonoBehaviour, IAsyncNPCResponseGener
             return "unknown_npc";
 
         return context.npcName.Trim().ToLowerInvariant().Replace(" ", "_");
+    }
+
+    private string CleanNpcResponse(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return string.Empty;
+
+        string result = text.Trim();
+
+        if ((result.StartsWith("«") && result.EndsWith("»")) ||
+            (result.StartsWith("\"") && result.EndsWith("\"")))
+        {
+            result = result.Substring(1, result.Length - 2).Trim();
+        }
+
+        return result;
     }
 }

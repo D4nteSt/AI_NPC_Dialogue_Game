@@ -15,5 +15,6 @@ public class DialogueRule
     public string requiredInventoryItemId;
     public bool requireItemPresent;
 
+
     public DialogueActionData[] actions;
 }

@@ -8,6 +8,7 @@ public class NPCPromptBuilder : MonoBehaviour
     [SerializeField] private int maxHistoryLinesCompact = 4;
     [SerializeField] private bool includeSecretsInDebugPrompt = true;
     [SerializeField] private bool includeSecretsInCompactPrompt = true;
+    [SerializeField] private SceneDialogueContext sceneContext;
 
     public string BuildPrompt(DialogueContext context)
     {
@@ -29,6 +30,7 @@ public class NPCPromptBuilder : MonoBehaviour
         StringBuilder prompt = new StringBuilder();
 
         AppendIdentityBlock(prompt, context);
+        AppendSceneContextBlock(prompt);
         AppendWorldContextBlock(prompt, context);
         AppendKnowledgeBlock(prompt, context);
         AppendMotivationBlock(prompt, context, includeSecretsInDebugPrompt);
@@ -45,22 +47,28 @@ public class NPCPromptBuilder : MonoBehaviour
         StringBuilder prompt = new StringBuilder();
 
         prompt.AppendLine("Ты NPC в сюжетной игре. Отвечай только как персонаж.");
-        prompt.AppendLine("Мир:\r\nДетективная сцена у городского архива. Пропала городская печать.\r\nИзвестные персонажи: Инспектор Баттлер — ведет дело; Мира — свидетельница.\r\nНе выдумывай новых важных персонажей, современные технологии и места, которых нет в контексте.\r\nЕсли не знаешь — говори осторожно и предлагай проверить архив, место происшествия или обратиться к Баттлеру.");
+        AppendSceneContextBlock(prompt);
         prompt.AppendLine();
 
         prompt.AppendLine("NPC:");
         prompt.AppendLine("Имя: " + SafeText(context.npcName, "NPC"));
-        prompt.AppendLine("Роль: " + CompressRole(context.npcRole));
-        prompt.AppendLine("Характер: " + CompressTraitsCompact(context.npcPersonality));
-        prompt.AppendLine("Речь: " + CompressSpeech(context.npcSpeechStyle));
-        prompt.AppendLine("Отношение: " + CompressAttitude(context.npcAttitudeToPlayer));
-        prompt.AppendLine("Состояние: " + CompressState(context.npcCurrentEmotionalState));
-        prompt.AppendLine("Тон: " + BuildToneHint(context));
-        prompt.AppendLine("Избегай: " + BuildAvoidHint(context));
+        prompt.AppendLine("Важно: сейчас говорит только этот персонаж: " + SafeText(context.npcName, "NPC") + ".");
+        prompt.AppendLine("Не отвечай от имени других персонажей. Не начинай ответ с имени другого персонажа.");
+        prompt.AppendLine("Если игрок спрашивает о другом персонаже, текущий NPC может только рассказать о нем со своей точки зрения.");
+        prompt.AppendLine("Роль: " + SafeText(context.npcRole, "персонаж сцены"));
+        prompt.AppendLine("Характер: " + SafeText(context.npcPersonality, "не указано"));
+        prompt.AppendLine("Речь: " + SafeText(context.npcSpeechStyle, "естественная"));
+        prompt.AppendLine("Отношение к игроку: " + SafeText(context.npcAttitudeToPlayer, "нейтральное"));
+        prompt.AppendLine("Состояние: " + SafeText(context.npcCurrentEmotionalState, "спокойное"));
+        prompt.AppendLine("Манера разговора: " + SafeText(context.npcConversationTendency, "говорит естественно"));
+        prompt.AppendLine();
+        prompt.AppendLine("Знания NPC:");
+        prompt.AppendLine("Знает: " + SafeText(context.npcKnowledge, "только то, что видел или слышал в сцене"));
+        prompt.AppendLine("Не знает: " + SafeText(context.npcUnknowns, "неизвестные ему факты"));
 
         if (ShouldIncludeSecretInCompactPrompt(context))
         {
-            prompt.AppendLine("Скрыто: " + CompressSecret(context.npcSecret));
+            prompt.AppendLine("Скрыто: " + SafeText(context.npcSecret, ""));
         }
 
         prompt.AppendLine();
@@ -69,8 +77,20 @@ public class NPCPromptBuilder : MonoBehaviour
         prompt.AppendLine("Квест: " + SafeText(context.questName, "нет"));
         prompt.AppendLine("Статус: " + SafeText(context.questStatus, "неизвестно"));
         prompt.AppendLine("Предметы: " + FormatInventoryCompact(context.inventoryItems));
+        if (context.inventoryItems == null || context.inventoryItems.Count == 0)
+        {
+            prompt.AppendLine("Важно: у игрока сейчас нет значимых предметов. Не говори, предмет уже у него на руках, если это не указано ниже в игровом результате.");
+        }
         prompt.AppendLine("Задача: " + BuildCompactObjective(context));
         prompt.AppendLine("Тип запроса: " + BuildIntentHint(context));
+        if (!string.IsNullOrWhiteSpace(context.lastOutcomeSummary))
+        {
+            prompt.AppendLine();
+            prompt.AppendLine("Только что произошло из-за реплики игрока:");
+            prompt.AppendLine(context.lastOutcomeSummary.Trim()); 
+            prompt.AppendLine("Это актуальный игровой результат. Если он противоречит предыдущей истории диалога, опирайся на этот результат, а не на старые реплики.");
+            prompt.AppendLine("Отрази это в ответе естественно, как текущий персонаж.");
+        }
         prompt.AppendLine();
 
         prompt.AppendLine("Последние реплики:");
@@ -91,7 +111,7 @@ public class NPCPromptBuilder : MonoBehaviour
         prompt.AppendLine("Последняя реплика игрока: " + SafeText(context.playerMessage, "..."));
         if (IsGreetingMessage(context.playerMessage))
         {
-            prompt.AppendLine("Особое правило: если игрок просто приветствует, ответь кратко и естественно, не пересказывая задание и не объясняя квест заново.");
+            prompt.AppendLine("Особое правило: если игрок просто приветствует, ответь кратко и естественно, не пересказывая задание и не объясняя квест заново.\nЕсли игрок получил предмет через действие правила, ответь так, будто текущий персонаж действительно выдал этот предмет.");
         }
         string exampleLines = BuildStyleExamples(context);
         if (!string.IsNullOrWhiteSpace(exampleLines))
@@ -101,8 +121,9 @@ public class NPCPromptBuilder : MonoBehaviour
             prompt.AppendLine(exampleLines);
         }
         prompt.AppendLine();
-        prompt.AppendLine("Правила: 1–3 предложения; не выходить из роли; не упоминать систему; не пересказывать контекст; не раскрывать скрытое без повода; не говорить слишком абстрактно; не использовать шаблонные фэнтези-фразы без опоры на сцену.");
-
+        prompt.AppendLine("Правила: 1–3 предложения; отвечай только от имени текущего NPC; не начинай ответ именем другого персонажа; не заключай ответ в кавычки; не используй формат цитаты;" +
+            " не выходить из роли; не упоминать систему; не пересказывать контекст; не раскрывать скрытое без повода; не выдумывать факты, персонажей, места или технологии;" +
+            " не утверждай, что игрок получил предмет, документ, ордер, разрешение или материалы дела, если это не указано в блоке \"Предметы\" или в блоке \"Только что произошло из-за реплики игрока\"; если предмет еще не выдан, говори, что можешь его выдать, а не что он уже у игрока; говорить конкретно и с опорой на сцену.");
         return prompt.ToString();
     }
 
@@ -249,7 +270,10 @@ public class NPCPromptBuilder : MonoBehaviour
         prompt.AppendLine("- Не повторяй название поручения или предмета механически в каждом ответе.");
         prompt.AppendLine("- Не раскрывай скрытые мотивы и секреты напрямую без естественного повода.");
         prompt.AppendLine("- Не делай ответ длинным монологом, если ситуация требует короткой реплики.");
-        prompt.AppendLine("- Если персонаж по характеру осторожен, не становись внезапно слишком откровенным без причины.");
+        prompt.AppendLine("- Отвечай только от имени текущего персонажа.");
+        prompt.AppendLine("- Не начинай ответ с имени другого персонажа.");
+        prompt.AppendLine("- Не разыгрывай диалог за других NPC.");
+        prompt.AppendLine("- Если игрок получил предмет через действие правила, ответь так, будто текущий персонаж действительно выдал этот предмет.");
     }
 
     private string BuildResponseObjective(DialogueContext context)
@@ -265,9 +289,9 @@ public class NPCPromptBuilder : MonoBehaviour
                 case "InProgress":
                     return "Дать игроку осторожный взгляд со стороны и помочь почувствовать атмосферу и значение происходящего.";
                 case "Completed":
-                    return "Отреагировать на успех игрока как наблюдатель, а не как тот, кто принимает результат.";
+                    return "отреагировать на найденный результат или улику и направить игрока к следующему естественному шагу.";
                 case "TurnedIn":
-                    return "Показать последствия завершенного события и отношение персонажа к случившемуся.";
+                    return "отреагировать на завершенный этап поручения, не объявляя всю историю полностью законченной, если это не следует из контекста.";
                 default:
                     return "Поддержать естественный разговор с точки зрения второстепенного участника событий.";
             }
@@ -282,7 +306,7 @@ public class NPCPromptBuilder : MonoBehaviour
             case "Completed":
                 return "Признать успех игрока, подчеркнуть значение результата и подготовить естественный переход к завершению сцены.";
             case "TurnedIn":
-                return "Показать, что персонаж помнит помощь игрока и реагирует на завершенное поручение естественно и по-человечески.";
+                return "отреагировать на последствия уже переданного результата с точки зрения своего знания и роли.";
             default:
                 return "Поддержать естественный разговор, раскрывая характер и отношение персонажа к происходящему.";
         }
@@ -291,20 +315,26 @@ public class NPCPromptBuilder : MonoBehaviour
     private string BuildCompactObjective(DialogueContext context)
     {
         string status = context.questStatus ?? string.Empty;
-        string playerMessage = context.playerMessage ?? string.Empty;
+        string playerMessage = context.playerMessage != null
+            ? context.playerMessage.ToLowerInvariant()
+            : string.Empty;
 
         if (!context.isQuestGiver)
         {
             switch (status)
             {
                 case "NotStarted":
-                    return "намекнуть, что ситуация важна или тревожна";
+                    return "поддержать разговор как участник сцены, не выдавая поручение напрямую";
+
                 case "InProgress":
-                    return "дать осторожный взгляд со стороны";
+                    return "дать осторожный взгляд со стороны, опираясь только на свои знания";
+
                 case "Completed":
-                    return "признать успех игрока как наблюдатель";
+                    return "отреагировать на найденную улику или результат как наблюдатель, не принимая его вместо квестодателя";
+
                 case "TurnedIn":
-                    return "отразить последствия завершенного события";
+                    return "отреагировать на последствия переданной улики, не объявляя всю историю полностью законченной";
+
                 default:
                     return "поддержать разговор в характере персонажа";
             }
@@ -313,20 +343,23 @@ public class NPCPromptBuilder : MonoBehaviour
         switch (status)
         {
             case "NotStarted":
-                return "ввести в ситуацию и заинтересовать";
-            case "InProgress":
-                if (playerMessage.Contains("почему") || playerMessage.Contains("что") || playerMessage.Contains("зачем") || playerMessage.Contains("как"))
-                    return "ответить осторожно и предметно, частично раскрывая смысл без полного объяснения";
-                else return "мягко направить игрока"; 
+                return "ввести игрока в ситуацию и обозначить поручение в характере персонажа";
 
+            case "InProgress":
+                if (ContainsAny(playerMessage, "почему", "что", "зачем", "как", "каким образом"))
+                    return "ответить предметно, не раскрывая больше, чем персонаж может знать";
+
+                return "направить игрока к следующему логичному шагу";
 
             case "Completed":
-                        return "признать успех и подготовить завершение";
-                    case "TurnedIn":
-                        return "отреагировать на завершенное поручение";
-                    default:
-                        return "поддержать разговор в характере персонажа";
-                    }
+                return "признать, что игрок нашел нужный результат или улику, и предложить передать ее";
+
+            case "TurnedIn":
+                return "отреагировать на уже переданный результат как на завершенный этап, но не объявлять всю историю полностью раскрытой";
+
+            default:
+                return "поддержать разговор в характере персонажа";
+        }
     }
 
     private List<string> GetRecentHistory(List<string> fullHistory, int maxLines)
@@ -374,15 +407,19 @@ public class NPCPromptBuilder : MonoBehaviour
         switch (rawStatus)
         {
             case "NotStarted":
-                return "поручение еще не начато";
+                return "текущий этап еще не начат";
+
             case "InProgress":
-                return "поручение сейчас выполняется";
+                return "текущий этап выполняется";
+
             case "Completed":
-                return "условие поручения уже выполнено";
+                return "условие текущего этапа выполнено, результат еще не передан";
+
             case "TurnedIn":
-                return "поручение уже завершено и результат передан персонажу";
+                return "этап поручения завершен, результат уже передан персонажу";
+
             default:
-                return "состояние поручения не уточнено";
+                return "состояние текущего этапа не уточнено";
         }
     }
 
@@ -399,98 +436,11 @@ public class NPCPromptBuilder : MonoBehaviour
         return text.Trim().TrimEnd('.', '!', '?');
     }
 
-    private string CompressTraitsCompact(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return "не указано";
-
-        string cleaned = Clean(text).ToLowerInvariant();
-
-        if (cleaned.Contains("мудр") && cleaned.Contains("осторож"))
-            return "мудрый, осторожный";
-
-        if (cleaned.Contains("вниматель") && cleaned.Contains("мягк"))
-            return "внимательная, мягкая";
-
-        return CompressByWords(cleaned, 6);
-    }
-
-    private string CompressSpeech(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return "обычная";
-
-        string cleaned = Clean(text).ToLowerInvariant();
-
-        if (cleaned.Contains("намек") || cleaned.Contains("намёк"))
-            return "размеренная, краткая, с намеками";
-
-        if (cleaned.Contains("прямо") || cleaned.Contains("прям"))
-            return "мягкая, прямая, без загадок";
-
-        return CompressByWords(cleaned, 6);
-    }
-
-    private string CompressAttitude(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return "нейтральное";
-
-        string cleaned = Clean(text).ToLowerInvariant();
-
-        if (cleaned.Contains("осторож") && cleaned.Contains("довер"))
-            return "осторожное доверие";
-
-        if (cleaned.Contains("насторож"))
-            return "настороженность";
-
-        return CompressByWords(cleaned, 5);
-    }
-
-    private string CompressState(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return "спокойствие";
-
-        string cleaned = Clean(text).ToLowerInvariant();
-
-        if (cleaned.Contains("напряж"))
-            return "спокойное напряжение";
-
-        if (cleaned.Contains("насторож"))
-            return "спокойная настороженность";
-
-        return CompressByWords(cleaned, 5);
-    }
-
-    private string CompressRole(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return "персонаж локации";
-
-        string cleaned = Clean(text);
-
-        if (cleaned.Length <= 40)
-            return cleaned;
-
-        return CompressByWords(cleaned, 6);
-    }
-
-    private string CompressSecret(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return string.Empty;
-
-        string cleaned = Clean(text).ToLowerInvariant();
-
-        if (cleaned.Contains("артефакт") && cleaned.Contains("говор"))
-            return "знает об артефакте больше, чем говорит";
-
-        return CompressByWords(cleaned, 8);
-    }
-
     private bool ShouldIncludeSecretInCompactPrompt(DialogueContext context)
     {
+        if (!includeSecretsInCompactPrompt)
+            return false;
+
         if (context == null || string.IsNullOrWhiteSpace(context.npcSecret))
             return false;
 
@@ -500,39 +450,24 @@ public class NPCPromptBuilder : MonoBehaviour
 
         string questStatus = context.questStatus ?? string.Empty;
 
-        return questStatus == "InProgress" ||
-               questStatus == "Completed" ||
-               playerMessage.Contains("артефакт") ||
-               playerMessage.Contains("руин") ||
-               playerMessage.Contains("квест") ||
-               playerMessage.Contains("задание") ||
-               playerMessage.Contains("что") ||
-               playerMessage.Contains("какой");
+        if (questStatus == "Completed" || questStatus == "TurnedIn")
+            return true;
+
+        return ContainsAny(playerMessage,
+            "что",
+            "почему",
+            "зачем",
+            "как",
+            "подозрева",
+            "секрет",
+            "скрыва",
+            "улика",
+            "доказательство",
+            "видел",
+            "видела",
+            "знаешь",
+            "правда");
     }
-
-    private string CompressByWords(string text, int maxWords)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return "не указано";
-
-        string cleaned = Clean(text);
-        string[] words = cleaned.Split(' ');
-
-        if (words.Length <= maxWords)
-            return cleaned;
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < maxWords; i++)
-        {
-            if (i > 0)
-                sb.Append(" ");
-
-            sb.Append(words[i]);
-        }
-
-        return sb.ToString().TrimEnd(',', ';', '.') + "...";
-    }
-
     private string FormatInventoryCompact(List<string> items)
     {
         if (items == null || items.Count == 0)
@@ -561,61 +496,23 @@ public class NPCPromptBuilder : MonoBehaviour
 
     private string BuildToneHint(DialogueContext context)
     {
-        string npcName = context.npcName != null ? context.npcName.ToLowerInvariant() : "";
-        string role = context.npcRole != null ? context.npcRole.ToLowerInvariant() : "";
+        if (!string.IsNullOrWhiteSpace(context.npcSpeechStyle))
+            return Clean(context.npcSpeechStyle);
 
-        bool isOldMan = npcName.Contains("старик") || role.Contains("хранитель");
-        bool isLea = npcName.Contains("лея") || role.Contains("травниц");
+        if (!string.IsNullOrWhiteSpace(context.npcConversationTendency))
+            return Clean(context.npcConversationTendency);
 
-        if (isOldMan)
-            return "спокойно, коротко, сдержанно; иногда через образы пути, камня, тишины, памяти; говорить скорее намеком, чем легендой";
-
-        if (isLea)
-            return "мягко, просто, осторожно; чуть живее и человечнее, чем Старик; меньше загадочности; говорить через ощущение места, леса, троп, тишины и тревоги";
-
-        return "естественно, кратко, в характере персонажа";
+        return "говори естественно, кратко и в характере персонажа";
     }
 
     private string BuildAvoidHint(DialogueContext context)
     {
-        string npcName = context.npcName != null ? context.npcName.ToLowerInvariant() : "";
-        string role = context.npcRole != null ? context.npcRole.ToLowerInvariant() : "";
-
-        bool isOldMan = npcName.Contains("старик") || role.Contains("хранитель");
-        bool isLea = npcName.Contains("лея") || role.Contains("травниц");
-
-        if (isOldMan)
-            return "не говорить как справочник; не пересказывать квест заново; избегать общих фраз вроде 'древняя сила', 'изменить судьбу', 'проклятие', 'тайны прошлого', если они не опираются на сцену; говорить конкретнее и суше; если игрок просто подтверждает или соглашается, отвечать коротко и не вводить новую тему";
-
-        if (isLea)
-            return "не говорить слишком пафосно; не звучать как Старик; избегать абстрактных фраз и лишней загадочности; не преувеличивать значение артефакта до масштаба мира, если персонаж не может знать этого наверняка";
-
-        return "не использовать абстрактные и шаблонные формулировки без опоры на ситуацию";
+        return "не выдумывай факты, не меняй роли персонажей, не раскрывай неизвестное персонажу, не говори как справочник";
     }
 
     private string BuildStyleExamples(DialogueContext context)
     {
-        string npcName = context.npcName != null ? context.npcName.ToLowerInvariant() : "";
-        string role = context.npcRole != null ? context.npcRole.ToLowerInvariant() : "";
-
-        bool isOldMan = npcName.Contains("старик") || role.Contains("хранитель");
-        bool isLea = npcName.Contains("лея") || role.Contains("травниц");
-
-        if (isOldMan)
-        {
-            return "- \"Не всякая вещь любит чужие руки.\"\n" +
-                   "- \"Тише ступай — руины не терпят спешки.\"\n" +
-                   "- \"Мудрость тут полезнее силы.\"";
-        }
-
-        if (isLea)
-        {
-            return "- \"Я бы на твоем месте не шла туда без осторожности.\"\n" +
-                   "- \"В лесу сейчас тревожно, даже если с виду тихо.\"\n" +
-                   "- \"Старик не все говорит сразу, но в одном он прав.\"";
-        }
-
-        return "";
+        return string.Empty;
     }
 
     private string BuildIntentHint(DialogueContext context)
@@ -643,17 +540,26 @@ public class NPCPromptBuilder : MonoBehaviour
             return "просьба о практическом совете; ответь осторожно, но по делу.";
 
         if (ContainsAny(playerMessage,
-            "припасы", "еда", "помощь", "заданий", "задание еще", "задание ещё", "есть работа", "есть еще", "есть ещё"))
-            return "прагматичный запрос; ответь по ситуации и по делу, без философских общих фраз.";
+            "помощь", "есть работа", "есть еще", "есть ещё", "что мне нужно", "что понадобится"))
+            return "прагматичный запрос; ответь по ситуации и по делу, без лишних рассуждений.";
 
         if (ContainsAny(playerMessage,
             "не страшно", "не думаю", "сомневаюсь", "не верю", "вряд ли"))
             return "сомнение игрока; ответь спокойно, без нажима, но сохрани настороженность персонажа.";
 
+        if (ContainsAny(playerMessage,
+            "ордер", "разрешение", "пропуск", "допуск", "доступ", "документ") &&
+            ContainsAny(playerMessage,
+            "осмотр", "осмотреть", "место преступления", "архив", "пройти", "пропустили", "войти",
+            "возьму", "заберу", "получить", "взять", "забрать", "нужен", "нужно"))
+        {
+            return "просьба о разрешении или документе для доступа; если этот предмет был выдан через игровой результат, упомяни его выдачу; если не был выдан, не говори, что он уже у игрока.";
+        }
+
         if (ContainsAny(playerMessage, "хорошо", "понял", "запомню", "ладно", "ясно", "проверю"))
             return "подтверждение; ответь кратко, как на принятие совета, без новых объяснений.";
 
-        if (ContainsAny(playerMessage, "думаю", "я смогу", "я справлюсь", "моей мудрости", "я готов", "я найду"))
+        if (ContainsAny(playerMessage, "думаю", "я смогу", "я справлюсь", "я готов", "я найду", "уверен", "уверена"))
             return "самоуверенное заявление; ответь сдержанно, можно чуть охладить уверенность игрока, но без длинней лекции.";
 
         if (ContainsAny(playerMessage, "уважительно", "как с ним разговаривать", "ему всё равно"))
@@ -674,5 +580,31 @@ public class NPCPromptBuilder : MonoBehaviour
         }
 
         return false;
+    }
+    private void AppendSceneContextBlock(StringBuilder prompt)
+    {
+        if (sceneContext == null)
+            return;
+
+        prompt.AppendLine("МИР И СЦЕНА");
+
+        if (!string.IsNullOrWhiteSpace(sceneContext.WorldDescription))
+            prompt.AppendLine(sceneContext.WorldDescription.Trim());
+
+        if (!string.IsNullOrWhiteSpace(sceneContext.KnownCharacters))
+        {
+            prompt.AppendLine();
+            prompt.AppendLine("Известные персонажи:");
+            prompt.AppendLine(sceneContext.KnownCharacters.Trim());
+        }
+
+        if (!string.IsNullOrWhiteSpace(sceneContext.WorldRules))
+        {
+            prompt.AppendLine();
+            prompt.AppendLine("Ограничения мира:");
+            prompt.AppendLine(sceneContext.WorldRules.Trim());
+        }
+
+        prompt.AppendLine();
     }
 }

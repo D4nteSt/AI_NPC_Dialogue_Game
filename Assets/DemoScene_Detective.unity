@@ -269,6 +269,14 @@ MonoBehaviour:
       \u0438 \u043D\u0430\u0439\u0442\u0438 \u0443\u043B\u0438\u043A\u0443, \u043A\u043E\u0442\u043E\u0440\u0430\u044F
       \u043F\u043E\u043C\u043E\u0436\u0435\u0442 \u0440\u0430\u0441\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u044E."
     requiredItemId: cloth_piece
+  additionalQuestData:
+  - questId: quest_find_suspect
+    questName: "\u041F\u043E\u0438\u0441\u043A \u043F\u043E\u0434\u043E\u0437\u0440\u0435\u0432\u0430\u0435\u043C\u043E\u0433\u043E"
+    description: "\u0418\u0437\u0443\u0447\u0438\u0442\u044C \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B
+      \u0434\u0435\u043B\u0430 \u0438 \u043F\u043E\u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C
+      \u0441 \u0420\u0435\u043D\u0430\u0440\u0434\u043E\u043C, \u043F\u0438\u0441\u0430\u0440\u0435\u043C
+      \u0430\u0440\u0445\u0438\u0432\u0430."
+    requiredItemId: contradictory_statement
 --- !u!1001 &90190069
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -521,12 +529,6 @@ Transform:
   - {fileID: 886332288}
   - {fileID: 326771231}
   - {fileID: 1157276973}
-  - {fileID: 889672662}
-  - {fileID: 1939509885}
-  - {fileID: 1347481846}
-  - {fileID: 992560310}
-  - {fileID: 158983247}
-  - {fileID: 258310547}
   m_Father: {fileID: 2096500769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &117516399
@@ -722,76 +724,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7710c12951e94d24eb1b65f105f6823e, type: 3}
---- !u!1001 &158983246
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 108501871}
-    m_Modifications:
-    - target: {fileID: 3603213746087829210, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 26.246674
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603213746087829210, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.07108847
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603213746087829210, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -28.05985
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603213746087829210, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9819878
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603213746087829210, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603213746087829210, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.18894456
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603213746087829210, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603213746087829210, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603213746087829210, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 21.782
-      objectReference: {fileID: 0}
-    - target: {fileID: 3603213746087829210, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4128392809708176480, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_Name
-      value: Branch_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 4611919046906417857, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.18
-      objectReference: {fileID: 0}
-    - target: {fileID: 4611919046906417857, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.49
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
---- !u!4 &158983247 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3603213746087829210, guid: c7fbe9217e346b4418724c1cea262a68, type: 3}
-  m_PrefabInstance: {fileID: 158983246}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &170922598
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1508,19 +1440,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCDialogueData
   npcName: "\u041C\u0438\u0440\u0430"
-  npcRole: "\u0421\u0432\u0438\u0434\u0435\u0442\u0435\u043B\u044C\u043D\u0438\u0446\u0430,
-    \u043D\u0430\u0445\u043E\u0434\u0438\u0432\u0448\u0430\u044F\u0441\u044F \u0440\u044F\u0434\u043E\u043C
-    \u0441 \u0430\u0440\u0445\u0438\u0432\u043E\u043C \u0432 \u0432\u0435\u0447\u0435\u0440
-    \u043F\u0440\u043E\u043F\u0430\u0436\u0438 \u043F\u0435\u0447\u0430\u0442\u0438"
+  npcRole: "\u0421\u0432\u0438\u0434\u0435\u0442\u0435\u043B\u044C\u043D\u0438\u0446\u0430
+    \u043F\u043E \u0434\u0435\u043B\u0443 \u043E \u043F\u0440\u043E\u043F\u0430\u0436\u0435
+    \u043F\u0435\u0447\u0430\u0442\u0438. \u041E\u043D\u0430 \u043C\u043E\u0436\u0435\u0442
+    \u0440\u0430\u0441\u0441\u043A\u0430\u0437\u0430\u0442\u044C \u0442\u043E\u043B\u044C\u043A\u043E
+    \u0442\u043E, \u0447\u0442\u043E \u0432\u0438\u0434\u0435\u043B\u0430 \u0438
+    \u0441\u043B\u044B\u0448\u0430\u043B\u0430 \u0432\u043E\u0437\u043B\u0435 \u0430\u0440\u0445\u0438\u0432\u0430."
   npcPersonality: "\u0422\u0440\u0435\u0432\u043E\u0436\u043D\u0430\u044F, \u043E\u0441\u0442\u043E\u0440\u043E\u0436\u043D\u0430\u044F,
     \u0432\u043D\u0438\u043C\u0430\u0442\u0435\u043B\u044C\u043D\u0430\u044F, \u043D\u0435
     \u043B\u044E\u0431\u0438\u0442 \u043E\u0431\u0432\u0438\u043D\u044F\u0442\u044C
     \u043B\u044E\u0434\u0435\u0439 \u0431\u0435\u0437 \u0434\u043E\u043A\u0430\u0437\u0430\u0442\u0435\u043B\u044C\u0441\u0442\u0432"
-  npcSpeechStyle: "\u0413\u043E\u0432\u043E\u0440\u0438\u0442 \u043C\u044F\u0433\u043A\u043E
-    \u0438 \u043D\u0435\u0443\u0432\u0435\u0440\u0435\u043D\u043D\u043E, \u043D\u043E
-    \u0441\u0442\u0430\u0440\u0430\u0435\u0442\u0441\u044F \u0431\u044B\u0442\u044C
-    \u0442\u043E\u0447\u043D\u043E\u0439; \u0447\u0430\u0441\u0442\u043E \u0443\u0442\u043E\u0447\u043D\u044F\u0435\u0442,
-    \u0447\u0442\u043E \u043C\u043E\u0433\u043B\u0430 \u043E\u0448\u0438\u0431\u0438\u0442\u044C\u0441\u044F"
+  npcSpeechStyle: "\u0413\u043E\u0432\u043E\u0440\u0438\u0442 \u0442\u0438\u0445\u043E,
+    \u043E\u0441\u0442\u043E\u0440\u043E\u0436\u043D\u043E \u0438 \u043D\u0435\u0443\u0432\u0435\u0440\u0435\u043D\u043D\u043E;
+    \u043D\u0435 \u043A\u043E\u043C\u0430\u043D\u0434\u0443\u0435\u0442 \u0438\u0433\u0440\u043E\u043A\u043E\u043C
+    \u0438 \u043D\u0435 \u0437\u0432\u0443\u0447\u0438\u0442 \u043A\u0430\u043A \u043D\u0430\u0441\u0442\u0430\u0432\u043D\u0438\u043A."
   npcBackstory: "\u0420\u0430\u0431\u043E\u0442\u0430\u0435\u0442 \u043D\u0435\u043F\u043E\u0434\u0430\u043B\u0435\u043A\u0443
     \u043E\u0442 \u0430\u0440\u0445\u0438\u0432\u0430 \u0438 \u0447\u0430\u0441\u0442\u043E
     \u0432\u0438\u0434\u0438\u0442, \u043A\u0442\u043E \u043F\u0440\u043E\u0445\u043E\u0434\u0438\u0442
@@ -1535,15 +1468,16 @@ MonoBehaviour:
     \u0432\u0445\u043E\u0434\u0430 \u0432 \u0430\u0440\u0445\u0438\u0432 \u0438 \u0441\u043B\u044B\u0448\u0430\u043B\u0430
     \u0431\u044B\u0441\u0442\u0440\u044B\u0435 \u0448\u0430\u0433\u0438. \u041F\u043E\u043C\u043D\u0438\u0442,
     \u0447\u0442\u043E \u0443 \u0434\u0432\u0435\u0440\u0438 \u0447\u0442\u043E-\u0442\u043E
-    \u0437\u0430\u0446\u0435\u043F\u0438\u043B\u043E\u0441\u044C \u0437\u0430 \u0433\u0432\u043E\u0437\u0434\u044C,
-    \u043D\u043E \u043D\u0435 \u0440\u0430\u0437\u0433\u043B\u044F\u0434\u0435\u043B\u0430
-    \u043F\u0440\u0435\u0434\u043C\u0435\u0442."
-  npcUnknowns: "\u041D\u0435 \u0437\u043D\u0430\u0435\u0442, \u043A\u043E\u043C\u0443
-    \u043F\u0440\u0438\u043D\u0430\u0434\u043B\u0435\u0436\u0438\u0442 \u043D\u0430\u0439\u0434\u0435\u043D\u043D\u044B\u0439
-    \u043A\u043B\u043E\u0447\u043E\u043A \u0442\u043A\u0430\u043D\u0438, \u0438 \u043D\u0435
-    \u0443\u0432\u0435\u0440\u0435\u043D\u0430, \u0441\u0432\u044F\u0437\u0430\u043D
-    \u043B\u0438 \u043E\u043D \u0441 \u0447\u0435\u043B\u043E\u0432\u0435\u043A\u043E\u043C
-    \u0443 \u0430\u0440\u0445\u0438\u0432\u0430."
+    \u0437\u0430\u0446\u0435\u043F\u0438\u043B\u043E\u0441\u044C \u0437\u0430 \u0433\u0432\u043E\u0437\u0434\u044C
+    \u0438\u043B\u0438 \u043A\u0440\u0430\u0439 \u0434\u043E\u0441\u043A\u0438, \u043D\u043E
+    \u043D\u0435 \u0440\u0430\u0437\u0433\u043B\u044F\u0434\u0435\u043B\u0430 \u043F\u0440\u0435\u0434\u043C\u0435\u0442."
+  npcUnknowns: "\u041D\u0435 \u0437\u043D\u0430\u0435\u0442, \u043A\u0442\u043E \u0443\u043A\u0440\u0430\u043B
+    \u043F\u0435\u0447\u0430\u0442\u044C, \u043D\u0435 \u0437\u043D\u0430\u0435\u0442
+    \u0442\u043E\u0447\u043D\u043E\u0433\u043E \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0430
+    \u043F\u043E\u0434\u043E\u0437\u0440\u0435\u0432\u0430\u0435\u043C\u043E\u0433\u043E
+    \u0438 \u043D\u0435 \u043C\u043E\u0436\u0435\u0442 \u0443\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C
+    \u0438\u0433\u0440\u043E\u043A\u0443, \u043A\u0430\u043A \u0432\u0435\u0441\u0442\u0438
+    \u0440\u0430\u0441\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0435."
   npcMotivation: "\u0425\u043E\u0447\u0435\u0442 \u043F\u043E\u043C\u043E\u0447\u044C
     \u0440\u0430\u0441\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u044E,
     \u043D\u043E \u0431\u043E\u0438\u0442\u0441\u044F \u043E\u0448\u0438\u0431\u0438\u0442\u044C\u0441\u044F
@@ -1565,11 +1499,14 @@ MonoBehaviour:
     \u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C \u0442\u0438\u0445\u043E \u0438
     \u043D\u0435 \u043F\u0440\u0438\u0432\u043B\u0435\u043A\u0430\u0442\u044C \u043B\u0438\u0448\u043D\u0435\u0433\u043E
     \u0432\u043D\u0438\u043C\u0430\u043D\u0438\u044F"
-  npcConversationTendency: "\u0413\u043E\u0432\u043E\u0440\u0438\u0442 \u043E\u0441\u0442\u043E\u0440\u043E\u0436\u043D\u043E,
-    \u0434\u0430\u0435\u0442 \u043F\u043E\u0434\u0441\u043A\u0430\u0437\u043A\u0438
-    \u043F\u043E\u0441\u0442\u0435\u043F\u0435\u043D\u043D\u043E, \u043B\u0443\u0447\u0448\u0435
-    \u0440\u0435\u0430\u0433\u0438\u0440\u0443\u0435\u0442 \u043D\u0430 \u0441\u043F\u043E\u043A\u043E\u0439\u043D\u044B\u0435
-    \u0432\u043E\u043F\u0440\u043E\u0441\u044B, \u0447\u0435\u043C \u043D\u0430 \u0434\u0430\u0432\u043B\u0435\u043D\u0438\u0435"
+  npcConversationTendency: "\u041E\u0442\u0432\u0435\u0447\u0430\u0435\u0442 \u043A\u0430\u043A
+    \u043E\u0441\u0442\u043E\u0440\u043E\u0436\u043D\u0430\u044F \u0441\u0432\u0438\u0434\u0435\u0442\u0435\u043B\u044C\u043D\u0438\u0446\u0430:
+    \u0441\u043E\u043E\u0431\u0449\u0430\u0435\u0442 \u043D\u0430\u0431\u043B\u044E\u0434\u0435\u043D\u0438\u044F,
+    \u0441\u043E\u043C\u043D\u0435\u0432\u0430\u0435\u0442\u0441\u044F, \u0443\u0442\u043E\u0447\u043D\u044F\u0435\u0442
+    \u0434\u0435\u0442\u0430\u043B\u0438, \u043D\u043E \u043D\u0435 \u0434\u0430\u0435\u0442
+    \u043D\u0430\u0441\u0442\u0430\u0432\u043D\u0438\u0447\u0435\u0441\u043A\u0438\u0445
+    \u0443\u043A\u0430\u0437\u0430\u043D\u0438\u0439 \u0438 \u043D\u0435 \u0440\u0443\u043A\u043E\u0432\u043E\u0434\u0438\u0442
+    \u0440\u0430\u0441\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0435\u043C."
   isQuestGiver: 0
   greetingMessage: "\u0412\u044B \u0442\u043E\u0436\u0435 \u0438\u0437-\u0437\u0430
     \u043F\u0440\u043E\u043F\u0430\u0436\u0438 \u043F\u0435\u0447\u0430\u0442\u0438?
@@ -1584,6 +1521,7 @@ MonoBehaviour:
       \u0438 \u043D\u0430\u0439\u0442\u0438 \u0443\u043B\u0438\u043A\u0443, \u043A\u043E\u0442\u043E\u0440\u0430\u044F
       \u043F\u043E\u043C\u043E\u0436\u0435\u0442 \u0440\u0430\u0441\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u044E."
     requiredItemId: cloth_piece
+  additionalQuestData: []
 --- !u!136 &247978018
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1684,76 +1622,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1001 &258310546
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 108501871}
-    m_Modifications:
-    - target: {fileID: 5851096110026923201, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 12.63
-      objectReference: {fileID: 0}
-    - target: {fileID: 5851096110026923201, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.44
-      objectReference: {fileID: 0}
-    - target: {fileID: 5905672442031324911, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_Name
-      value: Branch_02
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538937931806499925, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 11.666672
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538937931806499925, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.07543686
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538937931806499925, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -30.72985
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538937931806499925, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.96419144
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538937931806499925, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538937931806499925, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.26520732
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538937931806499925, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538937931806499925, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538937931806499925, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -30.759
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538937931806499925, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
---- !u!4 &258310547 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6538937931806499925, guid: 63f88b8ea8bdf544dadd60344ab2fe1e, type: 3}
-  m_PrefabInstance: {fileID: 258310546}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &266554013
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2477,6 +2345,318 @@ Transform:
   - {fileID: 426369899}
   m_Father: {fileID: 2096500769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &355926525
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 355926526}
+  - component: {fileID: 355926527}
+  m_Layer: 0
+  m_Name: SceneDialogueContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &355926526
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355926525}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 875661279}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &355926527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355926525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 919c109bed47d7f47a2a83db55744250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneDialogueContext
+  worldDescription: "\u0414\u0435\u0442\u0435\u043A\u0442\u0438\u0432\u043D\u0430\u044F
+    \u0441\u0446\u0435\u043D\u0430 \u0443 \u0433\u043E\u0440\u043E\u0434\u0441\u043A\u043E\u0433\u043E
+    \u0430\u0440\u0445\u0438\u0432\u0430. \u0418\u0437 \u0430\u0440\u0445\u0438\u0432\u0430
+    \u043F\u0440\u043E\u043F\u0430\u043B\u0430 \u0433\u043E\u0440\u043E\u0434\u0441\u043A\u0430\u044F
+    \u043F\u0435\u0447\u0430\u0442\u044C. \u0418\u0433\u0440\u043E\u043A \u0443\u0447\u0430\u0441\u0442\u0432\u0443\u0435\u0442
+    \u0432 \u043F\u0435\u0440\u0432\u0438\u0447\u043D\u043E\u043C \u0440\u0430\u0441\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0438:
+    \u043F\u043E\u043B\u0443\u0447\u0430\u0435\u0442 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u0438\u0435,
+    \u043E\u0441\u043C\u0430\u0442\u0440\u0438\u0432\u0430\u0435\u0442 \u043C\u0435\u0441\u0442\u043E
+    \u043F\u0440\u043E\u0438\u0441\u0448\u0435\u0441\u0442\u0432\u0438\u044F, \u0441\u043E\u0431\u0438\u0440\u0430\u0435\u0442
+    \u0443\u043B\u0438\u043A\u0438 \u0438 \u0440\u0430\u0437\u0433\u043E\u0432\u0430\u0440\u0438\u0432\u0430\u0435\u0442
+    \u0441\u043E \u0441\u0432\u0438\u0434\u0435\u0442\u0435\u043B\u044F\u043C\u0438.\n\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B
+    \u0434\u0435\u043B\u0430 \u2014 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442,
+    \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0411\u0430\u0442\u0442\u043B\u0435\u0440
+    \u043C\u043E\u0436\u0435\u0442 \u0432\u044B\u0434\u0430\u0442\u044C \u043F\u043E\u0441\u043B\u0435
+    \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0438\u044F \u043F\u0435\u0440\u0432\u043E\u0439
+    \u0443\u043B\u0438\u043A\u0438. \u0412 \u043D\u0438\u0445 \u0443\u043A\u0430\u0437\u0430\u043D
+    \u0441\u043F\u0438\u0441\u043E\u043A \u043B\u044E\u0434\u0435\u0439, \u0438\u043C\u0435\u0432\u0448\u0438\u0445
+    \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0430\u0440\u0445\u0438\u0432\u0443.
+    \u0421\u0440\u0435\u0434\u0438 \u043D\u0438\u0445 \u0432\u0430\u0436\u0435\u043D
+    \u0420\u0435\u043D\u0430\u0440\u0434, \u043F\u0438\u0441\u0430\u0440\u044C \u0430\u0440\u0445\u0438\u0432\u0430."
+  knownCharacters: "\u0418\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440 \u0411\u0430\u0442\u0442\u043B\u0435\u0440
+    \u2014 \u0438\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440, \u0432\u0435\u0434\u0443\u0449\u0438\u0439
+    \u0440\u0430\u0441\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0435.\n\u041C\u0438\u0440\u0430
+    \u2014 \u0441\u0432\u0438\u0434\u0435\u0442\u0435\u043B\u044C\u043D\u0438\u0446\u0430,
+    \u043D\u0430\u0445\u043E\u0434\u0438\u0432\u0448\u0430\u044F\u0441\u044F \u0440\u044F\u0434\u043E\u043C
+    \u0441 \u0430\u0440\u0445\u0438\u0432\u043E\u043C \u0432\u0435\u0447\u0435\u0440\u043E\u043C
+    \u043F\u0440\u043E\u043F\u0430\u0436\u0438.\n\u041F\u043E\u043B\u0438\u0446\u0435\u0439\u0441\u043A\u0438\u0439
+    \u2014 \u043E\u0445\u0440\u0430\u043D\u044F\u0435\u0442 \u043C\u0435\u0441\u0442\u043E
+    \u043F\u0440\u043E\u0438\u0441\u0448\u0435\u0441\u0442\u0432\u0438\u044F \u0438
+    \u043D\u0435 \u043F\u0440\u043E\u043F\u0443\u0441\u043A\u0430\u0435\u0442 \u0431\u0435\u0437
+    \u043E\u0440\u0434\u0435\u0440\u0430.\n\u0420\u0435\u043D\u0430\u0440\u0434 \u2014
+    \u043F\u0438\u0441\u0430\u0440\u044C \u0430\u0440\u0445\u0438\u0432\u0430, \u0438\u043C\u0435\u043B
+    \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430\u043C
+    \u0438 \u043C\u043E\u0436\u0435\u0442 \u0431\u044B\u0442\u044C \u0441\u0432\u044F\u0437\u0430\u043D
+    \u0441 \u043D\u0430\u0439\u0434\u0435\u043D\u043D\u043E\u0439 \u0443\u043B\u0438\u043A\u043E\u0439."
+  worldRules: "\u041D\u0435 \u0432\u044B\u0434\u0443\u043C\u044B\u0432\u0430\u0439
+    \u043D\u043E\u0432\u044B\u0445 \u0432\u0430\u0436\u043D\u044B\u0445 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0435\u0439,
+    \u043E\u0440\u0433\u0430\u043D\u0438\u0437\u0430\u0446\u0438\u0438, \u043C\u0435\u0441\u0442\u0430
+    \u0438 \u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438.\n\u041D\u0435
+    \u0443\u043F\u043E\u043C\u0438\u043D\u0430\u0439 \u043A\u0430\u043C\u0435\u0440\u044B,
+    \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u044B, \u043A\u043E\u043C\u043F\u044C\u044E\u0442\u0435\u0440\u044B
+    \u0438 \u0441\u043E\u0432\u0440\u0435\u043C\u0435\u043D\u043D\u0443\u044E \u0442\u0435\u0445\u043D\u0438\u043A\u0443,
+    \u0435\u0441\u043B\u0438 \u043E\u043D\u0438 \u043D\u0435 \u0443\u043A\u0430\u0437\u0430\u043D\u044B
+    \u044F\u0432\u043D\u043E.\n\u041D\u0435 \u043C\u0435\u043D\u044F\u0439 \u0440\u043E\u043B\u0438
+    \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0435\u0439.\n\u0415\u0441\u043B\u0438
+    \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 \u043D\u0435 \u0437\u043D\u0430\u0435\u0442
+    \u043E\u0442\u0432\u0435\u0442\u0430, \u043E\u043D \u0434\u043E\u043B\u0436\u0435\u043D
+    \u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C \u043E\u0441\u0442\u043E\u0440\u043E\u0436\u043D\u043E
+    \u0438 \u043D\u0430\u043F\u0440\u0430\u0432\u043B\u044F\u0442\u044C \u0438\u0433\u0440\u043E\u043A\u0430
+    \u043A \u0438\u0437\u0432\u0435\u0441\u0442\u043D\u044B\u043C \u0444\u0430\u043A\u0442\u0430\u043C,
+    \u043C\u0435\u0441\u0442\u0443 \u043F\u0440\u043E\u0438\u0441\u0448\u0435\u0441\u0442\u0432\u0438\u044F
+    \u0438\u043B\u0438 \u0438\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440\u0443.\nNPC
+    \u043D\u0435 \u043F\u0435\u0440\u0435\u043C\u0435\u0449\u0430\u044E\u0442\u0441\u044F
+    \u043F\u043E \u0441\u0446\u0435\u043D\u0435 \u0438 \u043D\u0435 \u043C\u043E\u0433\u0443\u0442
+    \u0444\u0438\u0437\u0438\u0447\u0435\u0441\u043A\u0438 \u0432\u0435\u0441\u0442\u0438
+    \u0438\u0433\u0440\u043E\u043A\u0430 \u0437\u0430 \u0441\u043E\u0431\u043E\u0439.\n\u041D\u0435
+    \u0433\u043E\u0432\u043E\u0440\u0438 \"\u0441\u043B\u0435\u0434\u0443\u0439\u0442\u0435
+    \u0437\u0430 \u043C\u043D\u043E\u0439\", \"\u043F\u043E\u0439\u0434\u0435\u043C\u0442\u0435\",
+    \"\u044F \u043F\u0440\u043E\u0432\u043E\u0436\u0443 \u0432\u0430\u0441\", \u0435\u0441\u043B\u0438
+    \u0443 NPC \u043D\u0435\u0442 \u043C\u0435\u0445\u0430\u043D\u0438\u043A\u0438
+    \u043F\u0435\u0440\u0435\u043C\u0435\u0449\u0435\u043D\u0438\u044F.\n\u0415\u0441\u043B\u0438
+    \u043D\u0443\u0436\u043D\u043E \u043D\u0430\u043F\u0440\u0430\u0432\u0438\u0442\u044C
+    \u0438\u0433\u0440\u043E\u043A\u0430, \u043E\u0431\u044A\u044F\u0441\u043D\u0438
+    \u0441\u043B\u043E\u0432\u0430\u043C\u0438, \u043A\u0443\u0434\u0430 \u0438\u0434\u0442\u0438
+    \u0438\u043B\u0438 \u043A \u043A\u043E\u043C\u0443 \u043E\u0431\u0440\u0430\u0442\u0438\u0442\u044C\u0441\u044F.\n\u041F\u043E\u043B\u0438\u0446\u0435\u0439\u0441\u043A\u0438\u0439
+    \u0442\u043E\u043B\u044C\u043A\u043E \u043F\u0440\u043E\u0432\u0435\u0440\u044F\u0435\u0442
+    \u043D\u0430\u043B\u0438\u0447\u0438\u0435 \u043E\u0440\u0434\u0435\u0440\u0430
+    \u0443 \u0432\u0445\u043E\u0434\u0430, \u043D\u043E \u043D\u0435 \u0432\u044B\u0434\u0430\u0435\u0442
+    \u043E\u0440\u0434\u0435\u0440.\n\u041E\u0440\u0434\u0435\u0440/\u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u0438\u0435
+    \u043D\u0430 \u043E\u0441\u043C\u043E\u0442\u0440 \u0432\u044B\u0434\u0430\u0435\u0442
+    \u0418\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440 \u0411\u0430\u0442\u0442\u043B\u0435\u0440."
+--- !u!1 &375500319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 375500320}
+  - component: {fileID: 375500323}
+  - component: {fileID: 375500322}
+  - component: {fileID: 375500321}
+  m_Layer: 3
+  m_Name: NPC_Renard
+  m_TagString: NPC
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &375500320
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375500319}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.99978894, z: -0, w: -0.020548042}
+  m_LocalPosition: {x: -19.518, y: 0, z: 15.214}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2105017165}
+  m_Father: {fileID: 875661279}
+  m_LocalEulerAnglesHint: {x: 0, y: -182.355, z: 0}
+--- !u!114 &375500321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375500319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f03149e3c55bd4a4e8d0cef849ba709b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCDialogueData
+  npcName: "\u0420\u0435\u043D\u0430\u0440\u0434"
+  npcRole: "\u041F\u0438\u0441\u0430\u0440\u044C \u0430\u0440\u0445\u0438\u0432\u0430,
+    \u0438\u043C\u0435\u0432\u0448\u0438\u0439 \u0434\u043E\u0441\u0442\u0443\u043F
+    \u043A \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430\u043C \u0438 \u0433\u043E\u0440\u043E\u0434\u0441\u043A\u043E\u0439
+    \u043F\u0435\u0447\u0430\u0442\u0438. \u041E\u0434\u0438\u043D \u0438\u0437 \u043B\u044E\u0434\u0435\u0439,
+    \u043A\u043E\u0442\u043E\u0440\u044B\u0445 \u043D\u0443\u0436\u043D\u043E \u043F\u0440\u043E\u0432\u0435\u0440\u0438\u0442\u044C
+    \u043F\u043E\u0441\u043B\u0435 \u0438\u0437\u0443\u0447\u0435\u043D\u0438\u044F
+    \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u043E\u0432 \u0434\u0435\u043B\u0430."
+  npcPersonality: "\u0421\u0434\u0435\u0440\u0436\u0430\u043D\u043D\u044B\u0439,
+    \u043D\u0435\u0440\u0432\u043D\u044B\u0439, \u043E\u0441\u0442\u043E\u0440\u043E\u0436\u043D\u044B\u0439.
+    \u0421\u0442\u0430\u0440\u0430\u0435\u0442\u0441\u044F \u0432\u044B\u0433\u043B\u044F\u0434\u0435\u0442\u044C
+    \u0441\u043F\u043E\u043A\u043E\u0439\u043D\u044B\u043C \u0438 \u0434\u0435\u043B\u043E\u0432\u044B\u043C,
+    \u043D\u043E \u043D\u0430\u0447\u0438\u043D\u0430\u0435\u0442 \u0441\u0431\u0438\u0432\u0430\u0442\u044C\u0441\u044F,
+    \u0435\u0441\u043B\u0438 \u0440\u0430\u0437\u0433\u043E\u0432\u043E\u0440 \u043A\u0430\u0441\u0430\u0435\u0442\u0441\u044F
+    \u0431\u043E\u043A\u043E\u0432\u043E\u0433\u043E \u0432\u0445\u043E\u0434\u0430,
+    \u0442\u043A\u0430\u043D\u0438 \u0438\u043B\u0438 \u0432\u0435\u0447\u0435\u0440\u0430
+    \u043F\u0440\u043E\u043F\u0430\u0436\u0438."
+  npcSpeechStyle: "\u0413\u043E\u0432\u043E\u0440\u0438\u0442 \u0441\u0443\u0445\u043E
+    \u0438 \u0444\u043E\u0440\u043C\u0430\u043B\u044C\u043D\u043E, \u0438\u0437\u0431\u0435\u0433\u0430\u0435\u0442
+    \u043B\u0438\u0448\u043D\u0438\u0445 \u043F\u043E\u0434\u0440\u043E\u0431\u043D\u043E\u0441\u0442\u0435\u0439.
+    \u041D\u0430 \u043F\u0440\u044F\u043C\u044B\u0435 \u0432\u043E\u043F\u0440\u043E\u0441\u044B
+    \u043E\u0442\u0432\u0435\u0447\u0430\u0435\u0442 \u0443\u043A\u043B\u043E\u043D\u0447\u0438\u0432\u043E,
+    \u0438\u043D\u043E\u0433\u0434\u0430 \u0440\u0430\u0437\u0434\u0440\u0430\u0436\u0430\u0435\u0442\u0441\u044F,
+    \u043D\u043E \u0441\u0442\u0430\u0440\u0430\u0435\u0442\u0441\u044F \u043D\u0435
+    \u0432\u044B\u0433\u043B\u044F\u0434\u0435\u0442\u044C \u0432\u0438\u043D\u043E\u0432\u043D\u044B\u043C."
+  npcBackstory: "\u0420\u0430\u0431\u043E\u0442\u0430\u0435\u0442 \u043F\u0438\u0441\u0430\u0440\u0435\u043C
+    \u0430\u0440\u0445\u0438\u0432\u0430 \u0438 \u0447\u0430\u0441\u0442\u043E \u0438\u043C\u0435\u0435\u0442
+    \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0441\u043B\u0443\u0436\u0435\u0431\u043D\u044B\u043C
+    \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430\u043C, \u043F\u0435\u0447\u0430\u0442\u044F\u043C
+    \u0438 \u0436\u0443\u0440\u043D\u0430\u043B\u0430\u043C \u043F\u043E\u0441\u0435\u0449\u0435\u043D\u0438\u0439.
+    \u0425\u043E\u0440\u043E\u0448\u043E \u0437\u043D\u0430\u0435\u0442 \u043F\u043E\u0440\u044F\u0434\u043E\u043A
+    \u0440\u0430\u0431\u043E\u0442\u044B \u0430\u0440\u0445\u0438\u0432\u0430 \u0438
+    \u0441\u043B\u0443\u0436\u0435\u0431\u043D\u044B\u0435 \u0432\u0445\u043E\u0434\u044B."
+  npcLocationContext: "\u041D\u0430\u0445\u043E\u0434\u0438\u0442\u0441\u044F \u0440\u044F\u0434\u043E\u043C
+    \u0441 \u0430\u0440\u0445\u0438\u0432\u043E\u043C \u043F\u043E\u0441\u043B\u0435
+    \u043F\u0440\u043E\u043F\u0430\u0436\u0438 \u0433\u043E\u0440\u043E\u0434\u0441\u043A\u043E\u0439
+    \u043F\u0435\u0447\u0430\u0442\u0438. \u041C\u043E\u0436\u0435\u0442 \u0431\u044B\u0442\u044C
+    \u0441\u0432\u044F\u0437\u0430\u043D \u0441 \u043C\u0435\u0441\u0442\u043E\u043C
+    \u043F\u0440\u043E\u0438\u0441\u0448\u0435\u0441\u0442\u0432\u0438\u044F, \u043F\u043E\u0442\u043E\u043C\u0443
+    \u0447\u0442\u043E \u0438\u043C\u0435\u043B \u0434\u043E\u0441\u0442\u0443\u043F
+    \u043A \u0430\u0440\u0445\u0438\u0432\u0443 \u0438 \u0431\u044B\u043B \u043F\u043E\u0431\u043B\u0438\u0437\u043E\u0441\u0442\u0438
+    \u0432\u0435\u0447\u0435\u0440\u043E\u043C \u043F\u0440\u043E\u043F\u0430\u0436\u0438."
+  npcKnowledge: "\u0417\u043D\u0430\u0435\u0442 \u043F\u043E\u0440\u044F\u0434\u043E\u043A
+    \u0440\u0430\u0431\u043E\u0442\u044B \u0430\u0440\u0445\u0438\u0432\u0430, \u0441\u043F\u0438\u0441\u043E\u043A
+    \u043B\u044E\u0434\u0435\u0439 \u0441 \u0434\u043E\u0441\u0442\u0443\u043F\u043E\u043C
+    \u043A \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430\u043C \u0438 \u0442\u043E,
+    \u0447\u0442\u043E \u0432\u0435\u0447\u0435\u0440\u043E\u043C \u043F\u0440\u043E\u043F\u0430\u0436\u0438
+    \u043D\u0430\u0445\u043E\u0434\u0438\u043B\u0441\u044F \u0440\u044F\u0434\u043E\u043C
+    \u0441\u043E \u0441\u043B\u0443\u0436\u0435\u0431\u043D\u044B\u043C \u0432\u0445\u043E\u0434\u043E\u043C.
+    \u0417\u043D\u0430\u0435\u0442, \u0447\u0442\u043E \u0435\u0433\u043E \u043C\u043E\u0433\u043B\u0438
+    \u0437\u0430\u043C\u0435\u0442\u0438\u0442\u044C \u0432\u043E\u0437\u043B\u0435
+    \u0430\u0440\u0445\u0438\u0432\u0430."
+  npcUnknowns: "\u041D\u0435 \u0437\u043D\u0430\u0435\u0442, \u043A\u0430\u043A\u0438\u0435
+    \u0438\u043C\u0435\u043D\u043D\u043E \u0443\u043B\u0438\u043A\u0438 \u0443\u0436\u0435
+    \u043D\u0430\u0448\u0435\u043B \u0438\u0433\u0440\u043E\u043A. \u041D\u0435 \u0437\u043D\u0430\u0435\u0442,
+    \u043D\u0430\u0441\u043A\u043E\u043B\u044C\u043A\u043E \u043F\u043E\u0434\u0440\u043E\u0431\u043D\u043E
+    \u041C\u0438\u0440\u0430 \u043E\u043F\u0438\u0441\u0430\u043B\u0430 \u0443\u0432\u0438\u0434\u0435\u043D\u043D\u043E\u0433\u043E
+    \u0447\u0435\u043B\u043E\u0432\u0435\u043A\u0430. \u041D\u0435 \u0437\u043D\u0430\u0435\u0442,
+    \u0435\u0441\u0442\u044C \u043B\u0438 \u0443 \u0438\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440\u0430
+    \u043F\u0440\u044F\u043C\u044B\u0435 \u0434\u043E\u043A\u0430\u0437\u0430\u0442\u0435\u043B\u044C\u0441\u0442\u0432\u0430
+    \u043F\u0440\u043E\u0442\u0438\u0432 \u043D\u0435\u0433\u043E."
+  npcMotivation: "\u0425\u043E\u0447\u0435\u0442 \u0438\u0437\u0431\u0435\u0436\u0430\u0442\u044C
+    \u043F\u043E\u0434\u043E\u0437\u0440\u0435\u043D\u0438\u0439, \u0441\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C
+    \u0432\u0438\u0434\u0438\u043C\u043E\u0441\u0442\u044C \u043D\u0435\u0432\u0438\u043D\u043E\u0432\u043D\u043E\u0441\u0442\u0438
+    \u0438 \u043D\u0435 \u0434\u0430\u0442\u044C \u0438\u0433\u0440\u043E\u043A\u0443
+    \u0441\u0432\u044F\u0437\u0430\u0442\u044C \u0435\u0433\u043E \u0441 \u043C\u0435\u0441\u0442\u043E\u043C
+    \u043F\u0440\u043E\u0438\u0441\u0448\u0435\u0441\u0442\u0432\u0438\u044F."
+  npcSecret: "\u0411\u044B\u043B \u0443 \u0431\u043E\u043A\u043E\u0432\u043E\u0433\u043E
+    \u0432\u0445\u043E\u0434\u0430 \u0430\u0440\u0445\u0438\u0432\u0430 \u0432\u0435\u0447\u0435\u0440\u043E\u043C
+    \u043F\u0440\u043E\u043F\u0430\u0436\u0438 \u0438 \u043F\u043E\u0440\u0432\u0430\u043B
+    \u043A\u0440\u0430\u0439 \u0440\u0443\u043A\u0430\u0432\u0430, \u0437\u0430\u0446\u0435\u043F\u0438\u0432\u0448\u0438\u0441\u044C
+    \u0437\u0430 \u0433\u0432\u043E\u0437\u0434\u044C \u0438\u043B\u0438 \u0432\u044B\u0441\u0442\u0443\u043F
+    \u0443 \u0434\u0432\u0435\u0440\u0438. \u0421\u043D\u0430\u0447\u0430\u043B\u0430
+    \u0441\u0442\u0430\u0440\u0430\u0435\u0442\u0441\u044F \u0441\u043A\u0440\u044B\u0442\u044C
+    \u044D\u0442\u043E\u0442 \u0444\u0430\u043A\u0442."
+  npcAttitudeToPlayer: "\u0421\u043D\u0430\u0447\u0430\u043B\u0430 \u043E\u0442\u043D\u043E\u0441\u0438\u0442\u0441\u044F
+    \u043A \u0438\u0433\u0440\u043E\u043A\u0443 \u043D\u0430\u0441\u0442\u043E\u0440\u043E\u0436\u0435\u043D\u043D\u043E
+    \u0438 \u0444\u043E\u0440\u043C\u0430\u043B\u044C\u043D\u043E. \u0415\u0441\u043B\u0438
+    \u0438\u0433\u0440\u043E\u043A \u0433\u043E\u0432\u043E\u0440\u0438\u0442 \u0441\u043F\u043E\u043A\u043E\u0439\u043D\u043E,
+    \u043E\u0442\u0432\u0435\u0447\u0430\u0435\u0442 \u0441\u0434\u0435\u0440\u0436\u0430\u043D\u043D\u043E;
+    \u0435\u0441\u043B\u0438 \u0434\u0430\u0432\u0438\u0442 \u0438\u043B\u0438 \u0443\u043F\u043E\u043C\u0438\u043D\u0430\u0435\u0442
+    \u0443\u043B\u0438\u043A\u0438, \u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u0441\u044F
+    \u043D\u0435\u0440\u0432\u043D\u0435\u0435."
+  npcCurrentEmotionalState: "\u0421\u043E\u0431\u0440\u0430\u043D, \u043D\u043E \u0432\u043D\u0443\u0442\u0440\u0435\u043D\u043D\u0435
+    \u043D\u0430\u043F\u0440\u044F\u0436\u0435\u043D. \u0421\u0442\u0430\u0440\u0430\u0435\u0442\u0441\u044F
+    \u043A\u043E\u043D\u0442\u0440\u043E\u043B\u0438\u0440\u043E\u0432\u0430\u0442\u044C
+    \u0440\u0435\u0447\u044C \u0438 \u043D\u0435 \u0432\u044B\u0434\u0430\u0442\u044C
+    \u043B\u0438\u0448\u043D\u0435\u0433\u043E."
+  npcConversationTendency: "\u041E\u0442\u0432\u0435\u0447\u0430\u0435\u0442 \u0443\u043A\u043B\u043E\u043D\u0447\u0438\u0432\u043E,
+    \u0438\u0437\u0431\u0435\u0433\u0430\u0435\u0442 \u043F\u0440\u044F\u043C\u044B\u0445
+    \u043F\u0440\u0438\u0437\u043D\u0430\u043D\u0438\u0439, \u043D\u043E \u043C\u043E\u0436\u0435\u0442
+    \u043F\u0440\u043E\u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C\u0441\u044F
+    \u043F\u0440\u0438 \u0432\u043E\u043F\u0440\u043E\u0441\u0430\u0445 \u043E \u0431\u043E\u043A\u043E\u0432\u043E\u043C
+    \u0432\u0445\u043E\u0434\u0435, \u043A\u043B\u043E\u0447\u043A\u0435 \u0442\u043A\u0430\u043D\u0438,
+    \u0440\u0443\u043A\u0430\u0432\u0435 \u0438\u043B\u0438 \u0441\u0432\u043E\u0435\u043C
+    \u043C\u0435\u0441\u0442\u043E\u043D\u0430\u0445\u043E\u0436\u0434\u0435\u043D\u0438\u0438
+    \u0432\u0435\u0447\u0435\u0440\u043E\u043C \u043F\u0440\u043E\u043F\u0430\u0436\u0438."
+  isQuestGiver: 0
+  greetingMessage: "\u0414\u043E\u0431\u0440\u044B\u0439 \u0434\u0435\u043D\u044C.
+    \u0415\u0441\u043B\u0438 \u044D\u0442\u043E \u0441\u043D\u043E\u0432\u0430 \u0438\u0437-\u0437\u0430
+    \u043F\u0440\u043E\u043F\u0430\u0432\u0448\u0435\u0439 \u043F\u0435\u0447\u0430\u0442\u0438,
+    \u0433\u043E\u0432\u043E\u0440\u0438\u0442\u0435 \u043F\u0440\u044F\u043C\u043E.
+    \u042F \u0443\u0436\u0435 \u0441\u043A\u0430\u0437\u0430\u043B \u0432\u0441\u0451,
+    \u0447\u0442\u043E \u0437\u043D\u0430\u043B."
+  questData:
+    questId: quest_find_suspect
+    questName: "\u041F\u043E\u0438\u0441\u043A \u043F\u043E\u0434\u043E\u0437\u0440\u0435\u0432\u0430\u0435\u043C\u043E\u0433\u043E"
+    description: "\u0418\u0437\u0443\u0447\u0438\u0442\u044C \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B
+      \u0434\u0435\u043B\u0430 \u0438 \u043F\u043E\u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C
+      \u0441 \u0420\u0435\u043D\u0430\u0440\u0434\u043E\u043C, \u043F\u0438\u0441\u0430\u0440\u0435\u043C
+      \u0430\u0440\u0445\u0438\u0432\u0430."
+    requiredItemId: contradictory_statement
+  additionalQuestData: []
+--- !u!114 &375500322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375500319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef0904d88719d2c4c91c2789134c9f0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
+  dialogueData: {fileID: 375500321}
+  dialogueManager: {fileID: 747523192}
+--- !u!136 &375500323
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375500319}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &385053240
 GameObject:
   m_ObjectHideFlags: 0
@@ -5627,10 +5807,12 @@ Transform:
   m_Children:
   - {fileID: 481528110}
   - {fileID: 63776713}
+  - {fileID: 375500320}
   - {fileID: 1095872255}
   - {fileID: 1983255721}
   - {fileID: 385053241}
   - {fileID: 247978015}
+  - {fileID: 355926526}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &878850257
@@ -5901,68 +6083,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b8ab6e871fce604f868a0eb40111eca, type: 3}
---- !u!1001 &889672661
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 108501871}
-    m_Modifications:
-    - target: {fileID: 3889046910303973218, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-      propertyPath: m_Name
-      value: Rock_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 4518090244822660568, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 15.448303
-      objectReference: {fileID: 0}
-    - target: {fileID: 4518090244822660568, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4518090244822660568, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -30.389841
-      objectReference: {fileID: 0}
-    - target: {fileID: 4518090244822660568, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4518090244822660568, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4518090244822660568, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4518090244822660568, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4518090244822660568, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4518090244822660568, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4518090244822660568, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
---- !u!4 &889672662 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4518090244822660568, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
-  m_PrefabInstance: {fileID: 889672661}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &890304870
 GameObject:
   m_ObjectHideFlags: 0
@@ -6337,68 +6457,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 985426795}
   m_CullTransparentMesh: 1
---- !u!1001 &992560309
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 108501871}
-    m_Modifications:
-    - target: {fileID: 6029751785393739471, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-      propertyPath: m_Name
-      value: WillowTree_03
-      objectReference: {fileID: 0}
-    - target: {fileID: 6405855769083481205, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 14.2842865
-      objectReference: {fileID: 0}
-    - target: {fileID: 6405855769083481205, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0011641979
-      objectReference: {fileID: 0}
-    - target: {fileID: 6405855769083481205, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -37.79965
-      objectReference: {fileID: 0}
-    - target: {fileID: 6405855769083481205, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.5388736
-      objectReference: {fileID: 0}
-    - target: {fileID: 6405855769083481205, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6405855769083481205, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.84238666
-      objectReference: {fileID: 0}
-    - target: {fileID: 6405855769083481205, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6405855769083481205, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6405855769083481205, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 114.786
-      objectReference: {fileID: 0}
-    - target: {fileID: 6405855769083481205, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
---- !u!4 &992560310 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6405855769083481205, guid: e2d8988947b88714f9943f13ba26381f, type: 3}
-  m_PrefabInstance: {fileID: 992560309}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1002581963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7733,68 +7791,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 46a54c5b0997d8b47bf6519139a81b86, type: 3}
   m_PrefabInstance: {fileID: 1338889547}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1347481845
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 108501871}
-    m_Modifications:
-    - target: {fileID: 5056862750051847511, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-      propertyPath: m_Name
-      value: WillowTree_02
-      objectReference: {fileID: 0}
-    - target: {fileID: 5577221383077664749, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 25.857834
-      objectReference: {fileID: 0}
-    - target: {fileID: 5577221383077664749, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0011632442
-      objectReference: {fileID: 0}
-    - target: {fileID: 5577221383077664749, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -28.309608
-      objectReference: {fileID: 0}
-    - target: {fileID: 5577221383077664749, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.92077583
-      objectReference: {fileID: 0}
-    - target: {fileID: 5577221383077664749, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5577221383077664749, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.39009216
-      objectReference: {fileID: 0}
-    - target: {fileID: 5577221383077664749, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5577221383077664749, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5577221383077664749, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -45.921
-      objectReference: {fileID: 0}
-    - target: {fileID: 5577221383077664749, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
---- !u!4 &1347481846 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5577221383077664749, guid: 57ad168f0f1250140a6dcfbbdea706ab, type: 3}
-  m_PrefabInstance: {fileID: 1347481845}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1376425519
 PrefabInstance:
@@ -10068,68 +10064,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1915005525}
   m_CullTransparentMesh: 1
---- !u!1001 &1939509884
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 108501871}
-    m_Modifications:
-    - target: {fileID: 5036926099411544764, guid: f0bedca3d06434740a10651f21261347, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 26.674286
-      objectReference: {fileID: 0}
-    - target: {fileID: 5036926099411544764, guid: f0bedca3d06434740a10651f21261347, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0011616892
-      objectReference: {fileID: 0}
-    - target: {fileID: 5036926099411544764, guid: f0bedca3d06434740a10651f21261347, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -22.677374
-      objectReference: {fileID: 0}
-    - target: {fileID: 5036926099411544764, guid: f0bedca3d06434740a10651f21261347, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5036926099411544764, guid: f0bedca3d06434740a10651f21261347, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5036926099411544764, guid: f0bedca3d06434740a10651f21261347, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5036926099411544764, guid: f0bedca3d06434740a10651f21261347, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5036926099411544764, guid: f0bedca3d06434740a10651f21261347, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5036926099411544764, guid: f0bedca3d06434740a10651f21261347, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5036926099411544764, guid: f0bedca3d06434740a10651f21261347, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669206426768240646, guid: f0bedca3d06434740a10651f21261347, type: 3}
-      propertyPath: m_Name
-      value: WillowTree_01
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f0bedca3d06434740a10651f21261347, type: 3}
---- !u!4 &1939509885 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5036926099411544764, guid: f0bedca3d06434740a10651f21261347, type: 3}
-  m_PrefabInstance: {fileID: 1939509884}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1954981160
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10299,6 +10233,7 @@ MonoBehaviour:
   maxHistoryLinesCompact: 4
   includeSecretsInDebugPrompt: 1
   includeSecretsInCompactPrompt: 1
+  sceneContext: {fileID: 355926527}
 --- !u!114 &1983255723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10398,29 +10333,31 @@ MonoBehaviour:
   - ruleId: battler_start_missing_seal_case
     npcId: "\u0438\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440 \u0431\u0430\u0442\u0442\u043B\u0435\u0440"
     requiredIntent: 9
-    requiredQuestId: quest_missing_seal
+    requiredQuestId: quest_first_clue
     checkQuestStatus: 1
     requiredQuestStatus: 0
     requiredInventoryItemId: 
     requireItemPresent: 0
     actions:
     - actionType: 1
-      questId: quest_missing_seal
+      questId: quest_first_clue
       itemId: 
       itemName: 
       itemCount: 0
       notificationText: 
+      responseHint: 
     - actionType: 7
       questId: 
       itemId: 
       itemName: 
       itemCount: 0
       notificationText: "\u0414\u0435\u043B\u043E \u043D\u0430\u0447\u0430\u0442\u043E:
-        \u041F\u0440\u043E\u043F\u0430\u0432\u0448\u0430\u044F \u043F\u0435\u0447\u0430\u0442\u044C"
+        \u041F\u0435\u0440\u0432\u044B\u0435 \u0443\u043B\u0438\u043A\u0438"
+      responseHint: 
   - ruleId: battler_give_inspection_pass
     npcId: "\u0438\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440 \u0431\u0430\u0442\u0442\u043B\u0435\u0440"
     requiredIntent: 8
-    requiredQuestId: quest_missing_seal
+    requiredQuestId: quest_first_clue
     checkQuestStatus: 1
     requiredQuestStatus: 1
     requiredInventoryItemId: inspection_pass
@@ -10429,10 +10366,18 @@ MonoBehaviour:
     - actionType: 5
       questId: 
       itemId: inspection_pass
-      itemName: "\u0420\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u0438\u0435 \u043D\u0430
-        \u043E\u0441\u043C\u043E\u0442\u0440"
+      itemName: "\u041E\u0440\u0434\u0435\u0440 \u043D\u0430 \u043E\u0441\u043C\u043E\u0442\u0440"
       itemCount: 0
       notificationText: 
+      responseHint: "\u0411\u0430\u0442\u0442\u043B\u0435\u0440 \u0432\u044B\u0434\u0430\u0435\u0442
+        \u0438\u0433\u0440\u043E\u043A\u0443 \u043E\u0440\u0434\u0435\u0440 \u043D\u0430
+        \u043E\u0441\u043C\u043E\u0442\u0440. \u042D\u0442\u043E\u0442 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442
+        \u043D\u0443\u0436\u043D\u043E \u043F\u043E\u043A\u0430\u0437\u0430\u0442\u044C
+        \u043F\u043E\u043B\u0438\u0446\u0435\u0439\u0441\u043A\u043E\u043C\u0443
+        \u0443 \u0432\u0445\u043E\u0434\u0430 \u043D\u0430 \u043C\u0435\u0441\u0442\u043E
+        \u043F\u0440\u043E\u0438\u0441\u0448\u0435\u0441\u0442\u0432\u0438\u044F,
+        \u0447\u0442\u043E\u0431\u044B \u043F\u043E\u043B\u0443\u0447\u0438\u0442\u044C
+        \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0430\u0440\u0445\u0438\u0432\u0443."
     - actionType: 7
       questId: 
       itemId: 
@@ -10441,10 +10386,11 @@ MonoBehaviour:
       notificationText: "\u041F\u043E\u043B\u0443\u0447\u0435\u043D \u043F\u0440\u0435\u0434\u043C\u0435\u0442:
         \u0420\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u0438\u0435 \u043D\u0430
         \u043E\u0441\u043C\u043E\u0442\u0440"
-  - ruleId: battler_turnin_cloth_piece
+      responseHint: 
+  - ruleId: battler_turnin_first_clue
     npcId: "\u0438\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440 \u0431\u0430\u0442\u0442\u043B\u0435\u0440"
     requiredIntent: 11
-    requiredQuestId: quest_missing_seal
+    requiredQuestId: quest_first_clue
     checkQuestStatus: 1
     requiredQuestStatus: 2
     requiredInventoryItemId: cloth_piece
@@ -10456,26 +10402,203 @@ MonoBehaviour:
       itemName: 
       itemCount: 0
       notificationText: 
+      responseHint: 
     - actionType: 4
-      questId: quest_missing_seal
+      questId: quest_first_clue
       itemId: 
       itemName: 
       itemCount: 0
       notificationText: 
-    - actionType: 5
-      questId: 
-      itemId: reward_badge
-      itemName: "\u0416\u0435\u0442\u043E\u043D \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0438"
-      itemCount: 0
-      notificationText: 
+      responseHint: 
     - actionType: 7
       questId: 
       itemId: 
       itemName: 
       itemCount: 0
-      notificationText: "\u0414\u0435\u043B\u043E \u0437\u0430\u043A\u0440\u044B\u0442\u043E.
+      notificationText: "\u0417\u0430\u0434\u0430\u043D\u0438\u0435 \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u043E.
+        \u0423\u043B\u0438\u043A\u0430 \u043F\u0435\u0440\u0435\u0434\u0430\u043D\u0430
+        \u0438\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440\u0443."
+      responseHint: 
+  - ruleId: battler_give_case_file_after_first_clue
+    npcId: "\u0438\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440 \u0431\u0430\u0442\u0442\u043B\u0435\u0440"
+    requiredIntent: 4
+    requiredQuestId: quest_first_clue
+    checkQuestStatus: 1
+    requiredQuestStatus: 3
+    requiredInventoryItemId: case_file
+    requireItemPresent: 0
+    actions:
+    - actionType: 5
+      questId: 
+      itemId: case_file
+      itemName: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B \u0434\u0435\u043B\u0430"
+      itemCount: 0
+      notificationText: 
+      responseHint: "\u0411\u0430\u0442\u0442\u043B\u0435\u0440 \u043F\u0435\u0440\u0435\u0434\u0430\u0435\u0442
+        \u0438\u0433\u0440\u043E\u043A\u0443 \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B
+        \u0434\u0435\u043B\u0430. \u0412 \u043D\u0438\u0445 \u0435\u0441\u0442\u044C
+        \u0441\u043F\u0438\u0441\u043E\u043A \u043B\u044E\u0434\u0435\u0439, \u0438\u043C\u0435\u0432\u0448\u0438\u0445
+        \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0430\u0440\u0445\u0438\u0432\u0443.
+        \u0421\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u0439 \u0448\u0430\u0433
+        \u2014 \u043F\u043E\u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C \u0441
+        \u0420\u0435\u043D\u0430\u0440\u0434\u043E\u043C, \u043F\u0438\u0441\u0430\u0440\u0435\u043C
+        \u0430\u0440\u0445\u0438\u0432\u0430."
+    - actionType: 7
+      questId: 
+      itemId: 
+      itemName: 
+      itemCount: 0
+      notificationText: "\u041D\u0430\u0447\u0430\u0442 \u043D\u043E\u0432\u044B\u0439
+        \u044D\u0442\u0430\u043F: \u041F\u043E\u0438\u0441\u043A \u043F\u043E\u0434\u043E\u0437\u0440\u0435\u0432\u0430\u0435\u043C\u043E\u0433\u043E\n\u041F\u043E\u043B\u0443\u0447\u0435\u043D
+        \u043F\u0440\u0435\u0434\u043C\u0435\u0442: \u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B
+        \u0434\u0435\u043B\u0430"
+      responseHint: "\u0411\u0430\u0442\u0442\u043B\u0435\u0440 \u043F\u0435\u0440\u0435\u0434\u0430\u0435\u0442
+        \u0438\u0433\u0440\u043E\u043A\u0443 \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B
+        \u0434\u0435\u043B\u0430. \u0412 \u043D\u0438\u0445 \u0435\u0441\u0442\u044C
+        \u0441\u043F\u0438\u0441\u043E\u043A \u043B\u044E\u0434\u0435\u0439, \u0438\u043C\u0435\u0432\u0448\u0438\u0445
+        \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0430\u0440\u0445\u0438\u0432\u0443.
+        \u0421\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u0439 \u0448\u0430\u0433
+        \u2014 \u043F\u043E\u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C \u0441
+        \u0420\u0435\u043D\u0430\u0440\u0434\u043E\u043C, \u043F\u0438\u0441\u0430\u0440\u0435\u043C
+        \u0430\u0440\u0445\u0438\u0432\u0430."
+    - actionType: 1
+      questId: quest_find_suspect
+      itemId: 
+      itemName: 
+      itemCount: 0
+      notificationText: "\u041F\u043E\u043B\u0443\u0447\u0435\u043D \u043F\u0440\u0435\u0434\u043C\u0435\u0442:
+        \u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B \u0434\u0435\u043B\u0430"
+      responseHint: 
+  - ruleId: battler_start_and_give_inspection_pass
+    npcId: "\u0438\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440 \u0431\u0430\u0442\u0442\u043B\u0435\u0440"
+    requiredIntent: 8
+    requiredQuestId: quest_first_clue
+    checkQuestStatus: 1
+    requiredQuestStatus: 0
+    requiredInventoryItemId: inspection_pass
+    requireItemPresent: 0
+    actions:
+    - actionType: 1
+      questId: quest_first_clue
+      itemId: 
+      itemName: 
+      itemCount: 0
+      notificationText: 
+      responseHint: "\u0411\u0430\u0442\u0442\u043B\u0435\u0440 \u0432\u044B\u0434\u0430\u0435\u0442
+        \u0438\u0433\u0440\u043E\u043A\u0443 \u043E\u0440\u0434\u0435\u0440 \u043D\u0430
+        \u043E\u0441\u043C\u043E\u0442\u0440. \u042D\u0442\u043E\u0442 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442
+        \u043D\u0443\u0436\u043D\u043E \u043F\u043E\u043A\u0430\u0437\u0430\u0442\u044C
+        \u043F\u043E\u043B\u0438\u0446\u0435\u0439\u0441\u043A\u043E\u043C\u0443
+        \u0443 \u0432\u0445\u043E\u0434\u0430 \u043D\u0430 \u043C\u0435\u0441\u0442\u043E
+        \u043F\u0440\u043E\u0438\u0441\u0448\u0435\u0441\u0442\u0432\u0438\u044F,
+        \u0447\u0442\u043E\u0431\u044B \u043F\u043E\u043B\u0443\u0447\u0438\u0442\u044C
+        \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0430\u0440\u0445\u0438\u0432\u0443."
+    - actionType: 5
+      questId: 
+      itemId: inspection_pass
+      itemName: "\u041E\u0440\u0434\u0435\u0440 \u043D\u0430 \u043E\u0441\u043C\u043E\u0442\u0440"
+      itemCount: 0
+      notificationText: 
+      responseHint: 
+    - actionType: 7
+      questId: 
+      itemId: 
+      itemName: 
+      itemCount: 0
+      notificationText: "\u0414\u0435\u043B\u043E \u043D\u0430\u0447\u0430\u0442\u043E.
         \u041F\u043E\u043B\u0443\u0447\u0435\u043D \u043F\u0440\u0435\u0434\u043C\u0435\u0442:
-        \u0416\u0435\u0442\u043E\u043D \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0438"
+        \u041E\u0440\u0434\u0435\u0440 \u043D\u0430 \u043E\u0441\u043C\u043E\u0442\u0440"
+      responseHint: 
+  - ruleId: renard_question_with_case_file
+    npcId: "\u0440\u0435\u043D\u0430\u0440\u0434"
+    requiredIntent: 4
+    requiredQuestId: quest_find_suspect
+    checkQuestStatus: 1
+    requiredQuestStatus: 1
+    requiredInventoryItemId: case_file
+    requireItemPresent: 1
+    actions: []
+  - ruleId: renard_give_contradictory_statement
+    npcId: "\u0440\u0435\u043D\u0430\u0440\u0434"
+    requiredIntent: 4
+    requiredQuestId: quest_find_suspect
+    checkQuestStatus: 1
+    requiredQuestStatus: 1
+    requiredInventoryItemId: case_file
+    requireItemPresent: 1
+    actions:
+    - actionType: 5
+      questId: 
+      itemId: 'contradictory_statement '
+      itemName: "\u041F\u0440\u043E\u0442\u0438\u0432\u043E\u0440\u0435\u0447\u0438\u0432\u044B\u0435
+        \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u0438\u044F"
+      itemCount: 0
+      notificationText: 
+      responseHint: "\u0420\u0435\u043D\u0430\u0440\u0434 \u043D\u0435\u0440\u0432\u043D\u0438\u0447\u0430\u0435\u0442
+        \u0438 \u0434\u0430\u0435\u0442 \u043F\u0440\u043E\u0442\u0438\u0432\u043E\u0440\u0435\u0447\u0438\u0432\u044B\u0435
+        \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u0438\u044F \u043E \u0442\u043E\u043C,
+        \u0433\u0434\u0435 \u0431\u044B\u043B \u0432\u0435\u0447\u0435\u0440\u043E\u043C
+        \u043F\u0440\u043E\u043F\u0430\u0436\u0438. \u0418\u0433\u0440\u043E\u043A
+        \u043F\u043E\u043B\u0443\u0447\u0430\u0435\u0442 \u043D\u043E\u0432\u0443\u044E
+        \u0443\u043B\u0438\u043A\u0443: \u043F\u0440\u043E\u0442\u0438\u0432\u043E\u0440\u0435\u0447\u0438\u0432\u044B\u0435
+        \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u0438\u044F."
+    - actionType: 7
+      questId: 
+      itemId: 
+      itemName: 
+      itemCount: 0
+      notificationText: "\u041F\u043E\u043B\u0443\u0447\u0435\u043D\u0430 \u043D\u043E\u0432\u0430\u044F
+        \u0443\u043B\u0438\u043A\u0430: \u041F\u0440\u043E\u0442\u0438\u0432\u043E\u0440\u0435\u0447\u0438\u0432\u044B\u0435
+        \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u0438\u044F"
+      responseHint: 
+    - actionType: 3
+      questId: quest_find_suspect
+      itemId: 
+      itemName: 
+      itemCount: 0
+      notificationText: 
+      responseHint: 
+  - ruleId: battler_turnin_contradictory_statement
+    npcId: "\u0438\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440 \u0431\u0430\u0442\u0442\u043B\u0435\u0440"
+    requiredIntent: 11
+    requiredQuestId: quest_find_suspect
+    checkQuestStatus: 1
+    requiredQuestStatus: 2
+    requiredInventoryItemId: contradictory_statement
+    requireItemPresent: 1
+    actions:
+    - actionType: 6
+      questId: 
+      itemId: 'contradictory_statement '
+      itemName: 
+      itemCount: 0
+      notificationText: 
+      responseHint: 
+    - actionType: 7
+      questId: 
+      itemId: 
+      itemName: 
+      itemCount: 0
+      notificationText: "\u0420\u0430\u0441\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0435
+        \u043F\u0440\u043E\u0434\u0432\u0438\u043D\u0443\u043B\u043E\u0441\u044C:
+        \u043F\u043E\u0434\u043E\u0437\u0440\u0435\u0432\u0430\u0435\u043C\u044B\u0439
+        \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D"
+      responseHint: 
+    - actionType: 4
+      questId: 
+      itemId: 
+      itemName: 
+      itemCount: 0
+      notificationText: 
+      responseHint: "\u0418\u0433\u0440\u043E\u043A \u043F\u0435\u0440\u0435\u0434\u0430\u0435\u0442
+        \u0411\u0430\u0442\u0442\u043B\u0435\u0440\u0443 \u043F\u0440\u043E\u0442\u0438\u0432\u043E\u0440\u0435\u0447\u0438\u0432\u044B\u0435
+        \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u0438\u044F \u0420\u0435\u043D\u0430\u0440\u0434\u0430.
+        \u0411\u0430\u0442\u0442\u043B\u0435\u0440 \u0441\u0447\u0438\u0442\u0430\u0435\u0442,
+        \u0447\u0442\u043E \u0442\u0435\u043F\u0435\u0440\u044C \u0420\u0435\u043D\u0430\u0440\u0434\u0430
+        \u043D\u0443\u0436\u043D\u043E \u043F\u0440\u043E\u0432\u0435\u0440\u0438\u0442\u044C
+        \u043E\u0444\u0438\u0446\u0438\u0430\u043B\u044C\u043D\u043E, \u043D\u043E
+        \u043D\u0435 \u043E\u0431\u044A\u044F\u0432\u043B\u044F\u0435\u0442 \u0434\u0435\u043B\u043E
+        \u043F\u043E\u043B\u043D\u043E\u0441\u0442\u044C\u044E \u0437\u0430\u043A\u0440\u044B\u0442\u044B\u043C."
 --- !u!114 &1983255730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11214,6 +11337,68 @@ Transform:
   - {fileID: 108501871}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2105017164
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 375500320}
+    m_Modifications:
+    - target: {fileID: 568985597124981416, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 568985597124981416, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 568985597124981416, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -13.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 568985597124981416, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 568985597124981416, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 568985597124981416, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 568985597124981416, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 568985597124981416, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 568985597124981416, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 568985597124981416, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 913845681951795218, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+      propertyPath: m_Name
+      value: casual_Male_K
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+--- !u!4 &2105017165 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 568985597124981416, guid: 2435736d6adca23458edd7c80c901e3e, type: 3}
+  m_PrefabInstance: {fileID: 2105017164}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2108329411 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 987448979968367832, guid: 9ec55189fab312141825d31ad5584d45, type: 3}
