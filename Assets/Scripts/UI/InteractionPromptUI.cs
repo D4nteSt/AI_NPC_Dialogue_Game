@@ -6,8 +6,13 @@ public class InteractionPromptUI : MonoBehaviour
     [SerializeField] private PlayerInteraction playerInteraction;
     [SerializeField] private GameplayUIController gameplayUIController;
     [SerializeField] private DialogueManager dialogueManager;
+
+    [Header("UI")]
     [SerializeField] private GameObject promptPanel;
     [SerializeField] private TextMeshProUGUI promptText;
+    [SerializeField] private AutoResizeTextPanel autoResizeTextPanel;
+
+    private string lastPromptText;
 
     private void Update()
     {
@@ -17,18 +22,44 @@ public class InteractionPromptUI : MonoBehaviour
 
         if (shouldHide)
         {
-            promptPanel.SetActive(false);
+            HidePrompt();
             return;
         }
 
-        if (playerInteraction.CurrentInteractable != null)
+        if (playerInteraction != null && playerInteraction.CurrentInteractable != null)
         {
-            promptPanel.SetActive(true);
-            promptText.text = playerInteraction.CurrentInteractable.GetInteractionText();
+            string interactionText = playerInteraction.CurrentInteractable.GetInteractionText();
+            ShowPrompt(interactionText);
         }
         else
         {
-            promptPanel.SetActive(false);
+            HidePrompt();
         }
+    }
+
+    private void ShowPrompt(string text)
+    {
+        if (promptPanel != null && !promptPanel.activeSelf)
+            promptPanel.SetActive(true);
+
+        if (promptText == null)
+            return;
+
+        if (lastPromptText == text)
+            return;
+
+        lastPromptText = text;
+        promptText.text = text;
+
+        if (autoResizeTextPanel != null)
+            autoResizeTextPanel.Refresh();
+    }
+
+    private void HidePrompt()
+    {
+        lastPromptText = string.Empty;
+
+        if (promptPanel != null && promptPanel.activeSelf)
+            promptPanel.SetActive(false);
     }
 }

@@ -5,6 +5,7 @@ public class DialogueOutcomeExecutor : MonoBehaviour, IDialogueOutcomeExecutor
     [SerializeField] private QuestManager questManager;
     [SerializeField] private InventoryManager inventoryManager;
     [SerializeField] private NotificationUI notificationUI;
+    [SerializeField] private PoliceGateController policeGateController;
 
     public DialogueOutcomeExecutionResult Execute(DialogueOutcome outcome)
     {
@@ -54,6 +55,10 @@ public class DialogueOutcomeExecutor : MonoBehaviour, IDialogueOutcomeExecutor
 
             case DialogueActionType.ShowNotification:
                 ExecuteShowNotification(action);
+                break;
+
+            case DialogueActionType.OpenGate:
+                ExecuteOpenGate(action, result);
                 break;
 
             default:
@@ -266,5 +271,21 @@ public class DialogueOutcomeExecutor : MonoBehaviour, IDialogueOutcomeExecutor
             return itemName;
 
         return string.Empty;
+    }
+    private void ExecuteOpenGate(DialogueActionData action, DialogueOutcomeExecutionResult result)
+    {
+        if (policeGateController == null)
+        {
+            Debug.LogWarning("ExecuteOpenGate failed: policeGateController is null.");
+            return;
+        }
+
+        policeGateController.OpenGate();
+
+        AddActionSummary(
+            result,
+            action,
+            "Полицейский проверил ордер и открыл проход к месту осмотра."
+        );
     }
 }

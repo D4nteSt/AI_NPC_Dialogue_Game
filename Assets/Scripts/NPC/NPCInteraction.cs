@@ -15,8 +15,8 @@ public class NPCInteraction : MonoBehaviour, IInteractable
     public string GetInteractionText()
     {
         if (dialogueData == null)
-            return "Нажмите E для взаимодействия";
+            return "Нажмите E";
 
-        return "Нажмите E, чтобы поговорить с " + dialogueData.NPCName;
+        return "E — поговорить: " + dialogueData.NPCName;
     }
 }

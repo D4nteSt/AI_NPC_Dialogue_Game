@@ -7,6 +7,7 @@ public class NotificationUI : MonoBehaviour
     [SerializeField] private GameObject root;
     [SerializeField] private TMP_Text messageText;
     [SerializeField] private float showDuration = 2.5f;
+    [SerializeField] private AutoResizeTextPanel autoResizeTextPanel;
 
     private Coroutine currentRoutine;
 
@@ -21,19 +22,22 @@ public class NotificationUI : MonoBehaviour
         if (string.IsNullOrWhiteSpace(message))
             return;
 
-        if (messageText != null)
-            messageText.text = message;
-
         if (currentRoutine != null)
             StopCoroutine(currentRoutine);
 
-        currentRoutine = StartCoroutine(ShowRoutine());
+        currentRoutine = StartCoroutine(ShowRoutine(message));
     }
 
-    private IEnumerator ShowRoutine()
+    private IEnumerator ShowRoutine(string message)
     {
         if (root != null)
             root.SetActive(true);
+
+        if (messageText != null)
+            messageText.text = message;
+
+        if (autoResizeTextPanel != null)
+            autoResizeTextPanel.Refresh();
 
         yield return new WaitForSeconds(showDuration);
 

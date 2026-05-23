@@ -10,5 +10,6 @@ public enum DialogueActionType
     GiveItem,
     RemoveItem,
 
-    ShowNotification
+    ShowNotification,
+    OpenGate
 }
