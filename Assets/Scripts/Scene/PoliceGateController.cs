@@ -16,6 +16,7 @@ public class PoliceGateController : MonoBehaviour
 
     [Header("Movement Settings")]
     [SerializeField] private float moveDuration = 1.2f;
+    [SerializeField] private float rotationSpeed = 8f;
 
     [Header("State")]
     [SerializeField] private bool isOpened;
@@ -46,10 +47,17 @@ public class PoliceGateController : MonoBehaviour
             yield break;
 
         Vector3 startPosition = policeTransform.position;
-        Quaternion startRotation = policeTransform.rotation;
-
         Vector3 targetPosition = movePoint.position;
-        Quaternion targetRotation = movePoint.rotation;
+
+        Quaternion finalRotation = movePoint.rotation;
+
+        Vector3 moveDirection = targetPosition - startPosition;
+        moveDirection.y = 0f;
+
+        Quaternion moveRotation = policeTransform.rotation;
+
+        if (moveDirection.sqrMagnitude > 0.01f)
+            moveRotation = Quaternion.LookRotation(moveDirection.normalized);
 
         float elapsed = 0f;
 
@@ -61,13 +69,21 @@ public class PoliceGateController : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / moveDuration);
 
             policeTransform.position = Vector3.Lerp(startPosition, targetPosition, t);
-            policeTransform.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
+
+            if (moveDirection.sqrMagnitude > 0.01f)
+            {
+                policeTransform.rotation = Quaternion.Slerp(
+                    policeTransform.rotation,
+                    moveRotation,
+                    Time.deltaTime * rotationSpeed
+                );
+            }
 
             yield return null;
         }
 
         policeTransform.position = targetPosition;
-        policeTransform.rotation = targetRotation;
+        policeTransform.rotation = finalRotation;
 
         SetWalking(false);
         moveRoutine = null;
