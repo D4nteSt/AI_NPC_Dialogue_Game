@@ -29,6 +29,7 @@ public class ThirdPersonCamera : MonoBehaviour
             return;
 
         bool canRotateCamera =
+            (PauseMenuController.Instance == null || !PauseMenuController.Instance.IsPaused) &&
             (dialogueManager == null || !dialogueManager.IsDialogueOpen) &&
             (gameplayUIController == null || !gameplayUIController.IsAnyGameplayPanelOpen);
 

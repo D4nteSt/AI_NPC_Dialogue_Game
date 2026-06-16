@@ -1,5 +1,8 @@
 from app.models import NpcDialogueRequest
 
+# Этот файл устарел, здесь используются старые тестовые фразы с первоначальным сеттингом
+# Если хотите проверить работоспособность, измените значения имен npc и желаемые реплики
+# В текущей сцене они работать не будут
 
 def build_mock_reply(request: NpcDialogueRequest) -> str:
     npc_name = request.npcName.lower()

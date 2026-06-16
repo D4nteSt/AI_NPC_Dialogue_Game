@@ -18,6 +18,7 @@ public class PlayerInteraction : MonoBehaviour
     private void Update()
     {
         bool shouldBlockInteraction =
+            (PauseMenuController.Instance != null && PauseMenuController.Instance.IsPaused) ||
             (dialogueManager != null && dialogueManager.IsDialogueOpen) ||
             (gameplayUIController != null && gameplayUIController.IsAnyGameplayPanelOpen);
 

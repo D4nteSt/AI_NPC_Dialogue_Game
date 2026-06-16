@@ -23,6 +23,9 @@ public class GameplayUIController : MonoBehaviour
 
     private void Update()
     {
+        if (PauseMenuController.Instance != null && PauseMenuController.Instance.IsPaused)
+            return;
+
         HandleInput();
     }
 
@@ -56,6 +59,9 @@ public class GameplayUIController : MonoBehaviour
 
     public void ToggleInventory()
     {
+        if (PauseMenuController.Instance != null && PauseMenuController.Instance.IsPaused)
+            return;
+
         if (inventoryPanel == null)
             return;
 
@@ -72,6 +78,9 @@ public class GameplayUIController : MonoBehaviour
 
     public void ToggleQuestJournal()
     {
+        if (PauseMenuController.Instance != null && PauseMenuController.Instance.IsPaused)
+            return;
+
         if (questJournalPanel == null)
             return;
 
@@ -99,6 +108,13 @@ public class GameplayUIController : MonoBehaviour
 
     private void UpdateCursorState()
     {
+        if (PauseMenuController.Instance != null && PauseMenuController.Instance.IsPaused)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            return;
+        }
+
         bool shouldShowCursor = IsAnyGameplayPanelOpen;
 
         if (dialogueManager != null && dialogueManager.IsDialogueOpen)

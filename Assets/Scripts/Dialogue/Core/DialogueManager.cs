@@ -198,8 +198,16 @@ public class DialogueManager : MonoBehaviour
         if (dialogueUI != null)
             dialogueUI.Hide();
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if (PauseMenuController.Instance != null && PauseMenuController.Instance.IsPaused)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     private void AddDialogueLine(string line)

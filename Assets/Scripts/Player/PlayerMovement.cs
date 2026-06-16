@@ -22,11 +22,15 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         bool shouldBlockMovement =
+            (PauseMenuController.Instance != null && PauseMenuController.Instance.IsPaused) ||
             (dialogueManager != null && dialogueManager.IsDialogueOpen) ||
             (gameplayUIController != null && gameplayUIController.IsAnyGameplayPanelOpen);
 
         if (shouldBlockMovement)
+        {
+            StopMovementAnimation();
             return;
+        }
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -41,7 +45,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Vector3 moveDirection = Vector3.zero;
-
 
         if (inputDirection.magnitude >= 0.1f)
         {
@@ -78,5 +81,11 @@ public class PlayerMovement : MonoBehaviour
         finalMove.y = verticalVelocity;
 
         controller.Move(finalMove * Time.deltaTime);
+    }
+
+    private void StopMovementAnimation()
+    {
+        if (characterAnimator != null)
+            characterAnimator.SetBool("IsMoving", false);
     }
 }
