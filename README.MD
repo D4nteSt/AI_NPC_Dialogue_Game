@@ -90,6 +90,7 @@
 │   │   ├── main.py
 │   │   └── models.py
 │   ├── server_launcher.py
+│   ├── requirements.txt
 │   └── .env.example
 └── README.md
 ```
